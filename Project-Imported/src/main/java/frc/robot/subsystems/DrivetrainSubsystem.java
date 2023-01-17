@@ -70,7 +70,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // FIXME Remove if you are using a Pigeon
  // private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
   // FIXME Uncomment if you are using a NavX
-  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
+  public final AHRS m_navx = new AHRS(SPI.Port.kMXP , (byte) 200); // NavX connected over MXP
 
   // These are our modules. We initialize them in the constructor.
   private final SwerveModule m_frontLeftModule;
@@ -178,7 +178,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 //
 //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+    return Rotation2d.fromDegrees(m_navx.getYaw());
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
