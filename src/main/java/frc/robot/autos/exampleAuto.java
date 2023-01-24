@@ -25,6 +25,10 @@ public class exampleAuto extends SequentialCommandGroup {
                     Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
+<<<<<<< HEAD:src/main/java/frc/robot/autos/exampleAuto.java
+=======
+        // An example trajectory to follow.  All units in meters.
+>>>>>>> e79ce967a83a01701a677639d47e353d48d95471:Project-Imported/src/main/java/frc/robot/autos/exampleAuto.java
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
