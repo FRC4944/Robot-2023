@@ -127,7 +127,10 @@ public final class Constants {
             public static final Rotation2d angleOffset = Rotation2d.fromDegrees(40.5);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
-        }
+        }   
+        //Subsystem IDs
+        public static final int verticalElevatorMotorID = 2; //FIND actual ID -- vertical elevator
+        public static final int horizontalElevatorMotorID = 3; //FIND actual ID -- horizontal elevator
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
