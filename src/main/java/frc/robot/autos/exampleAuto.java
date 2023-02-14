@@ -25,29 +25,32 @@ public class exampleAuto extends SequentialCommandGroup {
                     Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
-        //config.setReversed(true);  TODO Figure out how to make negative cordinates to work.
+        TrajectoryConfig config2 =  new TrajectoryConfig(
+            Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+            Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+        .setKinematics(Constants.Swerve.swerveKinematics);
+
+        config2.setReversed(true);  //TODO Figure out how to make negative cordinates to work.
 
         Trajectory exampleTrajectory =
-        //TODO X and Y are switched in actual cordnate understanding.
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
+                // Pass through these two interior waypoints.
                 List.of(new Translation2d(.25, 0), new Translation2d(.75, 0)),
-                // End 3 meters straight ahead of where we started, facing forward
+                
                 new Pose2d(1, 0, new Rotation2d(0)),
                 config);
 
             Trajectory trajectory1 =
-            //TODO X and Y are switched in actual cordnate understanding.
                     TrajectoryGenerator.generateTrajectory(
                         // Start at the origin facing the +X direction
-                        new Pose2d(0, 0, new Rotation2d(0)),
-                        // Pass through these two interior waypoints, making an 's' curve path
+                        new Pose2d(1, 0, new Rotation2d(0)),
+                        // Pass through these two interior waypoints.
                         List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
-                        // End 3 meters straight ahead of where we started, facing forward
+                        
                         new Pose2d(2.5, 0, new Rotation2d(0)),
-                        config);
+                        config2);
 
         var thetaController =
             new ProfiledPIDController(
@@ -79,7 +82,7 @@ public class exampleAuto extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            swerveControllerCommand2
+            swerveControllerCommand, swerveControllerCommand2
         );
     }
 }
