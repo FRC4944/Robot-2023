@@ -69,6 +69,7 @@ public class Wrist extends SubsystemBase {
     SmartDashboard.putNumber("Transform Encoder Value", getEncoderValue());
   }
 
+  // Wrist drives to PID
   public void driveTowardsPid() {
     double power = this.getPidPower();
     this.Vertical_Elevator_On(power);
