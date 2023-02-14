@@ -31,6 +31,7 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.print("VerticalFirstHorizontalCommand starting");
     this.verticalElevator.setSetpoint(this.verticalSetpoint);
 
     // this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
@@ -43,12 +44,13 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
     if (verticalElevator.pid.getPositionError() < 0.3) {
       this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
     }
-    System.out.println("Command working");
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.print("VerticalFirstHorizontalCommand finished");
+  }
 
   // Returns true when the command should end.
   @Override

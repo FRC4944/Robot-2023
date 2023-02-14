@@ -26,7 +26,7 @@ public class HorizontalElevator extends SubsystemBase {
   private static final double MAX_POWER = 0.3;
 
   public HorizontalElevator() {
-    this.pid.setTolerance(0.1, 0.05/20);
+    this.pid.setTolerance(0.1, 0.07/20);
     this.horizontal_elevator_motor.setNeutralMode(NeutralMode.Brake);
 
     this.setSetpoint(this.getEncoderValue());
