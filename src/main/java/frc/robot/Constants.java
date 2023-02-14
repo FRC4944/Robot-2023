@@ -11,7 +11,14 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
-    public static final double stickDeadband = 0.01;
+    public static final double stickDeadband = 0.1;
+
+    // subsystems
+    public static final int verticalElevatorMotorID = 13; // Find actual ID -- vertical elevator
+    public static final int horizontalElevatorMotorID = 14; // Find actual ID -- horizontal elevator
+    public static final int WristMotorID = 15;  // Find actual ID -- Wrist 
+    public static final int IntakeMotorID = 17; // Find actual ID -- Intake
+    public static final int PartnerLiftID = 18; // Find actual ID --  Partner Lift
 
     public static final class Swerve {
         //public static final int pigeonID = 1;
@@ -124,13 +131,13 @@ public final class Constants {
             public static final int driveMotorID = 4;
             public static final int angleMotorID = 6;
             public static final int canCoderID = 5;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(40.5);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(40.5 - 90);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }   
         //Subsystem IDs
-        public static final int verticalElevatorMotorID = 2; //FIND actual ID -- vertical elevator
-        public static final int horizontalElevatorMotorID = 3; //FIND actual ID -- horizontal elevator
+        public static final int verticalElevatorMotorID = 13; //FIND actual ID -- vertical elevator
+        public static final int horizontalElevatorMotorID = 14; //FIND actual ID -- horizontal elevator
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot

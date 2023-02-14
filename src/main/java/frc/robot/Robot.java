@@ -27,9 +27,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  String trajectoryJSON = "paths/Unnamed.wpilib.json";
-  Trajectory trajectory = new Trajectory();
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -42,12 +39,6 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-   } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-   }
   }
 
   /**
@@ -64,6 +55,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -93,6 +85,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -100,7 +93,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    System.out.println("Robot teleopPeriodic");
+    this.m_robotContainer.teleopPeriodic();
+  }
 
   @Override
   public void testInit() {
