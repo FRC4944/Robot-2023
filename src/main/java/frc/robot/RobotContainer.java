@@ -19,19 +19,23 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-
+    public final XboxController driver = new XboxController(0);
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kBack.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-
+    private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     /* Subsystems */
-    public final Swerve s_Swerve = new Swerve();
+    private final Swerve s_Swerve = new Swerve();
+    public VerticalElevator verticalElevator = new VerticalElevator();
+    public HorizontalElevator horizontalElevator = new HorizontalElevator();
+    public Wrist wrist = new Wrist();
+    public Intake intake = new Intake();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -45,6 +49,8 @@ public class RobotContainer {
                 () -> robotCentric.getAsBoolean()
             )
         );
+        
+        
 
         // Configure the button bindings
         configureButtonBindings();
@@ -58,7 +64,48 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
+        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
+        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
+        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+    }
+
+    public void teleopPeriodic() {
+        System.out.println("RobotContainer teleopPeriodic");
+
+        // Vertical Elevator
+
+        this.verticalElevator.driveTowardsPid();
+        
+        // Horizontal Elevator
+
+         this.horizontalElevator.driveTowardsPid();
+
+         // Intake
+
+         if (driver.getRightBumperPressed()){
+            intake.intake_on(0.4);
+         }
+         if (driver.getRightBumperReleased()){
+            intake.intake_on(0.0);
+         }
+         if (driver.getLeftBumperPressed()){
+            intake.intake_on(-.4);
+         }
+         if (driver.getLeftBumperReleased()){
+            intake.intake_on(0.0);
+         }
+
+        // Wrist
+
+         if (driver.getLeftTriggerAxis() > 0){
+            wrist.Wrist_On(0.15);
+         }
+         if (driver.getRightTriggerAxis() > 0){
+            wrist.Wrist_On(-0.15);
+         }
+
     }
 
     /**
