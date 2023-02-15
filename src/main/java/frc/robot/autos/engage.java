@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 public class engage extends SequentialCommandGroup {
     double altitude;
     public engage(Swerve s_Swerve){
-        altitude = Swerve.getAltitude();
+       // altitude = Swerve.getAltitude();
 
         System.out.println(altitude);
         TrajectoryConfig config =
