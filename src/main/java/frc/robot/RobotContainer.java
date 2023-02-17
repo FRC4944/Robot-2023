@@ -45,7 +45,7 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis( rotationAxis), 
+                () -> driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -66,7 +66,7 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
         aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
-        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.02, 0.01));
         bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
         bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
     }
@@ -84,27 +84,32 @@ public class RobotContainer {
 
          // Intake
 
-         if (driver.getRightBumperPressed()){
-            intake.intake_on(0.4);
-         }
-         if (driver.getRightBumperReleased()){
-            intake.intake_on(0.0);
-         }
-         if (driver.getLeftBumperPressed()){
-            intake.intake_on(-.4);
-         }
-         if (driver.getLeftBumperReleased()){
-            intake.intake_on(0.0);
-         }
-
-        // Wrist
-
-         if (driver.getLeftTriggerAxis() > 0){
-            wrist.Wrist_On(0.15);
-         }
-         if (driver.getRightTriggerAxis() > 0){
-            wrist.Wrist_On(-0.15);
-         }
+// Vertical Elevator PID
+    //this.verticalElevator.driveTowardsPid();
+// Horizontal Elevator PID
+    //this.horizontalElevator.driveTowardsPid();
+     // Intake
+     if (driver.getYButtonPressed()){
+        intake.intake_on(0.8);
+     }
+     if (driver.getYButtonReleased()){
+        intake.intake_on(0.0);
+     }
+     // Out-take
+     if (driver.getXButtonPressed()){
+        intake.intake_on(-.7);
+     }
+     if (driver.getXButtonReleased()){
+        intake.intake_on(0.0);
+     }
+    // Wrist
+     if (driver.getRightBumperPressed()){
+        wrist.setSetpoint(0.7);
+     }
+     if (driver.getLeftBumperPressed()){
+        wrist.setSetpoint(1);
+     }
+     this.wrist.driveTowardsPid();
 
     }
 
@@ -115,7 +120,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
+        return new TestAuto(s_Swerve);
         
 
     }
