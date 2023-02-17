@@ -20,16 +20,41 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     public final XboxController driver = new XboxController(0);
+    public final XboxController operator = new XboxController(1);
+
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kBack.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kBack.value);
+
+    private final JoystickButton dr_ZeroGyro = new JoystickButton(operator, XboxController.Button.kStart.value);
+    private final JoystickButton dr_RightTrigger = new JoystickButton(driver, XboxController.Axis.kRightTrigger.value);
+    private final JoystickButton dr_LeftTrigger = new JoystickButton(driver, XboxController.Axis.kLeftTrigger.value);
+    private final JoystickButton dr_RightBumper = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final JoystickButton dr_LeftBumper = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton dr_aButton = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton dr_bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton dr_xButton = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton dr_yButton = new JoystickButton(driver, XboxController.Button.kY.value);
+
+    /* Operator Buttons */
+    private final JoystickButton op_Back = new JoystickButton(operator, XboxController.Button.kBack.value);
+    private final JoystickButton op_Start = new JoystickButton(operator, XboxController.Button.kStart.value);
+    private final JoystickButton op_RightTrigger = new JoystickButton(operator, XboxController.Axis.kRightTrigger.value);
+    private final JoystickButton op_LeftTrigger = new JoystickButton(operator, XboxController.Axis.kLeftTrigger.value);
+    private final JoystickButton op_RightBumper = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+    private final JoystickButton op_LeftBumper = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton op_aButton = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton op_bButton = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton op_xButton = new JoystickButton(operator, XboxController.Button.kX.value);
+    private final JoystickButton op_yButton = new JoystickButton(operator, XboxController.Button.kY.value);
+
+    //Drive practice to see if we want this
+    // private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     public VerticalElevator verticalElevator = new VerticalElevator();
@@ -45,8 +70,8 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
-                () -> driver.getRawAxis(rotationAxis), 
-                () -> robotCentric.getAsBoolean()
+                () -> driver.getRawAxis(rotationAxis),
+                () -> robotCentric.getAsBoolean() 
             )
         );
         
@@ -64,11 +89,29 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
-        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.02, 0.01));
-        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
-        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        // dr_Back.onTrue();
+        dr_ZeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        dr_aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 0.9));
+        dr_aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        dr_bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.55, 0.5));
+        dr_bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        dr_xButton.onTrue(new HumanPlayerCubeIntake(verticalElevator, horizontalElevator, intake, 0.8, 0.8, 0.7));
+        dr_xButton.onFalse(new HumanPlayerCubeIntake(verticalElevator, horizontalElevator, intake, 0.05, 0.05, 0.05));
+        dr_yButton.onTrue(new HumanPlayerConeIntake(verticalElevator, horizontalElevator, intake, 0.8, 0.8, -0.8));
+        dr_yButton.onFalse(new HumanPlayerConeIntake(verticalElevator, horizontalElevator, intake, 0.05, 0.05, 0.05));    
+ 
+        /* Operator Buttons */
+        op_Back.onTrue(new BringElevatorToZero(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_Start.onTrue(new ZeroAllEncoders(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_aButton.onTrue(new FoldInIntake(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_aButton.onFalse(new FoldInIntake(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_bButton.onTrue(new LineRobotWithAprilTag(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_bButton.onFalse(new LineRobotWithAprilTag(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_RightBumper.onTrue(new DropFork(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_RightBumper.onTrue(new DropFork(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_LeftBumper.onTrue(new PidOnEngage(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+        op_LeftBumper.onTrue(new PidOnEngage(verticalElevator, horizontalElevator, intake, translationAxis, strafeAxis, rotationAxis));
+
     }
 
     public void teleopPeriodic() {
@@ -88,31 +131,36 @@ public class RobotContainer {
     //this.verticalElevator.driveTowardsPid();
 // Horizontal Elevator PID
     //this.horizontalElevator.driveTowardsPid();
-     // Intake
-     if (driver.getYButtonPressed()){
-        intake.intake_on(0.8);
+     // Ground Intake Cube
+     if (driver.getRightBumperPressed()){
+        intake.intake_on(0.7);
      }
-     if (driver.getYButtonReleased()){
+     if (driver.getRightBumperReleased()){
         intake.intake_on(0.0);
      }
-     // Out-take
+     // Ground Intake Cone
+     if (driver.getLeftBumperPressed()){
+        intake.intake_on(-0.8);
+     }
+     if (driver.getLeftBumperReleased()){
+        intake.intake_on(0.0);
+     }
+    // Human Player intake Cube
      if (driver.getXButtonPressed()){
-        intake.intake_on(-.7);
+        intake.intake_on(0.7);
      }
      if (driver.getXButtonReleased()){
         intake.intake_on(0.0);
      }
-    // Wrist
-     if (driver.getRightBumperPressed()){
-        wrist.setSetpoint(0.7);
+     // Human Player intake Cone
+     if (driver.getYButtonPressed()){
+        intake.intake_on(-0.8);
      }
-     if (driver.getLeftBumperPressed()){
-        wrist.setSetpoint(1);
+     if (driver.getYButtonReleased()){
+        intake.intake_on(0.0);
      }
-     this.wrist.driveTowardsPid();
 
     }
-
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -125,3 +173,4 @@ public class RobotContainer {
 
     }
 }
+
