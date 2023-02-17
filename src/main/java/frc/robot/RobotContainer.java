@@ -99,12 +99,6 @@ public class RobotContainer {
 
         // Wrist
 
-         if (driver.getLeftTriggerAxis() > 0){
-            wrist.Wrist_On(0.15);
-         }
-         if (driver.getRightTriggerAxis() > 0){
-            wrist.Wrist_On(-0.15);
-         }
 
     }
 
