@@ -18,13 +18,13 @@ public class VerticalElevator extends SubsystemBase {
   /** Creates a new VerticalElevator. */
   private final TalonFX vertical_elevator_motor = new TalonFX(Constants.verticalElevatorMotorID);
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(vertical_elevator_motor);
-  public final PIDController pid = new PIDController(0.9, 1.0/7.0, 0);
+  public final PIDController pid = new PIDController(0.5, 1.0/5.0, 0);
   private double setPoint = 0;
 
   // Constants
   private static final int ENCODER_BUFFER = 500;
-  private static final int BOTTOM_ENCODER_VALUE = 0 + ENCODER_BUFFER;
-  private static final int TOP_ENCODER_VALUE = 90000 - ENCODER_BUFFER;
+  private static final int BOTTOM_ENCODER_VALUE = 30000 + ENCODER_BUFFER;
+  private static final int TOP_ENCODER_VALUE = 46000 - ENCODER_BUFFER;
   private static final double MAX_POWER = 0.6;
 
   public VerticalElevator(){
@@ -66,7 +66,7 @@ public class VerticalElevator extends SubsystemBase {
     SmartDashboard.putNumber("Vertical Encoders", encoder.getIntegratedSensorPosition());
     SmartDashboard.putNumber("Current Setpoint", this.setPoint);
     SmartDashboard.putNumber("Motor Power", this.vertical_elevator_motor.getMotorOutputPercent());
-    SmartDashboard.putNumber("Transform Encoder Value", getEncoderValue());
+    SmartDashboard.putNumber("Transform Encoder Value vertical", getEncoderValue());
   }
 
   public void driveTowardsPid() {
