@@ -9,11 +9,13 @@ import java.nio.file.Path;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.VerticalElevator;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,6 +29,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private VerticalElevator verticalElevator;
+  private DigitalInput bottomLimitSwitch = new DigitalInput(0);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -55,6 +60,12 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    if(bottomLimitSwitch.get()){
+      verticalElevator.Vertical_Elevator_On(0.0);
+    } //else{
+      //verticalElevator.Vertical_Elevator_On(power);
+    //}
 
   }
 

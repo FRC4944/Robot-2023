@@ -22,6 +22,8 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     public final XboxController driver = new XboxController(0);
+    public final XboxController operator = new XboxController(1);
+
     /* Drive Controls */
     private final double translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -33,7 +35,6 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
-    //private final Button dPadRight = new JoystickButton(driver, XboxController);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     public VerticalElevator verticalElevator = new VerticalElevator();
@@ -49,9 +50,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translate), 
-                () -> -driver.getRawAxis(strafe), 
-                () -> driver.getRawAxis(rotationAxis), 
+                () -> -driver.getRawAxis(translationAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
+                () -> -driver.getRawAxis( rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -71,11 +72,10 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.75, 1));
-        aButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.25, 0.05, 1.6));
-        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.5, .5));
-        bButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.25, 0.05, 1.6));
-        
+        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
+        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.02, 0.01));
+        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
+        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
     }
 
 
@@ -95,48 +95,40 @@ public class RobotContainer {
     //this.verticalElevator.driveTowardsPid();
 // Horizontal Elevator PID
     //this.horizontalElevator.driveTowardsPid();
-     // Intake
-     if (driver.getYButtonPressed()){
-        intake.intake_on(0.8);
+     // Ground Intake Cube
+     if (driver.getRightBumperPressed()){
+        intake.intake_on(0.7);
      }
-     if (driver.getYButtonReleased()){
+     if (driver.getRightBumperReleased()){
         intake.intake_on(0.0);
      }
-     // Out-take
+     // Ground Intake Cone
+     if (driver.getLeftBumperPressed()){
+        intake.intake_on(-0.8);
+     }
+     if (driver.getLeftBumperReleased()){
+        intake.intake_on(0.0);
+     }
+    // Human Player intake Cube
      if (driver.getXButtonPressed()){
-        intake.intake_on(-.7);
+        intake.intake_on(0.7);
      }
      if (driver.getXButtonReleased()){
         intake.intake_on(0.0);
      }
-    // Wrist
-     if (driver.getRightBumperPressed()){
-        wrist.setSetpoint(0.7);
-     }
-     if (driver.getLeftBumperPressed()){
-        wrist.setSetpoint(1);
-     }
-     if (driver.getPOV() == 90){
-        wrist.setSetpoint(0.9);
-        verticalElevator.setSetpoint(0.05);
-        intake.intake_on(0.7);
-     }
-
-     if (driver.getPOV() == 270){
-        wrist.setSetpoint(0.8);
-        verticalElevator.setSetpoint(0.05);
+     // Human Player intake Cone
+     if (driver.getYButtonPressed()){
         intake.intake_on(-0.8);
      }
-
-    //  if (driver.getPOV() != 90){
-    //     intake.intake_on(0);
-    //  }
+     if (driver.getYButtonReleased()){
+        intake.intake_on(0.0);
+     }
+     this.wrist.driveTowardsPid();
 
     //  if (driver.getPOV() != 270){
     //     intake.intake_on(0);
     //  }
     }
-
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -150,3 +142,4 @@ public class RobotContainer {
 
     }
 }
+

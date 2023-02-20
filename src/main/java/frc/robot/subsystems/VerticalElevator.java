@@ -18,7 +18,7 @@ public class VerticalElevator extends SubsystemBase {
   /** Creates a new VerticalElevator. */
   private final TalonFX vertical_elevator_motor = new TalonFX(Constants.verticalElevatorMotorID);
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(vertical_elevator_motor);
-  public final PIDController pid = new PIDController(0.4, 1.0/5.0, 0);
+  public final PIDController pid = new PIDController(0.9, 1.0/7.0, 0);
   private double setPoint = 0;
 
   // Constants
