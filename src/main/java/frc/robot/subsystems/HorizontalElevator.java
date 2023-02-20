@@ -19,7 +19,7 @@ public class HorizontalElevator extends SubsystemBase {
   public final PIDController pid = new PIDController(.5, 1/30.0, 0);
   private double setPoint = 0;
 
-  //Constants E
+  //Constants
   private static final int ENCODER_BUFFER = 500;
   private static final int BOTTOM_ENCODER_VALUE = 0 + ENCODER_BUFFER;
   private static final int TOP_ENCODER_VALUE = 25000 - ENCODER_BUFFER;
