@@ -3,8 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,10 +23,9 @@ public class RobotContainer {
     public final XboxController operator = new XboxController(1);
 
     /* Drive Controls */
-    private final double translationAxis = XboxController.Axis.kLeftY.value;
+    private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
-    //private final int = getPOV(0);
 
     /* Driver Buttons */
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kBack.value);
@@ -68,9 +65,6 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
-        final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));
-        final int steer = (int) (((rotationAxis<0)?-1:1)*Math.sqrt(Math.abs(rotationAxis)));
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
@@ -131,7 +125,7 @@ public class RobotContainer {
 
          this.horizontalElevator.driveTowardsPid();
 
-         this.wrist.driveTowardsPid();
+         // Intake
 
 // Vertical Elevator PID
     //this.verticalElevator.driveTowardsPid();
@@ -165,18 +159,8 @@ public class RobotContainer {
      if (driver.getYButtonReleased()){
         intake.intake_on(0.0);
      }
-     if (driver.getPOV() == 90){
-        wrist.setSetpoint(0.8);
-        verticalElevator.setSetpoint(-3.95);
-        //intake.intake_on(0.7);
-     
-     if (driver.getPOV() == 270){
-        wrist.setSetpoint(0.8);
-        verticalElevator.setSetpoint(-3.95);
-     }
 
     }
-
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *

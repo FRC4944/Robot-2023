@@ -4,26 +4,23 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  public CANSparkMax intake;
+  TalonFX intake;
   public Intake() {
-    intake = new CANSparkMax(Constants.IntakeMotorID, MotorType.kBrushless);
-    
+    intake = new TalonFX(Constants.IntakeMotorID);
+    this.intake.setNeutralMode(NeutralMode.Brake);
   }
 
   public void intake_on(double power){
-    intake.set(power);
+    intake.set(ControlMode.PercentOutput, power);
   }
 
   
