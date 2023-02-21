@@ -1,10 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -50,9 +47,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis( rotationAxis), 
+                () -> -driver.getRawAxis(translate), 
+                () -> -driver.getRawAxis(strafe), 
+                () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -73,9 +70,9 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
         aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
-        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.02, 0.01));
+        aButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
         bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
-        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        bButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
     }
 
 
@@ -91,43 +88,31 @@ public class RobotContainer {
 
          this.wrist.driveTowardsPid();
 
-// Vertical Elevator PID
-    //this.verticalElevator.driveTowardsPid();
-// Horizontal Elevator PID
-    //this.horizontalElevator.driveTowardsPid();
-     // Ground Intake Cube
-     if (driver.getRightBumperPressed()){
-        intake.intake_on(0.7);
-     }
-     if (driver.getRightBumperReleased()){
-        intake.intake_on(0.0);
-     }
-     // Ground Intake Cone
-     if (driver.getLeftBumperPressed()){
-        intake.intake_on(-0.8);
-     }
-     if (driver.getLeftBumperReleased()){
-        intake.intake_on(0.0);
-     }
-    // Human Player intake Cube
-     if (driver.getXButtonPressed()){
-        intake.intake_on(0.7);
-     }
-     if (driver.getXButtonReleased()){
-        intake.intake_on(0.0);
-     }
-     // Human Player intake Cone
-     if (driver.getYButtonPressed()){
-        intake.intake_on(-0.8);
-     }
-     if (driver.getYButtonReleased()){
-        intake.intake_on(0.0);
-     }
-     this.wrist.driveTowardsPid();
+        if (driver.getYButtonPressed()){
+            intake.intake_on(0.8);
+        }
+        if (driver.getYButtonReleased()){
+            intake.intake_on(0.0);
+        }
 
-    //  if (driver.getPOV() != 270){
-    //     intake.intake_on(0);
-    //  }
+        if (driver.getXButtonPressed()){
+            intake.intake_on(-0.7);
+        }
+        if (driver.getXButtonReleased()){
+            intake.intake_on(0.0);
+        }
+
+        if (driver.getRightBumperPressed()){
+            wrist.setSetpoint(0.7);
+        }
+        if (driver.getLeftBumperPressed()){
+            wrist.setSetpoint(1);
+        }
+
+        if (driver.getPOV() == 90){
+            wrist.setSetpoint(0.8);
+            verticalElevator.setSetpoint(0);
+        }
     }
 
     /**

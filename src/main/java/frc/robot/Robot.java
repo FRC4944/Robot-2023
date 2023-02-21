@@ -30,8 +30,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private VerticalElevator verticalElevator;
-  private DigitalInput bottomLimitSwitch = new DigitalInput(0);
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -61,11 +60,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    if(bottomLimitSwitch.get()){
-      verticalElevator.Vertical_Elevator_On(0.0);
-    } //else{
-      //verticalElevator.Vertical_Elevator_On(power);
-    //}
+
 
   }
 
