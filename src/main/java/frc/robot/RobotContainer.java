@@ -33,7 +33,7 @@ public class RobotContainer {
     private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    public final Swerve s_Swerve = new Swerve();
     public VerticalElevator verticalElevator = new VerticalElevator();
     public HorizontalElevator horizontalElevator = new HorizontalElevator();
     public Wrist wrist = new Wrist();
@@ -77,6 +77,9 @@ public class RobotContainer {
 
 
     public void teleopPeriodic() {
+
+        //Fix Gyro from Autos
+        s_Swerve.setGyroOffset(0.0);
 
         // Vertical Elevator
 
@@ -122,7 +125,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new TestAuto(s_Swerve);
+        return new exampleAuto(s_Swerve);
         
 
     }
