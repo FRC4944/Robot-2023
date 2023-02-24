@@ -79,9 +79,11 @@ public class exampleAuto extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+        setGyro setGyro = new setGyro(180);
+
 
         addCommands(
-            new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
+            setGyro, new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
             swerveControllerCommand, swerveControllerCommand2
         );
     }
