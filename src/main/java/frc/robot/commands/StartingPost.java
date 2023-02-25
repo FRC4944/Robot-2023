@@ -21,8 +21,12 @@ public class StartingPost extends CommandBase {
   private double horizontalSetpoint;
   private double wristSetpoint;
 
+  private long time;
+
+  private boolean auto;
+
   public StartingPost(VerticalElevator verticalElevator, HorizontalElevator horizontalElevator, Wrist wrist,
-    double verticalSetpoint, double horizontalSetpoint, double wristSetpoint
+    double verticalSetpoint, double horizontalSetpoint, double wristSetpoint, boolean auto
   ) {
     this.horizontalElevator = horizontalElevator;
     this.verticalElevator = verticalElevator;
@@ -31,23 +35,33 @@ public class StartingPost extends CommandBase {
     this.verticalSetpoint = verticalSetpoint;
     this.horizontalSetpoint = horizontalSetpoint;
     this.wristSetpoint = wristSetpoint;
+
+    this.auto = auto;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.verticalElevator.setSetpoint(this.verticalSetpoint);
-
     this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
+
+    if (auto) {
+      time = System.currentTimeMillis() + 2000;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // if (verticalElevator.pid.atSetpoint()) {
-    if (verticalElevator.pid.getPositionError() < 0.3) {
-      this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
+    if (horizontalElevator.pid.getPositionError() < 0.01) {
+      this.verticalElevator.setSetpoint(this.verticalSetpoint);
       this.wrist.setSetpoint(this.wristSetpoint);
+    }
+
+    if(auto) {
+      this.verticalElevator.driveTowardsPid();
+      this.horizontalElevator.driveTowardsPid();
+      this.wrist.driveTowardsPid();
     }
     System.out.println("Command working");
   }
@@ -59,7 +73,11 @@ public class StartingPost extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.verticalElevator.pid.atSetpoint() && this.horizontalElevator.pid.atSetpoint() 
-    && this.wrist.pid.atSetpoint();
+    if(auto) {
+      return System.currentTimeMillis() > time;
+    } else {
+      return this.verticalElevator.pid.atSetpoint() && this.horizontalElevator.pid.atSetpoint() 
+      && this.wrist.pid.atSetpoint();
+    }
   }
 }

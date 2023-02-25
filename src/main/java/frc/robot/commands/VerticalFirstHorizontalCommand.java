@@ -18,20 +18,31 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
   private double verticalSetpoint;
   private double horizontalSetpoint;
 
+  private boolean auto;
+
+  private long time;
+
   public VerticalFirstHorizontalCommand(VerticalElevator verticalElevator, HorizontalElevator horizontalElevator,
-    double verticalSetpoint, double horizontalSetpoint
+    double verticalSetpoint, double horizontalSetpoint, boolean auto
   ) {
     this.horizontalElevator = horizontalElevator;
     this.verticalElevator = verticalElevator;
 
     this.verticalSetpoint = verticalSetpoint;
     this.horizontalSetpoint = horizontalSetpoint;
+
+    this.auto = auto;
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     this.verticalElevator.setSetpoint(this.verticalSetpoint);
+
+    if (auto) {
+      time = System.currentTimeMillis() + 2000;
+    }
 
     // this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
   }
@@ -43,6 +54,14 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
     if (verticalElevator.pid.getPositionError() < 0.3) {
       this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
     }
+
+
+    //FOR AUTOS ONLY! Makes the command run the drive towards PID Commands effectively making it an all in one command.  NOTE: normally it would only be like this but for some reason it needs to run constantly
+    if (auto) {
+      this.verticalElevator.driveTowardsPid();
+      this.horizontalElevator.driveTowardsPid();
+    }
+
     System.out.println("Command working");
   }
 
@@ -53,6 +72,10 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.verticalElevator.pid.atSetpoint() && this.horizontalElevator.pid.atSetpoint();
+    if (auto) {
+      return System.currentTimeMillis() > time;
+    } else {
+      return this.verticalElevator.pid.atSetpoint() && this.horizontalElevator.pid.atSetpoint();
+    }
   }
 }

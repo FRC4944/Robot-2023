@@ -4,18 +4,14 @@
 
 package frc.robot.autos;
 
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.commands.TeleopSwerve;
-import frc.robot.subsystems.Swerve;
 
-public class TestAuto extends CommandBase {
-  /** Creates a new TestAuto. */
-  private final Swerve m_swerve;
-  public TestAuto(Swerve swerve) {
+public class WaitUntil extends CommandBase {
+  /** Creates a new wait. */
+  double endTime;
+  public WaitUntil(double endTime) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_swerve = swerve;
+    this.endTime = System.currentTimeMillis() + endTime;
   }
 
   // Called when the command is initially scheduled.
@@ -24,14 +20,7 @@ public class TestAuto extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_swerve.drive(
-      new Translation2d(10.0, 0).times(Constants.Swerve.maxSpeed), 
-       180 * Constants.Swerve.maxAngularVelocity, 
-      false, 
-      true
-  );
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -40,6 +29,11 @@ public class TestAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (System.currentTimeMillis() > endTime) {
+      return true;
+    } else {
+      return false;
+    }
+    
   }
 }

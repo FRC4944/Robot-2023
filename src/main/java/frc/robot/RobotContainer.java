@@ -34,10 +34,10 @@ public class RobotContainer {
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     /* Subsystems */
     public final Swerve s_Swerve = new Swerve();
-    public VerticalElevator verticalElevator = new VerticalElevator();
-    public HorizontalElevator horizontalElevator = new HorizontalElevator();
-    public Wrist wrist = new Wrist();
-    public Intake intake = new Intake();
+    public static VerticalElevator verticalElevator = new VerticalElevator();
+    public static HorizontalElevator horizontalElevator = new HorizontalElevator();
+    public static Wrist wrist = new Wrist();
+    public static Intake intake = new Intake();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,10 +69,10 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
-        aButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
-        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
-        bButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
+        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1, false));
+        aButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5, false));
+        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5, false));
+        bButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5,false));
     }
 
 
