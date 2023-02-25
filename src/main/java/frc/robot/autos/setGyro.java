@@ -21,5 +21,7 @@ public class setGyro extends InstantCommand {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Robot.m_robotContainer.s_Swerve.setGyroOffset(gyroOffset);
+  }
 }
