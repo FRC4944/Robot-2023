@@ -16,11 +16,13 @@ public class Wrist extends SubsystemBase {
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(wrist);
   public final PIDController pid = new PIDController(0.45, 0.15, 0);
   private double setPoint = 0;
+  
   // Constants
   private static final int ENCODER_BUFFER = 500;
   private static final int BOTTOM_ENCODER_VALUE = 0 + ENCODER_BUFFER;
   private static final int TOP_ENCODER_VALUE = 20000 - ENCODER_BUFFER;
   private static final double MAX_POWER = 0.8;
+
   public Wrist(){
     this.pid.setTolerance(0.1, 0.07/20);
     this.wrist.setNeutralMode(NeutralMode.Brake);

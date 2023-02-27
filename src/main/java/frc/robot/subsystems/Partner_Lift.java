@@ -16,6 +16,7 @@ public class Partner_Lift extends SubsystemBase {
   TalonFX partner_lift = new TalonFX(Constants.PartnerLiftID);
   public Partner_Lift() {
     this.partner_lift.setNeutralMode(NeutralMode.Brake);
+    
   }
 
   public void Partner_Lift_On(double power){

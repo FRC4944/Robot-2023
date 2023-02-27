@@ -37,7 +37,6 @@ public class VerticalElevator extends SubsystemBase {
   
   public void Vertical_Elevator_On(Double power) {
     vertical_elevator_motor.set(ControlMode.PercentOutput, power);
-
     vertical_elevator_motor.setNeutralMode(NeutralMode.Brake);
     
   }

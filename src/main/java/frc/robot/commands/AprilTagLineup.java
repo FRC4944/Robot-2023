@@ -36,8 +36,7 @@ public class AprilTagLineup extends CommandBase {
       this.m_swerve = swerve;
       
     }
-  
-
+    
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -67,7 +66,6 @@ public class AprilTagLineup extends CommandBase {
       false, 
       true
   );
-    
   }
 
   // Called once the command ends or is interrupted.

@@ -61,7 +61,6 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
       this.wrist.setSetpoint(this.wristSetpoint);
   }
 
-
     //FOR AUTOS ONLY! Makes the command run the drive towards PID Commands effectively making it an all in one command.  NOTE: normally it would only be like this but for some reason it needs to run constantly
     if (auto) {
       this.verticalElevator.driveTowardsPid();

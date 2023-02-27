@@ -140,7 +140,6 @@ public class RobotContainer {
         if (operator.getYButtonReleased()){
             candle.rainbowAnimation(0.3, 0.5, 60);
         }
-
     }
 
     /**

@@ -1,7 +1,11 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.commands.StartingPost;
+import frc.robot.commands.VerticalFirstHorizontalCommand;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Wrist;
 
 import java.util.List;
 
@@ -37,7 +41,7 @@ public class exampleAuto extends SequentialCommandGroup {
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
                 // Pass through these two interior waypoints.
-                List.of(new Translation2d(.25, 0), new Translation2d(.75, 0)),
+                List.of(new Translation2d(1, 0), new Translation2d(1, 0)),
                 
                 new Pose2d(1, 0, new Rotation2d(0)),
                 config);
@@ -79,8 +83,20 @@ public class exampleAuto extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+        setGyro setGyro = new setGyro(90);
+
 
         addCommands(
+            setGyro,
+            new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
+            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.0, 0.05, 1, true),
+            new WaitUntil(100),
+            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.0, 1, 1, true), 
+            new InstantCommand(() -> RobotContainer.intake.intake_on(-0.7)),
+            new WaitUntil(3000),
+            new InstantCommand(() -> RobotContainer.intake.intake_on(0.0)), 
+            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.02, 0.05, 1.5, true),
+            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.02, 0.05, 0.7, true),
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
             swerveControllerCommand, swerveControllerCommand2
         );
