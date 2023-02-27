@@ -16,17 +16,17 @@ public class HorizontalElevator extends SubsystemBase {
   /** Creates a new HorizontalElevator. */
   private final TalonFX horizontal_elevator_motor = new TalonFX(Constants.horizontalElevatorMotorID);
   private final TalonFXSensorCollection hencoder   = new TalonFXSensorCollection(horizontal_elevator_motor);
-  public final PIDController pid = new PIDController(.5, 1/30.0, 0);
+  public final PIDController pid = new PIDController(.5, 1/25.0, 0);
   private double setPoint = 0;
 
   //Constants
   private static final int ENCODER_BUFFER = 500;
   private static final int BOTTOM_ENCODER_VALUE = 0 + ENCODER_BUFFER;
   private static final int TOP_ENCODER_VALUE = 25000 - ENCODER_BUFFER;
-  private static final double MAX_POWER = 0.3;
+  private static final double MAX_POWER = 0.4;
 
   public HorizontalElevator() {
-    this.pid.setTolerance(0.2, 0.05/20);
+    this.pid.setTolerance(0.15, 0.05/20);
     this.horizontal_elevator_motor.setNeutralMode(NeutralMode.Brake);
 
     this.setSetpoint(this.getEncoderValue());
@@ -52,7 +52,6 @@ public class HorizontalElevator extends SubsystemBase {
     double power = this.pid.calculate(this.getEncoderValue());
     return Math.min(MAX_POWER, Math.max(-MAX_POWER, power));
   }
-
 
   public void setSetpoint(double setpoint) {
     this.setPoint = setpoint;

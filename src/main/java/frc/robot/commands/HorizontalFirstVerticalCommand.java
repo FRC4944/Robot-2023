@@ -31,14 +31,13 @@ public class HorizontalFirstVerticalCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
-
     // this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
     if (horizontalElevator.pid.atSetpoint()) {
       this.verticalElevator.setSetpoint(this.verticalSetpoint);
     }

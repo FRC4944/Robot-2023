@@ -5,6 +5,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.StartingPost;
 import frc.robot.commands.VerticalFirstHorizontalCommand;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Wrist;
 
 import java.util.List;
 
@@ -88,9 +89,9 @@ public class exampleAuto extends SequentialCommandGroup {
         addCommands(
             setGyro,
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
-            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.0, 0.05, 1.2, true),
+            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.0, 0.05, 1, true),
             new WaitUntil(100),
-            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, 1.0, 1, true), 
+            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.0, 1, 1, true), 
             new InstantCommand(() -> RobotContainer.intake.intake_on(-0.7)),
             new WaitUntil(3000),
             new InstantCommand(() -> RobotContainer.intake.intake_on(0.0)), 

@@ -17,7 +17,6 @@ public class TestAuto extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_swerve = swerve;
   }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
