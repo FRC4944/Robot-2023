@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -20,10 +19,13 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     public final XboxController driver = new XboxController(0);
+    public final XboxController operator = new XboxController(1);
+
     /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
+    private final double translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
+    //private final int = getPOV(0);
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kBack.value);
@@ -40,12 +42,14 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+        final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
+        final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis( rotationAxis), 
+                () -> -driver.getRawAxis(translate), 
+                () -> -driver.getRawAxis(strafe), 
+                () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -66,13 +70,13 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
         aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
-        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        aButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
         bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
-        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        bButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
     }
 
+
     public void teleopPeriodic() {
-        System.out.println("RobotContainer teleopPeriodic");
 
         // Vertical Elevator
 
@@ -82,24 +86,33 @@ public class RobotContainer {
 
          this.horizontalElevator.driveTowardsPid();
 
-         // Intake
+         this.wrist.driveTowardsPid();
 
-         if (driver.getRightBumperPressed()){
-            intake.intake_on(0.4);
-         }
-         if (driver.getRightBumperReleased()){
+        if (driver.getYButtonPressed()){
+            intake.intake_on(0.8);
+        }
+        if (driver.getYButtonReleased()){
             intake.intake_on(0.0);
-         }
-         if (driver.getLeftBumperPressed()){
-            intake.intake_on(-.4);
-         }
-         if (driver.getLeftBumperReleased()){
+        }
+
+        if (driver.getXButtonPressed()){
+            intake.intake_on(-0.7);
+        }
+        if (driver.getXButtonReleased()){
             intake.intake_on(0.0);
-         }
+        }
 
-        // Wrist
+        if (driver.getRightBumperPressed()){
+            wrist.setSetpoint(0.7);
+        }
+        if (driver.getLeftBumperPressed()){
+            wrist.setSetpoint(1);
+        }
 
-
+        if (driver.getPOV() == 90){
+            wrist.setSetpoint(0.8);
+            verticalElevator.setSetpoint(0);
+        }
     }
 
     /**
@@ -109,8 +122,9 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
+        return new TestAuto(s_Swerve);
         
 
     }
 }
+
