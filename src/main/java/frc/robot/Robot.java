@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  static public RobotContainer m_robotContainer;
 
   
   /**
@@ -101,6 +101,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     this.m_robotContainer.teleopPeriodic();
+
+    
   }
 
   @Override

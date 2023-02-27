@@ -33,11 +33,12 @@ public class RobotContainer {
     private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
-    public VerticalElevator verticalElevator = new VerticalElevator();
-    public HorizontalElevator horizontalElevator = new HorizontalElevator();
-    public Wrist wrist = new Wrist();
-    public Intake intake = new Intake();
+    public final Swerve s_Swerve = new Swerve();
+    public static VerticalElevator verticalElevator = new VerticalElevator();
+    public static HorizontalElevator horizontalElevator = new HorizontalElevator();
+    public static Wrist wrist = new Wrist();
+    public static Intake intake = new Intake();
+    public static CANDle candle = new CANDle();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,14 +70,19 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.95, 1));
-        aButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
-        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, 0.53, .5));
-        bButton.onFalse(new StartingPost(verticalElevator, horizontalElevator, wrist, 0.02, 0.05, .5));
+        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.04, 1, 1.05, false));
+        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.7, .5, 1.05, false));
+        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+
+        aButton.onTrue(new AprilTagLineup(s_Swerve));
     }
 
 
     public void teleopPeriodic() {
+
+        //Fix Gyro from Autos
+        s_Swerve.setGyroOffset(0.0);
 
         // Vertical Elevator
 
@@ -89,30 +95,52 @@ public class RobotContainer {
          this.wrist.driveTowardsPid();
 
         if (driver.getYButtonPressed()){
-            intake.intake_on(0.8);
+            intake.intake_on(1);
         }
-        if (driver.getYButtonReleased()){
+        if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
         }
 
         if (driver.getXButtonPressed()){
-            intake.intake_on(-0.7);
+            intake.intake_on(-1);
         }
         if (driver.getXButtonReleased()){
             intake.intake_on(0.0);
         }
 
         if (driver.getRightBumperPressed()){
-            wrist.setSetpoint(0.7);
+            wrist.setSetpoint(0.8);
         }
         if (driver.getLeftBumperPressed()){
-            wrist.setSetpoint(1);
+            wrist.setSetpoint(1.1);
         }
 
         if (driver.getPOV() == 90){
-            wrist.setSetpoint(0.8);
-            verticalElevator.setSetpoint(0);
+            wrist.setSetpoint(0.9);
+            verticalElevator.setSetpoint(-0.05);
+            horizontalElevator.setSetpoint(.09);
         }
+        if (driver.getPOV() == 270){
+            wrist.setSetpoint(0.47);
+            verticalElevator.setSetpoint(-0.07);
+            horizontalElevator.setSetpoint(.1);
+        }
+
+
+
+        if (operator.getXButtonPressed()){
+            candle.candleOn(242, 233, 61);
+        }
+        if (operator.getXButtonReleased()){
+            candle.rainbowAnimation(0.3, 0.5, 60);
+        }
+        if (operator.getYButtonPressed()){
+            candle.candleOn(20,59,87);;
+        }
+        if (operator.getYButtonReleased()){
+            candle.rainbowAnimation(0.3, 0.5, 60);
+        }
+
     }
 
     /**
@@ -122,9 +150,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new TestAuto(s_Swerve);
+        return new exampleAuto(s_Swerve);
         
 
     }
 }
-

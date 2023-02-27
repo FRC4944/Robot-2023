@@ -8,53 +8,80 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.subsystems.HorizontalElevator;
 import frc.robot.subsystems.VerticalElevator;
+import frc.robot.subsystems.Wrist;
 
 public class VerticalFirstHorizontalCommand extends CommandBase {
   /** Creates a new HighScore. */
 
   private VerticalElevator verticalElevator;
   private HorizontalElevator horizontalElevator;
+  private Wrist wrist;
   
   private double verticalSetpoint;
   private double horizontalSetpoint;
+  private double wristSetpoint;
 
-  public VerticalFirstHorizontalCommand(VerticalElevator verticalElevator, HorizontalElevator horizontalElevator,
-    double verticalSetpoint, double horizontalSetpoint
+  private boolean auto;
+
+  private long time;
+
+  public VerticalFirstHorizontalCommand(VerticalElevator verticalElevator, HorizontalElevator horizontalElevator, Wrist wrist,
+    double verticalSetpoint, double horizontalSetpoint, double wristSetpoint, boolean auto
   ) {
     this.horizontalElevator = horizontalElevator;
     this.verticalElevator = verticalElevator;
+    this.wrist = wrist;
 
     this.verticalSetpoint = verticalSetpoint;
     this.horizontalSetpoint = horizontalSetpoint;
+    this.wristSetpoint = wristSetpoint;
+
+    this.auto = auto;
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.print("VerticalFirstHorizontalCommand starting");
-    this.verticalElevator.setSetpoint(this.verticalSetpoint);
+    // this.verticalElevator.setSetpoint(this.verticalSetpoint);
 
-    this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
+    if (auto) {
+      time = System.currentTimeMillis() + 2000;
+    }
+
+    //this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //if (verticalElevator.pid.atSetpoint()) {
-    if (verticalElevator.pid.getPositionError() < 0.3) {
+    this.verticalElevator.setSetpoint(this.verticalSetpoint);
+    if (verticalElevator.pid.atSetpoint()) {
       this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
+      this.wrist.setSetpoint(this.wristSetpoint);
+  }
+
+
+    //FOR AUTOS ONLY! Makes the command run the drive towards PID Commands effectively making it an all in one command.  NOTE: normally it would only be like this but for some reason it needs to run constantly
+    if (auto) {
+      this.verticalElevator.driveTowardsPid();
+      this.horizontalElevator.driveTowardsPid();
     }
+
+    System.out.println("Command working");
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    System.out.print("VerticalFirstHorizontalCommand finished");
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.verticalElevator.pid.atSetpoint() && this.horizontalElevator.pid.atSetpoint();
+    if (auto) {
+      return System.currentTimeMillis() > time;
+    } else {
+      return this.verticalElevator.pid.atSetpoint() && this.horizontalElevator.pid.atSetpoint();
+    }
   }
 }

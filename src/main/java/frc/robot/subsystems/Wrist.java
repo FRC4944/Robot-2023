@@ -14,7 +14,7 @@ public class Wrist extends SubsystemBase {
   /** Creates a new VerticalElevator. */
   private final TalonFX wrist = new TalonFX(Constants.WristMotorID);
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(wrist);
-  public final PIDController pid = new PIDController(0.4, 0.1, 0);
+  public final PIDController pid = new PIDController(0.45, 0.15, 0);
   private double setPoint = 0;
   // Constants
   private static final int ENCODER_BUFFER = 500;
@@ -27,7 +27,7 @@ public class Wrist extends SubsystemBase {
     this.wrist.setInverted(false);
     this.setSetpoint(this.getEncoderValue());
  }
-  public void Vertical_Elevator_On(Double power) {
+  public void wrist_On(Double power) {
     wrist.set(ControlMode.PercentOutput, power);
   }
   private double getEncoderValue() {
@@ -58,6 +58,6 @@ public class Wrist extends SubsystemBase {
   // Wrist drives to PID
   public void driveTowardsPid() {
     double power = this.getPidPower();
-    this.Vertical_Elevator_On(power);
+    this.wrist_On(power);
   }
 }
