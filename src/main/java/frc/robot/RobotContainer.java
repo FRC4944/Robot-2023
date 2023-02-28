@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +33,7 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton opAButton = new JoystickButton(operator, XboxController.Button.kA.value);
     /* Subsystems */
     public final Swerve s_Swerve = new Swerve();
     public static VerticalElevator verticalElevator = new VerticalElevator();
@@ -39,6 +41,8 @@ public class RobotContainer {
     public static Wrist wrist = new Wrist();
     public static Intake intake = new Intake();
     public static CANDle candle = new CANDle();
+    public static DigitalInput engage = new DigitalInput(0);
+    public static Partner_Lift Engage = new Partner_Lift();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -70,12 +74,12 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.04, 1, 1.05, false));
+        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .8, false));
         aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
-        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.7, .5, 1.05, false));
+        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.8, .5, .6, false));
         bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
-
-        aButton.onTrue(new AprilTagLineup(s_Swerve));
+        Command aprilTagLineup = new AprilTagLineup(s_Swerve);
+        opAButton.whileTrue(aprilTagLineup);
     }
 
 
@@ -95,7 +99,7 @@ public class RobotContainer {
          this.wrist.driveTowardsPid();
 
         if (driver.getYButtonPressed()){
-            intake.intake_on(1);
+            intake.intake_on(.6);
         }
         if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
@@ -109,22 +113,26 @@ public class RobotContainer {
         }
 
         if (driver.getRightBumperPressed()){
-            wrist.setSetpoint(0.8);
+            wrist.setSetpoint(0.7);
         }
         if (driver.getLeftBumperPressed()){
             wrist.setSetpoint(1.1);
         }
 
         if (driver.getPOV() == 90){
-            wrist.setSetpoint(0.9);
+            wrist.setSetpoint(0.8);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(.09);
         }
         if (driver.getPOV() == 270){
-            wrist.setSetpoint(0.47);
+            wrist.setSetpoint(0.5);
             verticalElevator.setSetpoint(-0.07);
             horizontalElevator.setSetpoint(.1);
+            if (wrist.pid.atSetpoint()){
+                wrist.wrist_On(0.0);
+            }
         }
+
 
 
 
@@ -137,8 +145,24 @@ public class RobotContainer {
         if (operator.getYButtonPressed()){
             candle.candleOn(20,59,87);;
         }
+
+        if (!engage.get()){
+            Engage.Partner_Lift_On(0);
+        }
         if (operator.getYButtonReleased()){
             candle.rainbowAnimation(0.3, 0.5, 60);
+        }
+        if (operator.getRightBumperPressed()){
+            Engage.Partner_Lift_On(.2);
+        }
+        if (operator.getRightBumperReleased()){
+            Engage.Partner_Lift_On(0.0);
+        }
+        if (operator.getLeftBumperPressed()){
+            Engage.Partner_Lift_On(-.2);
+        }
+        if (operator.getLeftBumperReleased()){
+            Engage.Partner_Lift_On(0.0);
         }
     }
 
