@@ -30,7 +30,7 @@ public class AprilTagLineup extends CommandBase {
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
-    double kp = 0.04;
+    double kp = 0.02;
     public AprilTagLineup(Swerve swerve) {
       // Use addRequirements() here to declare subsystem dependencies.
       this.m_swerve = swerve;
@@ -53,16 +53,19 @@ public class AprilTagLineup extends CommandBase {
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+    
 
     double delta = 0 - x;
     double power = delta * kp;
-    power = Math.min(power, .75);
-    power = Math.max(power, -.75);
+    power = Math.min(power, .25);
+    power = Math.max(power, -.25);
+
+    System.out.print("Limelight is working");
   
 
     m_swerve.drive(
-      new Translation2d(x, 0).times(power), 
-       180 * Constants.Swerve.maxAngularVelocity, 
+      new Translation2d(0, -x).times(Constants.Swerve.lm3maxSpeed), 
+       0, 
       false, 
       true
   );
