@@ -16,7 +16,7 @@ public class HorizontalElevator extends SubsystemBase {
   /** Creates a new HorizontalElevator. */
   private final TalonFX horizontal_elevator_motor = new TalonFX(Constants.horizontalElevatorMotorID);
   private final TalonFXSensorCollection hencoder   = new TalonFXSensorCollection(horizontal_elevator_motor);
-  public final PIDController pid = new PIDController(.5, 1/25.0, 0);
+  public final PIDController pid = new PIDController(.45, 1/25.0, 0);
   private double setPoint = 0;
 
   //Constants

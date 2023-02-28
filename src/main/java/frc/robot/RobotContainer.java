@@ -74,10 +74,12 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .8, false));
+        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .89, false));
         aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
         bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.8, .5, .6, false));
         bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+
+        /* Operator Buttons */
         Command aprilTagLineup = new AprilTagLineup(s_Swerve);
         opAButton.whileTrue(aprilTagLineup);
     }
@@ -88,16 +90,14 @@ public class RobotContainer {
         //Fix Gyro from Autos
         s_Swerve.setGyroOffset(0.0);
 
-        // Vertical Elevator
-
+        // Has the pid running the whole time 
         this.verticalElevator.driveTowardsPid();
-        
-        // Horizontal Elevator
 
          this.horizontalElevator.driveTowardsPid();
 
          this.wrist.driveTowardsPid();
 
+         // Intake cube 
         if (driver.getYButtonPressed()){
             intake.intake_on(.6);
         }
@@ -105,6 +105,7 @@ public class RobotContainer {
             intake.intake_on(0.0);
         }
 
+        // Intake cone
         if (driver.getXButtonPressed()){
             intake.intake_on(-1);
         }
@@ -112,6 +113,7 @@ public class RobotContainer {
             intake.intake_on(0.0);
         }
 
+        // Move's the wrist using the pid 
         if (driver.getRightBumperPressed()){
             wrist.setSetpoint(0.7);
         }
@@ -119,11 +121,14 @@ public class RobotContainer {
             wrist.setSetpoint(1.1);
         }
 
+        // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getPOV() == 90){
             wrist.setSetpoint(0.8);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(.09);
         }
+
+        // Sets the wrist to the ground to pick up cones
         if (driver.getPOV() == 270){
             wrist.setSetpoint(0.5);
             verticalElevator.setSetpoint(-0.07);
@@ -133,25 +138,33 @@ public class RobotContainer {
             }
         }
 
-
-
-
+        /*
+         *  Operator Controller buttons subsystems. 
+         */
+        
+        // This should be leds 
+        // candle turns purple for cube 
         if (operator.getXButtonPressed()){
-            candle.candleOn(242, 233, 61);
+            candle.candleOn(20,59,87);
         }
         if (operator.getXButtonReleased()){
             candle.rainbowAnimation(0.3, 0.5, 60);
         }
-        if (operator.getYButtonPressed()){
-            candle.candleOn(20,59,87);;
-        }
 
-        if (!engage.get()){
-            Engage.Partner_Lift_On(0);
+        // Candle turns yellow 
+        if (operator.getYButtonPressed()){    
+            candle.candleOn(242, 233, 61);;
         }
         if (operator.getYButtonReleased()){
             candle.rainbowAnimation(0.3, 0.5, 60);
         }
+
+        // limit switch to turn off forky 
+        if (!engage.get()){
+            Engage.Partner_Lift_On(0);
+        }
+
+        // Engage/forky 
         if (operator.getRightBumperPressed()){
             Engage.Partner_Lift_On(.2);
         }

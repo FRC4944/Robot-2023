@@ -14,7 +14,7 @@ public class Wrist extends SubsystemBase {
   /** Creates a new VerticalElevator. */
   private final TalonFX wrist = new TalonFX(Constants.WristMotorID);
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(wrist);
-  public final PIDController pid = new PIDController(0.45, 0.15, 0);
+  public final PIDController pid = new PIDController(0.47, 0.2, 0);
   private double setPoint = 0;
   
   // Constants
