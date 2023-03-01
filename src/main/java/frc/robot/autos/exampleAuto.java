@@ -2,6 +2,7 @@ package frc.robot.autos;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.HorizontalFirstVerticalCommand;
 import frc.robot.commands.StartingPost;
 import frc.robot.commands.VerticalFirstHorizontalCommand;
 import frc.robot.subsystems.Swerve;
@@ -89,14 +90,12 @@ public class exampleAuto extends SequentialCommandGroup {
         addCommands(
             setGyro,
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
-            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.0, 0.05, 1, true),
-            new WaitUntil(100),
-            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.0, 1, 1, true), 
-            new InstantCommand(() -> RobotContainer.intake.intake_on(-0.7)),
+            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.07, 1, .89, true), 
+            new intakeOn(),
             new WaitUntil(3000),
-            new InstantCommand(() -> RobotContainer.intake.intake_on(0.0)), 
-            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.02, 0.05, 1.5, true),
-            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.02, 0.05, 0.7, true),
+            new intakeOff(), 
+            new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, 0.05, 0.05),
+            new StartingPost(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, 0.7, true),
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
             swerveControllerCommand, swerveControllerCommand2
         );
