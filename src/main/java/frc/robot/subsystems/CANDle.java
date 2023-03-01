@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
+import com.ctre.phoenix.led.ColorFlowAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
@@ -33,5 +34,11 @@ public class CANDle extends SubsystemBase {
     public void rainbowAnimation(double brightness, double speed, int numLeds){
       RainbowAnimation rainbowAnim = new RainbowAnimation(brightness, speed, numLeds);
       candle.animate(rainbowAnim);
+      
     }
+
+  public void ColorFlowAnimation(int red, int green, int blue){
+    ColorFlowAnimation cFlowAnimation = new ColorFlowAnimation(0, 0, 0);
+    candle.animate(cFlowAnimation);
+  }
   }

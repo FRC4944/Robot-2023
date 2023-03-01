@@ -56,8 +56,8 @@ public class AprilTagLineup extends CommandBase {
   
 
     m_swerve.drive(
-      new Translation2d(x1, -x).times(Constants.Swerve.lm3maxSpeed), 
-       x, 
+      new Translation2d(0, -x).times(Constants.Swerve.lm3maxSpeed), 
+       0, 
       false, 
       true
   );

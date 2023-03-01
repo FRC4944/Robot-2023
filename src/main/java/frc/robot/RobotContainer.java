@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -145,19 +146,24 @@ public class RobotContainer {
         // This should be leds 
         // candle turns purple for cube 
         if (operator.getXButtonPressed()){
-            candle.candleOn(20,59,87);
+            candle.candleOn(63, 0, 242);
         }
         if (operator.getXButtonReleased()){
-            candle.rainbowAnimation(0.3, 0.5, 60);
+            candle.candleOn(16, 280, 34);
         }
 
         // Candle turns yellow 
         if (operator.getYButtonPressed()){    
-            candle.candleOn(242, 233, 61);;
+            candle.candleOn(252, 186, 3);;
         }
         if (operator.getYButtonReleased()){
-            candle.rainbowAnimation(0.3, 0.5, 60);
+            candle.candleOn(16, 280, 34);
         }
+
+        if (DriverStation.isDisabled()){
+            candle.rainbowAnimation(0.4, 0.5, 70);
+        }
+        
 
         // limit switch to turn off forky 
         if (!engage.get()){
