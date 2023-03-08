@@ -35,6 +35,7 @@ public class RobotContainer {
     private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton opAButton = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
     /* Subsystems */
     public final Swerve s_Swerve = new Swerve();
     public static VerticalElevator verticalElevator = new VerticalElevator();
@@ -45,7 +46,9 @@ public class RobotContainer {
     public static DigitalInput engage = new DigitalInput(0);
     public static Partner_Lift Engage = new Partner_Lift();
 
-
+    private static double verticalelevatorsp;
+    private static double horizontalelevatorsp;
+    private static double wristsp;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
@@ -75,14 +78,17 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .89, false));
-        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
-        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.8, .5, .6, false));
-        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05));
+        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .927, false));
+        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
+
+        opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
+        opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
+        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.7, 0.6, 0.8, false));
+        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
 
         /* Operator Buttons */
-        Command aprilTagLineup = new AprilTagLineup(s_Swerve);
-        opAButton.whileTrue(aprilTagLineup);
+        Command aprilTagLineup = new AprilTagLineup(s_Swerve, false);
+        //opAButton.whileTrue(aprilTagLineup);
     }
 
 
@@ -124,7 +130,7 @@ public class RobotContainer {
 
         // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getPOV() == 90){
-            wrist.setSetpoint(0.8);
+            wrist.setSetpoint(0.85);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(.09);
         }
@@ -147,22 +153,22 @@ public class RobotContainer {
         // candle turns purple for cube 
         if (operator.getXButtonPressed()){
             candle.candleOn(63, 0, 242);
-        }
-        if (operator.getXButtonReleased()){
-            candle.candleOn(16, 280, 34);
+            verticalelevatorsp = 0.7;
+            horizontalelevatorsp = 0.6;
+            wristsp = 0.8;
         }
 
         // Candle turns yellow 
         if (operator.getYButtonPressed()){    
-            candle.candleOn(252, 186, 3);;
-        }
-        if (operator.getYButtonReleased()){
-            candle.candleOn(16, 280, 34);
+            candle.candleOn(252, 186, 3);
+            verticalelevatorsp = 1.07;
+            horizontalelevatorsp = 1;
+            wristsp = .95;
         }
 
-        if (DriverStation.isDisabled()){
-            candle.rainbowAnimation(0.4, 0.5, 70);
-        }
+        // if (DriverStation.isDisabled()){
+        //     candle.rainbowAnimation(0.4, 0.5, 70);
+        // }
         
 
         // limit switch to turn off forky 
@@ -172,16 +178,24 @@ public class RobotContainer {
 
         // Engage/forky 
         if (operator.getRightBumperPressed()){
-            Engage.Partner_Lift_On(.2);
+            Engage.Partner_Lift_On(.25);
         }
         if (operator.getRightBumperReleased()){
             Engage.Partner_Lift_On(0.0);
         }
         if (operator.getLeftBumperPressed()){
-            Engage.Partner_Lift_On(-.2);
+            Engage.Partner_Lift_On(-.25);
         }
         if (operator.getLeftBumperReleased()){
             Engage.Partner_Lift_On(0.0);
+        }
+
+        if (operator.getPOV() == 0){
+            wrist.setSetpoint(1.5);
+        }
+
+        if (operator.getPOV() == 180){
+            wrist.setSetpoint(0.5);
         }
     }
 
@@ -192,8 +206,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
-        
-
+        return new Auto1(s_Swerve);
     }
 }

@@ -5,20 +5,22 @@
 package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class intakeOn extends InstantCommand {
-  public intakeOn() {
+public class Auto_Wrist extends InstantCommand {
+  public Auto_Wrist() {
+    addRequirements(RobotContainer.wrist);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.intake.intake_on(0.9);
+    RobotContainer.wrist.setSetpoint(0.6);
   }
 }
