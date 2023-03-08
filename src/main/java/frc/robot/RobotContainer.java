@@ -88,7 +88,7 @@ public class RobotContainer {
 
         /* Operator Buttons */
         Command aprilTagLineup = new AprilTagLineup(s_Swerve, false);
-        //opAButton.whileTrue(aprilTagLineup);
+        // opAButton.whileTrue(aprilTagLineup);
     }
 
 
@@ -127,22 +127,38 @@ public class RobotContainer {
         if (driver.getLeftBumperPressed()){
             wrist.setSetpoint(1.1);
         }
-
+        
         // Sets the Elevators to zero and lift wrist for cubes 
-        if (driver.getPOV() == 90){
+        if (driver.getBButtonPressed()){
             wrist.setSetpoint(0.85);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(.09);
+            intake.intake_on(0.9);
+        }
+
+        // Sets the wrist back to default
+        if (driver.getBButtonReleased()){
+            wrist.setSetpoint(1.5);
+            verticalElevator.setSetpoint(0.05);
+            horizontalElevator.setSetpoint(-0.05);
+            intake.intake_on(0);
+            
         }
 
         // Sets the wrist to the ground to pick up cones
-        if (driver.getPOV() == 270){
+        if (driver.getAButtonPressed()){
             wrist.setSetpoint(0.5);
             verticalElevator.setSetpoint(-0.07);
             horizontalElevator.setSetpoint(.1);
-            if (wrist.pid.atSetpoint()){
-                wrist.wrist_On(0.0);
-            }
+            intake.intake_on(-.9);
+        }
+
+        // Sets the wrist back to default
+        if (driver.getAButtonReleased()){
+            wrist.setSetpoint(1.5);
+            verticalElevator.setSetpoint(0.05);
+            horizontalElevator.setSetpoint(-0.05);
+            intake.intake_on(0);
         }
 
         /*

@@ -20,6 +20,7 @@ public class AprilTagLineup extends CommandBase {
     private final boolean auto;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
