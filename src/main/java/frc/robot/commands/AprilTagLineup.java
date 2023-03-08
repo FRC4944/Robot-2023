@@ -15,21 +15,31 @@ import frc.robot.subsystems.Swerve;
 
 public class AprilTagLineup extends CommandBase {
     private final Swerve m_swerve;
+    private long time;
+
+    private final boolean auto;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     double kp = 0.02;
-    public AprilTagLineup(Swerve swerve) {
+    public AprilTagLineup(Swerve swerve, boolean auto) {
       // Use addRequirements() here to declare subsystem dependencies.
       this.m_swerve = swerve;
+      this.auto = auto;
       
     }
     
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    if (auto) {
+      time = System.currentTimeMillis() + 2000;
+    }
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -45,11 +55,6 @@ public class AprilTagLineup extends CommandBase {
     SmartDashboard.putNumber("LimelightArea", area);
     
 
-    double delta = 0 - x;
-    double power = delta * kp;
-    power = Math.min(power, .25);
-    power = Math.max(power, -.25);
-
     double x1 = x + 10; 
 
     System.out.print("Limelight is working");
@@ -62,6 +67,7 @@ public class AprilTagLineup extends CommandBase {
       true
   );
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
