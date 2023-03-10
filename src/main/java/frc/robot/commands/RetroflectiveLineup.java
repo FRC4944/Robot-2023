@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
-public class AprilTagLineup extends CommandBase {
+public class RetroflectiveLineup extends CommandBase {
     private final Swerve m_swerve;
     private long time;
 
@@ -25,7 +25,7 @@ public class AprilTagLineup extends CommandBase {
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     double kp = 0.02;
-    public AprilTagLineup(Swerve swerve, boolean auto) {
+    public RetroflectiveLineup(Swerve swerve, boolean auto) {
       // Use addRequirements() here to declare subsystem dependencies.
       this.m_swerve = swerve;
       this.auto = auto;
@@ -46,8 +46,7 @@ public class AprilTagLineup extends CommandBase {
   @Override
   public void execute() {
     // pipeline 1 is april tags and 2 is retroflective
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
     //read values periodically
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);

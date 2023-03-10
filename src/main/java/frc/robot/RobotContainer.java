@@ -78,17 +78,20 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .927, false));
-        aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
+        // aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .927, false));
+        // aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
 
-        opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
-        opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
-        bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.7, 0.6, 0.8, false));
-        bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
+        // opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
+        // opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
+        // bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.7, 0.6, 0.8, false));
+        // bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
 
         /* Operator Buttons */
         Command aprilTagLineup = new AprilTagLineup(s_Swerve, false);
-        // opAButton.whileTrue(aprilTagLineup);
+        opAButton.whileTrue(aprilTagLineup);
+
+        Command retroflectiveLineup = new RetroflectiveLineup(s_Swerve, false);
+        opBButton.whileTrue(retroflectiveLineup);
     }
 
 

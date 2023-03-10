@@ -91,7 +91,7 @@ public final class Constants {
         /** Meters per Second */
         public static final double maxSpeed = 4; //TODO: This must be tuned to specific robot
         
-        public static final double lm3maxSpeed = 0.2;
+        public static final double lm3maxSpeed = 0.1;
         public static final double AutoMaxspeed = 1;
         /** Radians per Second */
         public static final double maxAngularVelocity = 6; //TODO: This must be tuned to specific robot
