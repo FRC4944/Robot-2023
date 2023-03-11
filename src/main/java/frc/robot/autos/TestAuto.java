@@ -4,8 +4,11 @@
 
 package frc.robot.autos;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
@@ -24,6 +27,12 @@ public class TestAuto extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    var thetaController =
+            new ProfiledPIDController(
+                Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        
     m_swerve.drive(
       new Translation2d(10.0, 0).times(Constants.Swerve.maxSpeed), 
        180 * Constants.Swerve.maxAngularVelocity, 

@@ -7,14 +7,19 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.VerticalElevator;
 
 /**
@@ -27,6 +32,7 @@ public class Robot extends TimedRobot {
   public static CTREConfigs ctreConfigs;
 
   private Command m_autonomousCommand;
+  private Swerve r_Swerve;
 
   static public RobotContainer m_robotContainer;
 
@@ -41,6 +47,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    r_Swerve = new Swerve();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
   }
@@ -58,11 +65,17 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+
+    Pose2d a = r_Swerve.getPose();
+    
+    SmartDashboard.putNumber("Pose X", a.getX());
+    SmartDashboard.putNumber("Pose Y", a.getY());
+    SmartDashboard.putNumber("Gyro", r_Swerve.gyro.getAngle());
+    
     CommandScheduler.getInstance().run();
 
   
-
-
+    this.m_robotContainer.teleopPeriodic();
 
   }
 
@@ -102,9 +115,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    this.m_robotContainer.teleopPeriodic();
 
-    
   }
 
   @Override
