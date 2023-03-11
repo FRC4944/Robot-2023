@@ -4,6 +4,10 @@
 
 package frc.robot.commands;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.math.Conversions;
@@ -18,37 +22,50 @@ public class Drive_Back_Command extends CommandBase {
 
   private final boolean auto;
   public double xdistance;
+  public double xrotation;
+
+  public double kp = Constants.AutoConstants.kPThetaController;
+  public double power;
+
+
+  public final PIDController pid = new PIDController(Constants.AutoConstants.kPThetaController, 0, 0);
   
-  
- 
-   private final Swerve m_swerve;
-  public Drive_Back_Command(Swerve swerve,  double xDistance, boolean auto) {
+  private static final double MAX_POWER = 1;
+  private final Swerve m_swerve;
+
+  public SwerveModule m_swervemodule;
+
+  public Drive_Back_Command(Swerve swerve, double xDistance, double xRotation, boolean auto) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_swerve = swerve;
     this.auto = auto;
     this.xdistance = xDistance;
+    this.xrotation = xRotation;
+
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if (auto) {
-      time = System.currentTimeMillis() + 3000;
+      time = System.currentTimeMillis() + 2000;
     }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+        
     if (auto) {
       m_swerve.drive(
         new Translation2d(xdistance, 0).times(Constants.Swerve.AutoMaxspeed), 
-         0, 
-        false, 
+         xrotation * Constants.Swerve.AutoAngleSpeed, 
+        true, 
         true
     );
   }
-}
+} 
 
   // Called once the command ends or is interrupted.
   @Override

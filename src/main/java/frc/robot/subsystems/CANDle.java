@@ -10,8 +10,7 @@ import com.ctre.phoenix.led.ColorFlowAnimation;
 import com.ctre.phoenix.led.FireAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
-import com.ctre.phoenix.led.CANdle.VBatOutputMode;
-
+import com.ctre.phoenix.led.CANdle.VBatOutputMode; 
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 

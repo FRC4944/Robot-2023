@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -81,8 +82,10 @@ public class RobotContainer {
         // aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .927, false));
         // aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
 
+
         // opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
         // opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
+
         // bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.7, 0.6, 0.8, false));
         // bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
 
@@ -110,6 +113,9 @@ public class RobotContainer {
          // Intake cube 
         if (driver.getYButtonPressed()){
             intake.intake_on(.6);
+            // if (intake.intake.getOutputCurrent() > 8){
+            //     driver.setRumble(RumbleType.kBothRumble, 1);
+            // }
         }
         if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
@@ -216,6 +222,11 @@ public class RobotContainer {
         if (operator.getPOV() == 180){
             wrist.setSetpoint(0.5);
         }
+
+        // if (intake.intake.getOutputCurrent() > 10){
+        //     driver.setRumble(RumbleType.kBothRumble, 1);
+        // }
+
     }
 
     /**
@@ -225,6 +236,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new Auto1(s_Swerve);
+        return new Auto2(s_Swerve);
     }
 }
