@@ -47,7 +47,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    r_Swerve = new Swerve();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
   }
@@ -66,16 +65,18 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 
-    Pose2d a = r_Swerve.getPose();
+    //Pose2d a = r_Swerve.getPose();
     
-    SmartDashboard.putNumber("Pose X", a.getX());
-    SmartDashboard.putNumber("Pose Y", a.getY());
-    SmartDashboard.putNumber("Gyro", r_Swerve.gyro.getAngle());
+    // SmartDashboard.putNumber("Pose X", a.getX());
+    // SmartDashboard.putNumber("Pose Y", a.getY());
+    SmartDashboard.putNumber("Gyro", m_robotContainer.s_Swerve.gyro.getAngle());
+    SmartDashboard.putNumber("Converted Gyro", m_robotContainer.s_Swerve.getYaw().getDegrees());
     
     CommandScheduler.getInstance().run();
 
+
   
-    this.m_robotContainer.teleopPeriodic();
+    m_robotContainer.teleopPeriodic();
 
   }
 
