@@ -4,13 +4,10 @@
 
 package frc.robot.commands;
 
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.SwerveModule;
 import frc.robot.subsystems.Swerve;
@@ -30,7 +27,7 @@ public class Drive_Back_Command extends CommandBase {
 
   public final PIDController pid = new PIDController(Constants.AutoConstants.kPThetaController, 0, 0);
   
-  private static final double MAX_POWER = 1;
+  //private static final double MAX_POWER = 1;
   private final Swerve m_swerve;
 
   public SwerveModule m_swervemodule;

@@ -9,9 +9,8 @@ import frc.robot.subsystems.HorizontalElevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.VerticalElevator;
 
-public class GroundIntake extends CommandBase {
-  /** Creates a new HighScore. */
 
+public class GroundIntake extends CommandBase {
   private VerticalElevator verticalElevator;
   private HorizontalElevator horizontalElevator;
   private Intake intake;

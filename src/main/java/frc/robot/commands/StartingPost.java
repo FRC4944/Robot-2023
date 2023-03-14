@@ -10,7 +10,6 @@ import frc.robot.subsystems.VerticalElevator;
 import frc.robot.subsystems.Wrist;
 
 public class StartingPost extends CommandBase {
-  /** Creates a new HighScore. */
 
   private VerticalElevator verticalElevator;
   private HorizontalElevator horizontalElevator;
@@ -25,8 +24,7 @@ public class StartingPost extends CommandBase {
   private boolean auto;
 
   public StartingPost(VerticalElevator verticalElevator, HorizontalElevator horizontalElevator, Wrist wrist,
-    double verticalSetpoint, double horizontalSetpoint, double wristSetpoint, boolean auto
-  ) {
+    double verticalSetpoint, double horizontalSetpoint, double wristSetpoint, boolean auto) {
     this.horizontalElevator = horizontalElevator;
     this.verticalElevator = verticalElevator;
     this.wrist = wrist;
@@ -42,7 +40,6 @@ public class StartingPost extends CommandBase {
   @Override
   public void initialize() {
     this.horizontalElevator.setSetpoint(this.horizontalSetpoint);
-
     if (auto) {
       time = System.currentTimeMillis() + 2000;
     }
@@ -51,7 +48,6 @@ public class StartingPost extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if (verticalElevator.pid.atSetpoint()) {
     if (horizontalElevator.pid.getPositionError() < 0.01) {
       this.verticalElevator.setSetpoint(this.verticalSetpoint);
       this.wrist.setSetpoint(this.wristSetpoint);
@@ -62,7 +58,6 @@ public class StartingPost extends CommandBase {
       this.horizontalElevator.driveTowardsPid();
       this.wrist.driveTowardsPid();
     }
-    System.out.println("Command working");
   }
 
   // Called once the command ends or is interrupted.

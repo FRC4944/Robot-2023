@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
 
 public class HorizontalElevator extends SubsystemBase {
@@ -17,7 +18,6 @@ public class HorizontalElevator extends SubsystemBase {
   private final TalonFX horizontal_elevator_motor = new TalonFX(Constants.horizontalElevatorMotorID);
   private final TalonFXSensorCollection hencoder   = new TalonFXSensorCollection(horizontal_elevator_motor);
   public final PIDController pid = new PIDController(.45, 1/25.0, 0);
-  private double setPoint = 0;
 
   //Constants
   private static final int ENCODER_BUFFER = 500;
@@ -54,7 +54,6 @@ public class HorizontalElevator extends SubsystemBase {
   }
 
   public void setSetpoint(double setpoint) {
-    this.setPoint = setpoint;
     this.pid.setSetpoint(setpoint);
   }
 

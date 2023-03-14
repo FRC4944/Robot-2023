@@ -15,9 +15,6 @@ import frc.robot.subsystems.Swerve;
 
 public class AprilTagLineup extends CommandBase {
     private final Swerve m_swerve;
-    private long time;
-
-    private final boolean auto;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     
@@ -25,20 +22,15 @@ public class AprilTagLineup extends CommandBase {
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     double kp = 0.02;
-    public AprilTagLineup(Swerve swerve, boolean auto) {
+    public AprilTagLineup(Swerve swerve) {
       // Use addRequirements() here to declare subsystem dependencies.
       this.m_swerve = swerve;
-      this.auto = auto;
       
     }
     
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    if (auto) {
-      time = System.currentTimeMillis() + 2000;
-    }
 
   }
 
@@ -58,8 +50,6 @@ public class AprilTagLineup extends CommandBase {
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
     
-
-    double x1 = x + 10; 
 
     System.out.print("Limelight is working");
   

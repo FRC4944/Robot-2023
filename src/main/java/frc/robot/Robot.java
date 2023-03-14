@@ -4,23 +4,14 @@
 
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.math.geometry.Pose2d;
+
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.VerticalElevator;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -65,17 +56,15 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 
-    //Pose2d a = r_Swerve.getPose();
-    
-    // SmartDashboard.putNumber("Pose X", a.getX());
-    // SmartDashboard.putNumber("Pose Y", a.getY());
+    Pose2d a = r_Swerve.getPose();
+
+    SmartDashboard.putNumber("Pose X", a.getX());
+    SmartDashboard.putNumber("Pose Y", a.getY());
     SmartDashboard.putNumber("Gyro", m_robotContainer.s_Swerve.gyro.getAngle());
     SmartDashboard.putNumber("Converted Gyro", m_robotContainer.s_Swerve.getYaw().getDegrees());
     
     CommandScheduler.getInstance().run();
 
-
-  
     m_robotContainer.teleopPeriodic();
 
   }

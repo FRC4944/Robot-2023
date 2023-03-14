@@ -13,11 +13,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
+
 public class RetroflectiveLineup extends CommandBase {
     private final Swerve m_swerve;
-    private long time;
 
-    private final boolean auto;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     
@@ -25,10 +24,9 @@ public class RetroflectiveLineup extends CommandBase {
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     double kp = 0.02;
-    public RetroflectiveLineup(Swerve swerve, boolean auto) {
+    public RetroflectiveLineup(Swerve swerve) {
       // Use addRequirements() here to declare subsystem dependencies.
       this.m_swerve = swerve;
-      this.auto = auto;
       
     }
     
@@ -36,16 +34,13 @@ public class RetroflectiveLineup extends CommandBase {
   @Override
   public void initialize() {
 
-    if (auto) {
-      time = System.currentTimeMillis() + 2000;
-    }
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // pipeline 1 is april tags and 2 is retroflective
+    // Pipeline 1 is april tags and 2 is retroflective
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
     //read values periodically
     double x = tx.getDouble(0.0);
@@ -57,9 +52,6 @@ public class RetroflectiveLineup extends CommandBase {
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
     
-
-    double x1 = x + 10; 
-
     System.out.print("Limelight is working");
   
 

@@ -1,10 +1,10 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -28,15 +28,15 @@ public class RobotContainer {
     private final double translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
-    //private final int = getPOV(0);
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kBack.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+
+    /*Operator Buttons */
     private final JoystickButton opAButton = new JoystickButton(operator, XboxController.Button.kA.value);
     private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
+
     /* Subsystems */
     public final Swerve s_Swerve = new Swerve();
     public static VerticalElevator verticalElevator = new VerticalElevator();
@@ -47,13 +47,15 @@ public class RobotContainer {
     public static DigitalInput engage = new DigitalInput(0);
     public static Partner_Lift Engage = new Partner_Lift();
 
-    private static double verticalelevatorsp;
-    private static double horizontalelevatorsp;
-    private static double wristsp;
+    //private static double verticalelevatorsp;
+    //private static double horizontalelevatorsp;
+    //private static double wristsp;
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
         final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));
+
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
@@ -63,8 +65,6 @@ public class RobotContainer {
                 () -> robotCentric.getAsBoolean()
             )
         );
-        
-        
 
         // Configure the button bindings
         configureButtonBindings();
@@ -76,43 +76,36 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
+
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
-        // aButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 1, .927, false));
-        // aButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
-
-
-        // opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
-        // opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
-
-        // bButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.7, 0.6, 0.8, false));
-        // bButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
 
         /* Operator Buttons */
-        Command aprilTagLineup = new AprilTagLineup(s_Swerve, false);
+        //Robot aligns with apriltags while operator presses A and retroflective tape while operator presses B
+        Command aprilTagLineup = new AprilTagLineup(s_Swerve);
         opAButton.whileTrue(aprilTagLineup);
-
-        Command retroflectiveLineup = new RetroflectiveLineup(s_Swerve, false);
+        Command retroflectiveLineup = new RetroflectiveLineup(s_Swerve);
         opBButton.whileTrue(retroflectiveLineup);
+        //opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
+        //opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
     }
 
 
     public void teleopPeriodic() {
-
         //Fix Gyro from Autos
         s_Swerve.setGyroOffset(0.0);
 
         // Has the pid running the whole time 
         this.verticalElevator.driveTowardsPid();
-
-         this.horizontalElevator.driveTowardsPid();
-
-         this.wrist.driveTowardsPid();
+        this.horizontalElevator.driveTowardsPid();
+        this.wrist.driveTowardsPid();
 
          // Intake cube 
         if (driver.getYButtonPressed()){
             intake.intake_on(.6);
+
+            //Controller rumble when intake motor voltage spikes
             // if (intake.intake.getOutputCurrent() > 8){
             //     driver.setRumble(RumbleType.kBothRumble, 1);
             // }
@@ -124,12 +117,19 @@ public class RobotContainer {
         // Intake cone
         if (driver.getXButtonPressed()){
             intake.intake_on(-1);
+
+            //Controller rumble when intake motor voltage spikes
+            // if (intake.intake.getOutputCurrent() > 10){
+            // driver.setRumble(RumbleType.kBothRumble, 1);
+            // }
         }
+
+        // Stops intake motor
         if (driver.getXButtonReleased()){
             intake.intake_on(0.0);
         }
 
-        // Move's the wrist using the pid 
+        // Moves the wrist using the pid 
         if (driver.getRightBumperPressed()){
             wrist.setSetpoint(0.7);
         }
@@ -144,7 +144,6 @@ public class RobotContainer {
             horizontalElevator.setSetpoint(.09);
             intake.intake_on(0.9);
         }
-
         // Sets the wrist back to default
         if (driver.getBButtonReleased()){
             wrist.setSetpoint(1.5);
@@ -161,7 +160,6 @@ public class RobotContainer {
             horizontalElevator.setSetpoint(.1);
             intake.intake_on(-.9);
         }
-
         // Sets the wrist back to default
         if (driver.getAButtonReleased()){
             wrist.setSetpoint(1.5);
@@ -170,33 +168,30 @@ public class RobotContainer {
             intake.intake_on(0);
         }
 
-        /*
-         *  Operator Controller buttons subsystems. 
-         */
+        /* Operator Controller buttons subsystems. */
         
-        // This should be leds 
-        // candle turns purple for cube 
+        // CANdle LED operator control
+        // Purple for cube 
         if (operator.getXButtonPressed()){
             candle.candleOn(63, 0, 242);
-            verticalelevatorsp = 0.7;
-            horizontalelevatorsp = 0.6;
-            wristsp = 0.8;
+            //verticalelevatorsp = 0.7;
+            //horizontalelevatorsp = 0.6;
+            //wristsp = 0.8;
         }
-
-        // Candle turns yellow 
+        // Yellow for cone
         if (operator.getYButtonPressed()){    
             candle.candleOn(252, 186, 3);
-            verticalelevatorsp = 1.07;
-            horizontalelevatorsp = 1;
-            wristsp = .95;
+            //verticalelevatorsp = 1.07;
+            //horizontalelevatorsp = 1;
+            //wristsp = .95;
         }
 
+        //Plays rainbow animation when disabled
         // if (DriverStation.isDisabled()){
         //     candle.rainbowAnimation(0.4, 0.5, 70);
         // }
         
-
-        // limit switch to turn off forky 
+        //Limit switch to turn off forky 
         if (!engage.get()){
             Engage.Partner_Lift_On(0);
         }
@@ -214,18 +209,14 @@ public class RobotContainer {
         if (operator.getLeftBumperReleased()){
             Engage.Partner_Lift_On(0.0);
         }
-
+        //Operator D-Pad UP
         if (operator.getPOV() == 0){
             wrist.setSetpoint(1.5);
         }
-
+        //Operator D-Pad Down
         if (operator.getPOV() == 180){
             wrist.setSetpoint(0.5);
         }
-
-        // if (intake.intake.getOutputCurrent() > 10){
-        //     driver.setRumble(RumbleType.kBothRumble, 1);
-        // }
 
     }
 
@@ -235,7 +226,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
+        // This command will run in autonomous
         return new Auto2(s_Swerve);
     }
 }
