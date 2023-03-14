@@ -10,38 +10,41 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import java.lang.Math;
 import frc.robot.Constants;
+import frc.robot.subsystems.CANDle;
 import frc.robot.subsystems.Swerve;
 
-
-public class RetroflectiveLineup extends CommandBase {
+public class VisionLineup extends CommandBase {
     private final Swerve m_swerve;
-
-
+    private final CANDle m_candle;
+    private int m_pipeline;
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     double kp = 0.02;
-    public RetroflectiveLineup(Swerve swerve) {
+    
+    public VisionLineup(Swerve swerve, CANDle candle, int pipeline) {
       // Use addRequirements() here to declare subsystem dependencies.
       this.m_swerve = swerve;
-      
+      this.m_candle = candle;
+      this.m_pipeline = pipeline;
     }
     
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Pipeline 1 is april tags and 2 is retroflective
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
+    // pipeline 1 is april tags and 2 is reflective
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(m_pipeline);
+
     //read values periodically
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
@@ -52,6 +55,7 @@ public class RetroflectiveLineup extends CommandBase {
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
     
+
     System.out.print("Limelight is working");
   
 
@@ -60,7 +64,10 @@ public class RetroflectiveLineup extends CommandBase {
        0, 
       false, 
       true
-  );
+    );
+    while(Math.abs(x) < 0.3) {
+      m_candle.candleOn(10, 200, 20);
+    }
   }
 
 

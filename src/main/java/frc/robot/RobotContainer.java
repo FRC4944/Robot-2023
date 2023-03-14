@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -82,11 +81,11 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));                
 
         /* Operator Buttons */
-        //Robot aligns with apriltags while operator presses A and retroflective tape while operator presses B
-        Command aprilTagLineup = new AprilTagLineup(s_Swerve);
+        //Robot aligns with apriltags while operator presses A and reflective tape while operator presses B
+        Command aprilTagLineup = new VisionLineup(s_Swerve, candle, 1);
         opAButton.whileTrue(aprilTagLineup);
-        Command retroflectiveLineup = new RetroflectiveLineup(s_Swerve);
-        opBButton.whileTrue(retroflectiveLineup);
+        Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
+        opBButton.whileTrue(reflectiveTapeLineup);
         //opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
         //opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
     }
@@ -106,9 +105,9 @@ public class RobotContainer {
             intake.intake_on(.6);
 
             //Controller rumble when intake motor voltage spikes
-            // if (intake.intake.getOutputCurrent() > 8){
-            //     driver.setRumble(RumbleType.kBothRumble, 1);
-            // }
+            if (intake.intake.getOutputCurrent() > 8){
+                driver.setRumble(RumbleType.kBothRumble, 1);
+            }
         }
         if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
@@ -119,9 +118,9 @@ public class RobotContainer {
             intake.intake_on(-1);
 
             //Controller rumble when intake motor voltage spikes
-            // if (intake.intake.getOutputCurrent() > 10){
-            // driver.setRumble(RumbleType.kBothRumble, 1);
-            // }
+            if (intake.intake.getOutputCurrent() > 10){
+                driver.setRumble(RumbleType.kBothRumble, 1);
+            }
         }
 
         // Stops intake motor

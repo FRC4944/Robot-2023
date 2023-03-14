@@ -1,9 +1,10 @@
 package frc.robot.autos;
 
 import frc.robot.RobotContainer;
-import frc.robot.commands.AprilTagLineup;
+import frc.robot.commands.VisionLineup;
 import frc.robot.commands.HorizontalFirstVerticalCommand;
 import frc.robot.commands.VerticalFirstHorizontalCommand;
+import frc.robot.subsystems.CANDle;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -24,7 +25,7 @@ public class exampleAuto extends SequentialCommandGroup {
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, 0.05, 0.05, true),
             //new DriveAutoLineCommandGroup(swerve, 0, 5, 0, 2000)
             //new Drive_Back(swerve)
-            new AprilTagLineup(swerve)
+            new VisionLineup(swerve, RobotContainer.candle, 1)
         );
     }
 }
