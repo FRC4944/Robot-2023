@@ -107,6 +107,7 @@ public class RobotContainer {
             //Controller rumble when intake motor voltage spikes
             if (intake.intake.getOutputCurrent() > 8){
                 driver.setRumble(RumbleType.kBothRumble, 1);
+                candle.candleOn(10, 200, 20);
             }
         }
         if (driver.getYButtonReleased()){    
@@ -120,6 +121,7 @@ public class RobotContainer {
             //Controller rumble when intake motor voltage spikes
             if (intake.intake.getOutputCurrent() > 10){
                 driver.setRumble(RumbleType.kBothRumble, 1);
+                candle.candleOn(10, 200, 20);
             }
         }
 
