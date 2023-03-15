@@ -1,5 +1,8 @@
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -12,12 +15,15 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
     /* Controllers */
     public final XboxController driver = new XboxController(0);
@@ -49,6 +55,7 @@ public class RobotContainer {
     //private static double verticalelevatorsp;
     //private static double horizontalelevatorsp;
     //private static double wristsp;
+    //private SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -67,6 +74,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+        //autonomousOptions();
     }
 
     /**
@@ -108,6 +116,16 @@ public class RobotContainer {
             if (intake.intake.getOutputCurrent() > 8){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(10, 200, 20);
+                for(int i = 0; i < 9; i++) {
+                    try {
+                        candle.candleOn(255, 255, 255);
+                        Thread.sleep(500);
+                        candle.candleOn(0, 0, 0);
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }   
+                }
             }
         }
         if (driver.getYButtonReleased()){    
@@ -122,6 +140,16 @@ public class RobotContainer {
             if (intake.intake.getOutputCurrent() > 10){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(10, 200, 20);
+                for(int i = 0; i < 9; i++) {
+                    try {
+                        candle.candleOn(255, 255, 255);
+                        Thread.sleep(500);
+                        candle.candleOn(0, 0, 0);
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }   
+                }
             }
         }
 
@@ -225,9 +253,21 @@ public class RobotContainer {
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
      * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // This command will run in autonomous
-        return new Auto2(s_Swerve);
-    }
+     */public Command getAutonomousCommand() {
+    // Get the selected Auto in smartDashboard
+    //return m_chooser.getSelected();
+    return new Auto2(s_Swerve);
+}
+
+/**
+ * Use this to set Autonomous options for selection in Smart Dashboard
+ */
+private void autonomousOptions() {
+  // Adds Autonomous options to chooser
+  //m_chooser.addOption("1", new Auto1(s_Swerve));
+  //m_chooser.addOption("2", new Auto2(s_Swerve));
+
+  // Put the chooser on the dashboard
+  //SmartDashboard.putData(m_chooser);
+}
 }
