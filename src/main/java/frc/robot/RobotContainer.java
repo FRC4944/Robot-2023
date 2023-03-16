@@ -97,6 +97,7 @@ public class RobotContainer {
         Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
         opBButton.whileTrue(reflectiveTapeLineup);
 
+
         
 
     }
@@ -111,22 +112,31 @@ public class RobotContainer {
         this.horizontalElevator.driveTowardsPid();
         this.wrist.driveTowardsPid();
 
-         // Intake cube 
+         // Intake 
         if (driver.getYButtonPressed()){
             intake.intake_on(.6);
 
         }
+
         if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
         }
+        //Controller rumble and white candle when intake amps spike
+        if (intake.intake.getOutputCurrent() > 15){
+            driver.setRumble(RumbleType.kBothRumble, 1);
+            candle.candleOn(255, 255, 255);
+        } else {
+            driver.setRumble(RumbleType.kBothRumble, 0);
+            candle.candleOn(0, 0, 0);
+        }
 
-        // Intake cone
+        // Outtake
         if (driver.getXButtonPressed()){
             intake.intake_on(-1);
 
         }
 
-        // Stops intake motor
+        // Stops outtake motor
         if (driver.getXButtonReleased()){
             intake.intake_on(0.0);
         }
