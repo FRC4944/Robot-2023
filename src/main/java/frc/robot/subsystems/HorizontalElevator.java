@@ -52,7 +52,7 @@ public class HorizontalElevator extends SubsystemBase {
     double power = this.pid.calculate(this.getEncoderValue());
     return Math.min(MAX_POWER, Math.max(-MAX_POWER, power));
   }
-
+  // setpoints
   public void setSetpoint(double setpoint) {
     this.pid.setSetpoint(setpoint);
   }

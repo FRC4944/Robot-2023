@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -52,10 +53,11 @@ public class RobotContainer {
     public static DigitalInput engage = new DigitalInput(0);
     public static Partner_Lift Engage = new Partner_Lift();
 
-    //private static double verticalelevatorsp;
-    //private static double horizontalelevatorsp;
-    //private static double wristsp;
-    //private SendableChooser<Command> m_chooser = new SendableChooser<>();
+    private static double verticalelevatorsp;
+    private static double horizontalelevatorsp;
+    private static double wristsp;
+    private static double level;
+    private static double gp;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -94,8 +96,9 @@ public class RobotContainer {
         opAButton.whileTrue(aprilTagLineup);
         Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
         opBButton.whileTrue(reflectiveTapeLineup);
-        //opAButton.onTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 1.07, 0.6, 0.7, false));
-        //opAButton.onFalse(new HorizontalFirstVerticalCommand(verticalElevator, horizontalElevator, 0.05, 0.05, false));
+
+        
+
     }
 
 
@@ -112,21 +115,6 @@ public class RobotContainer {
         if (driver.getYButtonPressed()){
             intake.intake_on(.6);
 
-            //Controller rumble when intake motor voltage spikes
-            if (intake.intake.getOutputCurrent() > 8){
-                driver.setRumble(RumbleType.kBothRumble, 1);
-                candle.candleOn(10, 200, 20);
-                for(int i = 0; i < 9; i++) {
-                    try {
-                        candle.candleOn(255, 255, 255);
-                        Thread.sleep(500);
-                        candle.candleOn(0, 0, 0);
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }   
-                }
-            }
         }
         if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
@@ -136,21 +124,6 @@ public class RobotContainer {
         if (driver.getXButtonPressed()){
             intake.intake_on(-1);
 
-            //Controller rumble when intake motor voltage spikes
-            if (intake.intake.getOutputCurrent() > 10){
-                driver.setRumble(RumbleType.kBothRumble, 1);
-                candle.candleOn(10, 200, 20);
-                for(int i = 0; i < 9; i++) {
-                    try {
-                        candle.candleOn(255, 255, 255);
-                        Thread.sleep(500);
-                        candle.candleOn(0, 0, 0);
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }   
-                }
-            }
         }
 
         // Stops intake motor
@@ -160,23 +133,23 @@ public class RobotContainer {
 
         // Moves the wrist using the pid 
         if (driver.getRightBumperPressed()){
-            wrist.setSetpoint(0.7);
+            wrist.setSetpoint(0.6);
         }
         if (driver.getLeftBumperPressed()){
             wrist.setSetpoint(1.1);
         }
         
-        // Sets the Elevators to zero and lift wrist for cubes 
+        // // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getBButtonPressed()){
-            wrist.setSetpoint(0.85);
+            wrist.setSetpoint(0.9);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(.09);
             intake.intake_on(0.9);
         }
         // Sets the wrist back to default
         if (driver.getBButtonReleased()){
-            wrist.setSetpoint(1.5);
-            verticalElevator.setSetpoint(0.05);
+            wrist.setSetpoint(1.3);
+            verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-0.05);
             intake.intake_on(0);
             
@@ -184,17 +157,22 @@ public class RobotContainer {
 
         // Sets the wrist to the ground to pick up cones
         if (driver.getAButtonPressed()){
-            wrist.setSetpoint(0.5);
-            verticalElevator.setSetpoint(-0.07);
+            wrist.setSetpoint(0.6);
+            verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(.1);
             intake.intake_on(-.9);
         }
         // Sets the wrist back to default
         if (driver.getAButtonReleased()){
-            wrist.setSetpoint(1.5);
-            verticalElevator.setSetpoint(0.05);
+            wrist.setSetpoint(1.3);
+            verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-0.05);
             intake.intake_on(0);
+        }
+
+       
+
+        if (driver.getPOV() == 270){
         }
 
         /* Operator Controller buttons subsystems. */
@@ -202,50 +180,133 @@ public class RobotContainer {
         // CANdle LED operator control
         // Purple for cube 
         if (operator.getXButtonPressed()){
-            candle.candleOn(63, 0, 242);
-            //verticalelevatorsp = 0.7;
-            //horizontalelevatorsp = 0.6;
-            //wristsp = 0.8;
+            gp = 1;
         }
         // Yellow for cone
         if (operator.getYButtonPressed()){    
-            candle.candleOn(252, 186, 3);
-            //verticalelevatorsp = 1.07;
-            //horizontalelevatorsp = 1;
-            //wristsp = .95;
+            
+            gp = 2;
         }
+
+        if(gp == 2){
+            candle.candleOn(252, 186, 3);
+        }
+
+        if(gp ==1){
+            candle.candleOn(63, 0, 242);
+        }
+
+        if (operator.getPOV() == 0){
+            level = 1;
+            System.out.print("working level");
+        }
+        if (level == 1){
+            if (gp == 1){
+                verticalelevatorsp = 1.07;
+                horizontalelevatorsp = -1;
+                wristsp = 1.2;
+                System.out.print("working high cube");
+                System.out.print(verticalelevatorsp);
+                System.out.print(horizontalelevatorsp);
+                System.out.print(wristsp);
+
+            }
+
+            if (gp == 2){
+                verticalelevatorsp = 1.07;
+                horizontalelevatorsp = -1;
+                wristsp = 0.927;
+                System.out.print("working high cone");
+                System.out.print(verticalelevatorsp);
+                System.out.print(horizontalelevatorsp);
+                System.out.print(wristsp);
+            }
+        }
+
+        if (operator.getPOV() == 90){
+            level = 2;
+        }
+        if (level == 2){
+            if (gp == 1){
+                verticalelevatorsp = .6;
+                horizontalelevatorsp = -.6;
+                wristsp = 1;
+            }
+
+            if (gp == 2){
+                verticalelevatorsp = 1.07;
+                horizontalelevatorsp = -.6;
+                wristsp = 0.3;
+            }
+        }
+
+        if (operator.getPOV() == 180){
+            level = 3;
+        }
+        if (level == 3){
+            if (gp == 1){
+                verticalelevatorsp = 0.05;
+                horizontalelevatorsp = -0.05;
+                wristsp = 1;
+            }
+
+            if (gp == 2){
+                verticalelevatorsp = .5;
+                horizontalelevatorsp = 0;
+                wristsp = .2;
+            }
+        }
+        Command scoreCommand = new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, verticalelevatorsp, horizontalelevatorsp, wristsp, false);
+
+        if (driver.getPOV() == 90){
+            // wrist.setSetpoint(wristsp);
+            // verticalElevator.setSetpoint(verticalelevatorsp);
+            // horizontalElevator.setSetpoint(horizontalelevatorsp);
+            scoreCommand.execute();
+        }
+
+        if (driver.getPOV() == 270){
+            horizontalElevator.setSetpoint(-0.05);
+            if(horizontalElevator.pid.atSetpoint()){
+            verticalElevator.setSetpoint(0.05);
+            }
+            if(verticalElevator.pid.atSetpoint()){
+            wrist.setSetpoint(1.1);
+            }
+        }
+
 
         //Plays rainbow animation when disabled
-        // if (DriverStation.isDisabled()){
-        //     candle.rainbowAnimation(0.4, 0.5, 70);
-        // }
+        //  if (DriverStation.isDisabled()){
+        //      candle.rainbowAnimation(0.4, 0.5, 70);
+        //  }
         
-        //Limit switch to turn off forky 
-        if (!engage.get()){
-            Engage.Partner_Lift_On(0);
-        }
+        // //Limit switch to turn off forky 
+        // if (!engage.get()){
+        //     Engage.Partner_Lift_On(0);
+        // }
 
-        // Engage/forky 
-        if (operator.getRightBumperPressed()){
-            Engage.Partner_Lift_On(.25);
-        }
-        if (operator.getRightBumperReleased()){
-            Engage.Partner_Lift_On(0.0);
-        }
-        if (operator.getLeftBumperPressed()){
-            Engage.Partner_Lift_On(-.25);
-        }
-        if (operator.getLeftBumperReleased()){
-            Engage.Partner_Lift_On(0.0);
-        }
-        //Operator D-Pad UP
-        if (operator.getPOV() == 0){
-            wrist.setSetpoint(1.5);
-        }
-        //Operator D-Pad Down
-        if (operator.getPOV() == 180){
-            wrist.setSetpoint(0.5);
-        }
+        // // Engage/forky 
+        // if (operator.getRightBumperPressed()){
+        //     Engage.Partner_Lift_On(.25);
+        // }
+        // if (operator.getRightBumperReleased()){
+        //     Engage.Partner_Lift_On(0.0);
+        // }
+        // if (operator.getLeftBumperPressed()){
+        //     Engage.Partner_Lift_On(-.25);
+        // }
+        // if (operator.getLeftBumperReleased()){
+        //     Engage.Partner_Lift_On(0.0);
+        // }
+        // //Operator D-Pad UP
+        // if (operator.getPOV() == 0){
+        //     wrist.setSetpoint(1.5);
+        // }
+        // //Operator D-Pad Down
+        // if (operator.getPOV() == 180){
+        //     wrist.setSetpoint(0.5);
+        // }
 
     }
 
