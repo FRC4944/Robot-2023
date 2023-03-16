@@ -1,5 +1,8 @@
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,12 +16,15 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
     /* Controllers */
     public final XboxController driver = new XboxController(0);
@@ -47,15 +53,9 @@ public class RobotContainer {
     public static DigitalInput engage = new DigitalInput(0);
     public static Partner_Lift Engage = new Partner_Lift();
 
-
-    private static double verticalelevatorsp;
-    private static double horizontalelevatorsp;
-    private static double wristsp;
-    private static int level;
-    public static int gp;
-    
-
-    
+    //private static double verticalelevatorsp;
+    //private static double horizontalelevatorsp;
+    //private static double wristsp;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -74,6 +74,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+        //autonomousOptions();
     }
 
     /**
@@ -311,12 +312,23 @@ public class RobotContainer {
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
      * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // This command will run in autonomous
-        return new Auto2(s_Swerve);
+     */public Command getAutonomousCommand() {
+    // Get the selected Auto in smartDashboard
+    //return m_chooser.getSelected();
+    return new Auto2(s_Swerve);
+}
 
-    }
+/**
+ * Use this to set Autonomous options for selection in Smart Dashboard
+ */
+private void autonomousOptions() {
+  // Adds Autonomous options to chooser
+  //m_chooser.addOption("1", new Auto1(s_Swerve));
+  //m_chooser.addOption("2", new Auto2(s_Swerve));
+
+  // Put the chooser on the dashboard
+  //SmartDashboard.putData(m_chooser);
+}
 }
 
 // max height 1.1 max horiz 1.1 
