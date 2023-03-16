@@ -29,6 +29,7 @@ public class Auto2 extends SequentialCommandGroup {
             new intakeOn(),
             new WaitUntil(3000),
             new intakeOff(), 
+            //test
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 0.6, true),
             new Drive_Back_Command(swerve, .68, 0, true),
             // new Drive_Back_Command(swerve, .4, 0, true),
