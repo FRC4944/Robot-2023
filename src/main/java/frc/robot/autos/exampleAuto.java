@@ -29,13 +29,3 @@ public class exampleAuto extends SequentialCommandGroup {
         );
     }
 }
-
-
-//Results from testing:
-//34.5 in
-//31.75 in
-//35 in
-//35 in
-//34 in 
-
-// 1 unit is about 34 inches

@@ -18,7 +18,7 @@ public class Auto6 extends SequentialCommandGroup {
 
     public Auto6(Swerve swerve){
         this.m_swerve = swerve;
-        
+        // needs to change
         setGyro setGyro = new setGyro(78);
 
         addCommands(

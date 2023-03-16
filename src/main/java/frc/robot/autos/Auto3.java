@@ -18,7 +18,7 @@ public class Auto3 extends SequentialCommandGroup {
 
     public Auto3(Swerve swerve){
         this.m_swerve = swerve;
-        
+        // needs to change
         setGyro setGyro = new setGyro(78);
 
         addCommands(

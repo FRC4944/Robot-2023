@@ -53,9 +53,11 @@ public class RobotContainer {
     public static DigitalInput engage = new DigitalInput(0);
     public static Partner_Lift Engage = new Partner_Lift();
 
-    //private static double verticalelevatorsp;
-    //private static double horizontalelevatorsp;
-    //private static double wristsp;
+    private static double verticalelevatorsp;
+    private static double horizontalelevatorsp;
+    private static double wristsp;
+    private static double level;
+    private static double gp;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -330,5 +332,3 @@ private void autonomousOptions() {
   //SmartDashboard.putData(m_chooser);
 }
 }
-
-// max height 1.1 max horiz 1.1 

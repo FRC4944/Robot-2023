@@ -12,10 +12,11 @@ import frc.robot.subsystems.Wrist;
 
 public class VerticalFirstHorizontalCommand extends CommandBase {
 
+
   private VerticalElevator verticalElevator;
   private HorizontalElevator horizontalElevator;
   private Wrist wrist;
-  
+  // setpoints
   private double verticalSetpoint;
   private double horizontalSetpoint;
   private double wristSetpoint;

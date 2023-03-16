@@ -57,6 +57,7 @@ public class VerticalElevator extends SubsystemBase {
    * 
    * @param setpoint Value between 0 and 1
    */
+  // setpoints
   public void setSetpoint(double setpoint) {
     this.setPoint = setpoint;
     this.pid.setSetpoint(setpoint);

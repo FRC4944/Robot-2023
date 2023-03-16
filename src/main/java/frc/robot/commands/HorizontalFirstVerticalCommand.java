@@ -30,7 +30,7 @@ public class HorizontalFirstVerticalCommand extends CommandBase {
     this.horizontalElevator = horizontalElevator;
     this.verticalElevator = verticalElevator;
     this.wrist = wrist;
-
+    // setpoints
     this.verticalSetpoint = verticalSetpoint;
     this.horizontalSetpoint = horizontalSetpoint;
     this.wristSetpoint = wristSetpoint;
