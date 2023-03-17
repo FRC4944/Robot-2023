@@ -61,6 +61,8 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+        gp = 1;
+        level = 1;
         final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
         final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));
 
@@ -153,7 +155,7 @@ public class RobotContainer {
         if (driver.getBButtonPressed()){
             wrist.setSetpoint(0.9);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(.09);
+            horizontalElevator.setSetpoint(-.09);
             intake.intake_on(0.9);
         }
         // Sets the wrist back to default
@@ -169,7 +171,7 @@ public class RobotContainer {
         if (driver.getAButtonPressed()){
             wrist.setSetpoint(0.6);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(.1);
+            horizontalElevator.setSetpoint(-.1);
             intake.intake_on(-.9);
         }
         // Sets the wrist back to default
@@ -288,7 +290,7 @@ public class RobotContainer {
 
         //Plays rainbow animation when disabled
         //  if (DriverStation.isDisabled()){
-        //      candle.rainbowAnimation(0.4, 0.5, 70);
+        //      candle.rainbowAnimation(0.4, 0.5, 78);
         //  }
         
         // //Limit switch to turn off forky 
