@@ -92,6 +92,8 @@ public final class Constants {
         public static final double maxSpeed = 4;
         public static final double lm3maxSpeed = 0.2;
         public static final double AutoMaxspeed = 2;
+        public static final double AutoMaxspeed1 = 2.3;
+        public static final double AutoEngageMaxspeed = 2.3;
         public static final double AutoAngleSpeed = 2;
         public static final double EngageSpeed = 0.7;
 

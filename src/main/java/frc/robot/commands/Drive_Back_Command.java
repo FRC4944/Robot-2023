@@ -21,23 +21,23 @@ public class Drive_Back_Command extends CommandBase {
   public double xdistance;
   public double xrotation;
 
+
   public double kp = Constants.AutoConstants.kPThetaController;
   public double power;
 
-
-  public final PIDController pid = new PIDController(Constants.AutoConstants.kPThetaController, 0, 0);
   
   //private static final double MAX_POWER = 1;
   private final Swerve m_swerve;
 
   public SwerveModule m_swervemodule;
 
-  public Drive_Back_Command(Swerve swerve, double xDistance, double xRotation, boolean auto) {
+  public Drive_Back_Command(Swerve swerve, double xDistance, double xRotation, double power, boolean auto) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_swerve = swerve;
     this.auto = auto;
     this.xdistance = xDistance;
     this.xrotation = xRotation;
+    this.power = power;
 
 
   }
@@ -56,7 +56,7 @@ public class Drive_Back_Command extends CommandBase {
         
     if (auto) {
       m_swerve.drive(
-        new Translation2d(xdistance, 0).times(Constants.Swerve.AutoMaxspeed), 
+        new Translation2d(xdistance, 0).times(power), 
          xrotation * Constants.Swerve.AutoAngleSpeed, 
         true, 
         true
