@@ -24,14 +24,15 @@ public class Auto2 extends SequentialCommandGroup {
         addCommands(
             setGyro,
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
-            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.08, .55, 0.587, true), 
+            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.08, -.55, 0.597, true), 
             new intakeOn(),
             new WaitUntil(3000),
             new intakeOff(), 
-            new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, 0.6, true),
+            new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 0.6, true),
             new Drive_Back_Command(swerve, .6, 0, true),
             // new Drive_Back_Command(swerve, .4, 0, true),
-            new AutoEngageCommand(swerve, true)
+           // new AutoEngageCommand(swerve, true)
+            new Engage(swerve, true)
         );
     }
 }
