@@ -4,7 +4,6 @@ package frc.robot.autos;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Drive_Back_Command;
-import frc.robot.commands.Engage_Auto;
 import frc.robot.commands.HorizontalFirstVerticalCommand;
 import frc.robot.commands.VerticalFirstHorizontalCommand;
 import frc.robot.subsystems.Swerve;
@@ -33,9 +32,9 @@ public class Auto4 extends SequentialCommandGroup {
             new Drive_Back_Command(swerve, .7, 0, Constants.Swerve.AutoMaxspeed, true),
             new WaitUntil(200),
             new Drive_Back_Command(swerve, .4, 0, Constants.Swerve.AutoMaxspeed, true),
-            new Drive_Back_Command(swerve, -.6, 0, Constants.Swerve.AutoMaxspeed1, true),
+            new Drive_Back_Command(swerve, -.6, 0, Constants.Swerve.AutoMaxspeed1, true)
             // new Drive_Back_Command(swerve, .4, 0, true),
-            new AutoEngageCommand(swerve, true)
+            //new AutoEngageCommand(swerve, true)
         );
     }
 }
