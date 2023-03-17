@@ -123,14 +123,7 @@ public class RobotContainer {
         if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
         }
-        //Controller rumble and white candle when intake amps spike
-        if (intake.intake.getOutputCurrent() > 15){
-            driver.setRumble(RumbleType.kBothRumble, 1);
-            candle.candleOn(255, 255, 255);
-        } else {
-            driver.setRumble(RumbleType.kBothRumble, 0);
-            candle.candleOn(0, 0, 0);
-        }
+        
 
         // Outtake
         if (driver.getXButtonPressed()){
@@ -201,11 +194,25 @@ public class RobotContainer {
         }
 
         if(gp == 2){
-            candle.candleOn(252, 186, 3);
+            //Controller rumble and white candle when intake amps spike
+            if (intake.intake.getOutputCurrent() > 15){
+                driver.setRumble(RumbleType.kBothRumble, 1);
+                candle.candleOn(255, 255, 255);
+            } else {
+                driver.setRumble(RumbleType.kBothRumble, 0);
+                candle.candleOn(252, 186, 3);
+            }
+            
         }
 
         if(gp ==1){
-            candle.candleOn(63, 0, 242);
+            if (intake.intake.getOutputCurrent() > 15){
+                driver.setRumble(RumbleType.kBothRumble, 1);
+                candle.candleOn(255, 255, 255);
+            } else {
+                driver.setRumble(RumbleType.kBothRumble, 0);
+                candle.candleOn(252, 186, 3);
+            }
         }
 
         if (operator.getPOV() == 0){
@@ -221,7 +228,7 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-
+                candle.candleChunkOn(102, 0, 102, 0, 52, 26);
             }
 
             if (gp == 2){
@@ -232,6 +239,7 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
+                candle.candleChunkOn(255, 102, 0, 0, 52, 26);
             }
         }
 
@@ -243,12 +251,14 @@ public class RobotContainer {
                 verticalelevatorsp = .6;
                 horizontalelevatorsp = -.6;
                 wristsp = 1;
+                candle.candleChunkOn(102, 0, 102, 0, 26, 26);
             }
 
             if (gp == 2){
                 verticalelevatorsp = 1.07;
                 horizontalelevatorsp = -.6;
                 wristsp = 0.3;
+                candle.candleChunkOn(255, 102, 0, 0, 26, 26);
             }
         }
 
@@ -260,12 +270,14 @@ public class RobotContainer {
                 verticalelevatorsp = 0.05;
                 horizontalelevatorsp = -0.05;
                 wristsp = 1;
+                candle.candleChunkOn(102, 0, 102,0, 0, 26);
             }
 
             if (gp == 2){
                 verticalelevatorsp = .5;
                 horizontalelevatorsp = 0;
                 wristsp = .2;
+                candle.candleChunkOn(255, 102, 0, 0,0, 26);
             }
         }
         Command scoreCommand = new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, verticalelevatorsp, horizontalelevatorsp, wristsp, false);
