@@ -22,7 +22,7 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public static SwerveModule[] mSwerveMods;
     public AHRS gyro;
-    public double gyroOffset = 0;
+    public double gyroOffset = 180;
 
     public Swerve() {
         gyro = new AHRS(SPI.Port.kMXP , (byte) 200);
@@ -105,7 +105,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getYaw() {
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(gyro.getYaw() * -1 + gyroOffset) : Rotation2d.fromDegrees(gyro.getYaw() + gyroOffset);
+        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(gyro.getYaw() * -1 + 180) : Rotation2d.fromDegrees(gyro.getYaw() + gyroOffset);
     }
 
     public void resetModulesToAbsolute(){

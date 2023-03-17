@@ -34,7 +34,7 @@ public class Auto4 extends SequentialCommandGroup {
             new Drive_Back_Command(swerve, .4, 0, true),
             new Drive_Back_Command(swerve, -.6, 0, true),
             // new Drive_Back_Command(swerve, .4, 0, true),
-            new AutoEngageCommand(swerve)
+            new AutoEngageCommand(swerve, true)
         );
     }
 }
