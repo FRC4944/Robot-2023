@@ -31,7 +31,7 @@ public class Auto2 extends SequentialCommandGroup {
             new intakeOff(), 
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, .6, true),
             new Drive_Back_Command(swerve, .7, 0, Constants.Swerve.AutoMaxspeed, true),
-            new Drive_Back_Command(swerve, .25, 0, Constants.Swerve.AutoMaxspeed, true),
+            new Drive_Back_Command(swerve, .25, 0, Constants.Swerve.AutoMaxspeed1, true),
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 1, true),
             new Drive_Back_Command(swerve, -.5, 0, Constants.Swerve.AutoMaxspeed, true),
             // new Drive_Back_Command(swerve, .4, 0, true),
