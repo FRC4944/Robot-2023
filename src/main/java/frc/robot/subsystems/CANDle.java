@@ -29,6 +29,10 @@ public class CANDle extends SubsystemBase {
   public void candleOn(int red, int green, int blue){
     candle.setLEDs(red, green, blue);
   }
+  
+  public void candleChunkOn(int red, int green, int blue, int white, int startindex, int count) {
+    candle.setLEDs(red, green, blue, white, startindex, count);
+  }
 
   public void rainbowAnimation(double brightness, double speed, int numLeds){
     RainbowAnimation rainbowAnim = new RainbowAnimation(brightness, speed, numLeds);
