@@ -59,13 +59,6 @@ public class RobotContainer {
     private static double level;
     private static double gp;
 
-//   // A simple auto routine that drives forward a specified distance, and then stops.
-//   private final Command m_simpleAuto =
-//       new Auto1(s_Swerve);
-
-//   // A complex auto routine that drives forward, drops a hatch, and then drives backward.
-//   private final Command m_complexAuto = new Auto2(s_Swerve);
-
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -88,12 +81,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-
-        // m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-        // m_chooser.addOption("Complex Auto", m_complexAuto);
-
-        // Put the chooser on the dashboard
-        SmartDashboard.putData(m_chooser);
+        autonomousOptions();
     }
 
     /**
@@ -258,7 +246,7 @@ public class RobotContainer {
             }
         }
 
-        if (operator.getPOV() == 90){
+        if (operator.getPOV() == 90 || operator.getPOV() == 270){
             level = 2;
         }
         if (level == 2){
@@ -352,8 +340,16 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
     // Get the selected Auto in smartDashboard
-    //return m_chooser.getSelected();
-    return new Auto5(s_Swerve);
+    return m_chooser.getSelected();
+    //return new Auto5(s_Swerve);
     }
-    
+    private void autonomousOptions() {
+        m_chooser.setDefaultOption("Auto 1", new Auto1(s_Swerve)); //TODO: Give Autos better names and specify starting positions
+        m_chooser.addOption("Auto 2", new Auto2(s_Swerve));
+        m_chooser.addOption("Auto 3", new Auto3(s_Swerve));
+        m_chooser.addOption("Auto 4", new Auto4(s_Swerve));
+        m_chooser.addOption("Auto 5", new Auto5(s_Swerve));
+        m_chooser.addOption("Auto 6", new Auto6(s_Swerve));
+        SmartDashboard.putData("Auto mode", m_chooser);
+    }
 }
