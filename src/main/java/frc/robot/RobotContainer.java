@@ -59,9 +59,19 @@ public class RobotContainer {
     private static double level;
     private static double gp;
 
+//   // A simple auto routine that drives forward a specified distance, and then stops.
+//   private final Command m_simpleAuto =
+//       new Auto1(s_Swerve);
+
+//   // A complex auto routine that drives forward, drops a hatch, and then drives backward.
+//   private final Command m_complexAuto = new Auto2(s_Swerve);
+
+  // A chooser for autonomous commands
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        gp = 1;
+        gp = 2;
         level = 1;
         final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
         final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));
@@ -78,7 +88,12 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-        //autonomousOptions();
+
+        // m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
+        // m_chooser.addOption("Complex Auto", m_complexAuto);
+
+        // Put the chooser on the dashboard
+        SmartDashboard.putData(m_chooser);
     }
 
     /**
@@ -169,7 +184,7 @@ public class RobotContainer {
 
         // Sets the wrist to the ground to pick up cones
         if (driver.getAButtonPressed()){
-            wrist.setSetpoint(0.6);
+            wrist.setSetpoint(0.46);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-.1);
             intake.intake_on(-.9);
@@ -225,9 +240,9 @@ public class RobotContainer {
             }
 
             if (gp == 2){
-                verticalelevatorsp = 1.07;
+                verticalelevatorsp = 1.12;
                 horizontalelevatorsp = -1;
-                wristsp = 0.927;
+                wristsp = 0.95;
                 System.out.print("working high cone");
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
@@ -246,9 +261,9 @@ public class RobotContainer {
             }
 
             if (gp == 2){
-                verticalelevatorsp = 1.07;
+                verticalelevatorsp = 1.11;
                 horizontalelevatorsp = -.6;
-                wristsp = 0.3;
+                wristsp = 0.66;
             }
         }
 
@@ -281,17 +296,13 @@ public class RobotContainer {
             horizontalElevator.setSetpoint(-0.05);
             if(horizontalElevator.pid.atSetpoint()){
             verticalElevator.setSetpoint(0.05);
-            }
-            if(verticalElevator.pid.atSetpoint()){
             wrist.setSetpoint(1.1);
             }
+            // if(verticalElevator.pid.atSetpoint()){
+            // wrist.setSetpoint(1.1);
+            // }
         }
 
-
-        //Plays rainbow animation when disabled
-        //  if (DriverStation.isDisabled()){
-        //      candle.rainbowAnimation(0.4, 0.5, 78);
-        //  }
         
         // //Limit switch to turn off forky 
         // if (!engage.get()){
@@ -326,21 +337,11 @@ public class RobotContainer {
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
      * @return the command to run in autonomous
-     */public Command getAutonomousCommand() {
+     */
+    public Command getAutonomousCommand() {
     // Get the selected Auto in smartDashboard
     //return m_chooser.getSelected();
-    return new Auto2(s_Swerve);
-}
-
-/**
- * Use this to set Autonomous options for selection in Smart Dashboard
- */
-private void autonomousOptions() {
-  // Adds Autonomous options to chooser
-  //m_chooser.addOption("1", new Auto1(s_Swerve));
-  //m_chooser.addOption("2", new Auto2(s_Swerve));
-
-  // Put the chooser on the dashboard
-  //SmartDashboard.putData(m_chooser);
-}
+    return new Auto5(s_Swerve);
+    }
+    
 }

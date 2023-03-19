@@ -21,7 +21,7 @@ public class CANDle extends SubsystemBase {
         configAll.statusLedOffWhenActive = true;
         configAll.disableWhenLOS = true; //will be diff between hold and press
         configAll.stripType = LEDStripType.GRB;
-        configAll.brightnessScalar = 0.4;
+        configAll.brightnessScalar = 0.5;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
         candle.configAllSettings(configAll, 100);
     }
@@ -40,8 +40,4 @@ public class CANDle extends SubsystemBase {
     candle.animate(cFlowAnimation);
   }
 
-  public void fireanimation(int brightness, int speed, int nunLed, int spark, int cooling){
-    FireAnimation cFireAnimation = new FireAnimation(brightness, speed, nunLed, spark, cooling);
-    candle.animate(cFireAnimation);
-  }
 }

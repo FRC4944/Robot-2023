@@ -24,17 +24,15 @@ public class Auto4 extends SequentialCommandGroup {
         addCommands(
             setGyro,
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
-            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.08, .55, 0.587, true), 
+            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.15, -1, 1, true), 
             new intakeOn(),
-            new WaitUntil(3000),
+            new WaitUntil(2500),
             new intakeOff(), 
-            new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, 0.6, true),
-            new Drive_Back_Command(swerve, .7, 0, Constants.Swerve.AutoMaxspeed, true),
-            new WaitUntil(200),
-            new Drive_Back_Command(swerve, .4, 0, Constants.Swerve.AutoMaxspeed, true),
-            new Drive_Back_Command(swerve, -.6, 0, Constants.Swerve.AutoMaxspeed1, true)
+            new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, 1, true),
+            new Drive_Back_Command(swerve, .45, 0, Constants.Swerve.AutoMaxspeed, 2000, true),
+            new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, 1, true),
             // new Drive_Back_Command(swerve, .4, 0, true),
-            //new AutoEngageCommand(swerve, true)
+            new AutoEngage1(swerve, true)
         );
     }
 }
