@@ -60,7 +60,7 @@ public class RobotContainer {
     private static double gp;
 
   // A chooser for autonomous commands
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -81,7 +81,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-        autonomousOptions();
+        //autonomousOptions();
     }
 
     /**
@@ -97,10 +97,10 @@ public class RobotContainer {
 
         /* Operator Buttons */
         //Robot aligns with apriltags while operator presses A and reflective tape while operator presses B
-        Command aprilTagLineup = new VisionLineup(s_Swerve, candle, 1);
-        opAButton.whileTrue(aprilTagLineup);
-        Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
-        opBButton.whileTrue(reflectiveTapeLineup);
+        //Command aprilTagLineup = new VisionLineup(s_Swerve, candle, 1);
+        //opAButton.whileTrue(aprilTagLineup);
+        //Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
+        //opBButton.whileTrue(reflectiveTapeLineup);
 
 
         
@@ -203,7 +203,7 @@ public class RobotContainer {
                 candle.candleOn(255, 255, 255);
             } else {
                 driver.setRumble(RumbleType.kBothRumble, 0);
-                candle.candleOn(252, 186, 3);
+                candle.candleOn(240, 180, 3);
             }
             
         }
@@ -214,7 +214,7 @@ public class RobotContainer {
                 candle.candleOn(255, 255, 255);
             } else {
                 driver.setRumble(RumbleType.kBothRumble, 0);
-                candle.candleOn(252, 186, 3);
+                candle.candleOn(102, 0, 102);
             }
         }
 
@@ -231,7 +231,7 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                candle.candleChunkOn(102, 0, 102, 0, 52, 26);
+                //candle.candleChunkOn(102, 0, 102, 0, 52, 26);
             }
 
             if (gp == 2){
@@ -242,7 +242,7 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                candle.candleChunkOn(255, 102, 0, 0, 52, 26);
+                //candle.candleChunkOn(255, 102, 0, 0, 52, 26);
             }
         }
 
@@ -254,14 +254,14 @@ public class RobotContainer {
                 verticalelevatorsp = .6;
                 horizontalelevatorsp = -.6;
                 wristsp = 1;
-                candle.candleChunkOn(102, 0, 102, 0, 26, 26);
+                //candle.candleChunkOn(102, 0, 102, 0, 26, 26);
             }
 
             if (gp == 2){
                 verticalelevatorsp = 1.11;
                 horizontalelevatorsp = -.6;
                 wristsp = 0.66;
-                candle.candleChunkOn(255, 102, 0, 0, 26, 26);
+                //candle.candleChunkOn(255, 102, 0, 0, 26, 26);
             }
         }
 
@@ -273,14 +273,14 @@ public class RobotContainer {
                 verticalelevatorsp = 0.05;
                 horizontalelevatorsp = -0.05;
                 wristsp = 1;
-                candle.candleChunkOn(102, 0, 102,0, 0, 26);
+                //candle.candleChunkOn(102, 0, 102,0, 0, 26);
             }
 
             if (gp == 2){
                 verticalelevatorsp = .5;
                 horizontalelevatorsp = 0;
                 wristsp = .2;
-                candle.candleChunkOn(255, 102, 0, 0,0, 26);
+                //candle.candleChunkOn(255, 102, 0, 0,0, 26);
             }
         }
         Command scoreCommand = new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, verticalelevatorsp, horizontalelevatorsp, wristsp, false);
@@ -340,16 +340,16 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
     // Get the selected Auto in smartDashboard
-    return m_chooser.getSelected();
-    //return new Auto5(s_Swerve);
+    //return m_chooser.getSelected();
+    return new Auto2(s_Swerve);
     }
-    private void autonomousOptions() {
-        m_chooser.setDefaultOption("Auto 1", new Auto1(s_Swerve)); //TODO: Give Autos better names and specify starting positions
-        m_chooser.addOption("Auto 2", new Auto2(s_Swerve));
-        m_chooser.addOption("Auto 3", new Auto3(s_Swerve));
-        m_chooser.addOption("Auto 4", new Auto4(s_Swerve));
-        m_chooser.addOption("Auto 5", new Auto5(s_Swerve));
-        m_chooser.addOption("Auto 6", new Auto6(s_Swerve));
-        SmartDashboard.putData("Auto mode", m_chooser);
-    }
+    //private void autonomousOptions() {
+     //   m_chooser.setDefaultOption("Auto 1", new Auto1(s_Swerve)); //TODO: Give Autos better names and specify starting positions
+     //   m_chooser.addOption("Auto 2", new Auto2(s_Swerve));
+     //   m_chooser.addOption("Auto 3", new Auto3(s_Swerve));
+     //   m_chooser.addOption("Auto 4", new Auto4(s_Swerve));
+     //   m_chooser.addOption("Auto 5", new Auto5(s_Swerve));
+     //   m_chooser.addOption("Auto 6", new Auto6(s_Swerve));
+     //   SmartDashboard.putData("Auto mode", m_chooser);
+    //}
 }
