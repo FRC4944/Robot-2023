@@ -44,7 +44,7 @@ public class RobotContainer {
     private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
 
     /* Subsystems */
-    public final Swerve s_Swerve = new Swerve();
+    public static Swerve s_Swerve = new Swerve();
     public static VerticalElevator verticalElevator = new VerticalElevator();
     public static HorizontalElevator horizontalElevator = new HorizontalElevator();
     public static Wrist wrist = new Wrist();
@@ -60,7 +60,7 @@ public class RobotContainer {
     private static double gp;
 
   // A chooser for autonomous commands
-  //SendableChooser<Command> m_chooser = new SendableChooser<>();
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -81,7 +81,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-        //autonomousOptions();
+        autonomousOptions();
     }
 
     /**
@@ -340,16 +340,16 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
     // Get the selected Auto in smartDashboard
-    //return m_chooser.getSelected();
-    return new Auto2(s_Swerve);
+    return m_chooser.getSelected();
+    //return new Auto2(s_Swerve);
     }
-    //private void autonomousOptions() {
-     //   m_chooser.setDefaultOption("Auto 1", new Auto1(s_Swerve)); //TODO: Give Autos better names and specify starting positions
-     //   m_chooser.addOption("Auto 2", new Auto2(s_Swerve));
+    private void autonomousOptions() {
+       m_chooser.setDefaultOption("engage", new Auto2(s_Swerve));
+       m_chooser.addOption("score and intake", new Auto5(s_Swerve));
      //   m_chooser.addOption("Auto 3", new Auto3(s_Swerve));
      //   m_chooser.addOption("Auto 4", new Auto4(s_Swerve));
      //   m_chooser.addOption("Auto 5", new Auto5(s_Swerve));
      //   m_chooser.addOption("Auto 6", new Auto6(s_Swerve));
-     //   SmartDashboard.putData("Auto mode", m_chooser);
-    //}
+       SmartDashboard.putData("Auto mode", m_chooser);
+    }
 }
