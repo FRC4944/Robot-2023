@@ -1,6 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.autos;
 
@@ -28,15 +25,18 @@ public class Drive_Intake extends CommandBase {
 
   
   //private static final double MAX_POWER = 1;
-  //private final Swerve m_swerve;
+  private final Swerve m_swerve;
 
   public SwerveModule m_swervemodule;
   public Intake intake;
 
-  public Drive_Intake(Intake intake, double power, boolean auto) {
+  public Drive_Intake(Swerve swerve, Intake intake, double xDistance, double xRotation, double power, boolean auto) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.m_swerve = swerve;
     this.auto = auto;
     this.intake = intake;
+    this.xdistance = xDistance;
+    this.xrotation = xRotation;
     this.power = power;
 
 
@@ -54,17 +54,17 @@ public class Drive_Intake extends CommandBase {
   @Override
   public void execute() {
         
-   // if (auto) {
-   //   m_swerve.drive(
-   //     new Translation2d(xdistance, 0).times(power), 
-   //      xrotation * Constants.Swerve.AutoAngleSpeed, 
-   //     true, 
-  //      true
-  //  );
-  //}
+    if (auto) {
+      m_swerve.drive(
+        new Translation2d(xdistance, 0).times(power), 
+         xrotation * Constants.Swerve.AutoAngleSpeed, 
+        true, 
+        true
+    );
+  }
 
   intake.intake_on(0.9);
-  if (intake.intake.getOutputCurrent() > 30){
+  if (intake.intake.getOutputCurrent() > 12){
     intake.intake_on(0.0);
     }
   

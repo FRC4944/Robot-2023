@@ -66,8 +66,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 
-    SmartDashboard.putNumber("Gyro", m_robotContainer.s_Swerve.gyro.getAngle());
-    SmartDashboard.putNumber("Converted Gyro", m_robotContainer.s_Swerve.getYaw().getDegrees());
+    SmartDashboard.putNumber("Gyro", RobotContainer.s_Swerve.gyro.getAngle());
+    SmartDashboard.putNumber("Converted Gyro", RobotContainer.s_Swerve.getYaw().getDegrees());
     
     CommandScheduler.getInstance().run();
 

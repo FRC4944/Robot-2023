@@ -4,6 +4,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -111,11 +112,13 @@ public class RobotContainer {
     public void teleopPeriodic() {
         //Fix Gyro from Autos
         s_Swerve.setGyroOffset(0.0);
+        LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
         // Has the pid running the whole time 
         this.verticalElevator.driveTowardsPid();
         this.horizontalElevator.driveTowardsPid();
         this.wrist.driveTowardsPid();
+        //filter.calculate(intake.intake.getOutputCurrent() > 15)
 
          // Intake 
         if (driver.getYButtonPressed()){
@@ -198,18 +201,18 @@ public class RobotContainer {
 
         if(gp == 2){
             //Controller rumble and white candle when intake amps spike
-            if (intake.intake.getOutputCurrent() > 15){
+            if (filter.calculate(intake.intake.getOutputCurrent()) > 15){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
                 driver.setRumble(RumbleType.kBothRumble, 0);
-                candle.candleOn(240, 180, 3);
+                candle.candleOn(240, 240, 0);
             }
             
         }
 
-        if(gp ==1){
-            if (intake.intake.getOutputCurrent() > 15){
+        if(gp == 1){
+            if (filter.calculate(intake.intake.getOutputCurrent()) > 15){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
@@ -231,7 +234,7 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                //candle.candleChunkOn(102, 0, 102, 0, 52, 26);
+                //candle.candleChunkOn(250, 150, 0, 0, 52, 26);
             }
 
             if (gp == 2){
@@ -242,7 +245,7 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                //candle.candleChunkOn(255, 102, 0, 0, 52, 26);
+                //candle.candleChunkOn(0, 125, 250, 0, 52, 26);
             }
         }
 
@@ -254,14 +257,14 @@ public class RobotContainer {
                 verticalelevatorsp = .6;
                 horizontalelevatorsp = -.6;
                 wristsp = 1;
-                //candle.candleChunkOn(102, 0, 102, 0, 26, 26);
+                //candle.candleChunkOn(250, 150, 0, 0, 26, 26);
             }
 
             if (gp == 2){
                 verticalelevatorsp = 1.11;
                 horizontalelevatorsp = -.6;
                 wristsp = 0.66;
-                //candle.candleChunkOn(255, 102, 0, 0, 26, 26);
+                //candle.candleChunkOn(0, 125, 250, 0, 26, 26);
             }
         }
 
@@ -273,22 +276,20 @@ public class RobotContainer {
                 verticalelevatorsp = 0.05;
                 horizontalelevatorsp = -0.05;
                 wristsp = 1;
-                //candle.candleChunkOn(102, 0, 102,0, 0, 26);
+                //candle.candleChunkOn(250, 150, 0,0, 0, 26);
             }
 
             if (gp == 2){
                 verticalelevatorsp = .5;
                 horizontalelevatorsp = 0;
                 wristsp = .2;
-                //candle.candleChunkOn(255, 102, 0, 0,0, 26);
+                //candle.candleChunkOn(0, 125, 250, 0,0, 26);
             }
         }
+
         Command scoreCommand = new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, verticalelevatorsp, horizontalelevatorsp, wristsp, false);
 
         if (driver.getPOV() == 90){
-            // wrist.setSetpoint(wristsp);
-            // verticalElevator.setSetpoint(verticalelevatorsp);
-            // horizontalElevator.setSetpoint(horizontalelevatorsp);
             scoreCommand.execute();
         }
 
