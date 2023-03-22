@@ -6,13 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.math.geometry.Pose2d;
-
-import frc.robot.subsystems.Swerve;
 
 
 /**
@@ -22,11 +18,10 @@ import frc.robot.subsystems.Swerve;
  * project.
  */
 public class Robot extends TimedRobot {
+
   public static CTREConfigs ctreConfigs;
-
+  public static RobotContainer m_robotContainer;
   private Command m_autonomousCommand;
-
-  static public RobotContainer m_robotContainer;
 
   //private static final String kDefaultAuto = "Default";
   //private static final String kCustomAuto = "My Auto";
@@ -44,7 +39,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -76,19 +70,20 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    // if (DriverStation.isDisabled()){
-    //   RobotContainer.candle.rainbowAnimation(0.4, 0.5, 78);
-    // }
+    if (DriverStation.isDisabled()){
+      //Pink snake animation
+      RobotContainer.candle.larsonAnimation(155); //36, 36, 75 +8 internal
+    }
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     //m_autoSelected = m_chooser.getSelected();
     //System.out.println("Auto selected: " + m_autonomousCommand);
     // schedule the autonomous command (example)
@@ -108,6 +103,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    //Could not find a better way to turn this off...
+    RobotContainer.candle.larsonAnimation(0);
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
