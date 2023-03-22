@@ -6,8 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -41,8 +39,8 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /*Operator Buttons */
-    private final JoystickButton opAButton = new JoystickButton(operator, XboxController.Button.kA.value);
-    private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
+    //private final JoystickButton opAButton = new JoystickButton(operator, XboxController.Button.kA.value);
+    //private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
 
     /* Subsystems */
     public static Swerve s_Swerve = new Swerve();
@@ -234,7 +232,8 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                //candle.candleChunkOn(250, 150, 0, 0, 52, 26);
+                candle.candleChunkOn(0, 250, 0, 0, 44, 74);
+                
             }
 
             if (gp == 2){
@@ -245,10 +244,9 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                //candle.candleChunkOn(0, 125, 250, 0, 52, 26);
+                candle.candleChunkOn(0, 250, 0, 0, 44, 75);
             }
         }
-
         if (operator.getPOV() == 90 || operator.getPOV() == 270){
             level = 2;
         }
@@ -257,14 +255,16 @@ public class RobotContainer {
                 verticalelevatorsp = .6;
                 horizontalelevatorsp = -.6;
                 wristsp = 1;
-                //candle.candleChunkOn(250, 150, 0, 0, 26, 26);
-            }
-
+                candle.candleChunkOn(0, 250, 0, 0, 26, 18);
+                candle.candleChunkOn(0, 250, 0, 0, 119, 18);
+                
+            }   
             if (gp == 2){
                 verticalelevatorsp = 1.11;
                 horizontalelevatorsp = -.6;
                 wristsp = 0.66;
-                //candle.candleChunkOn(0, 125, 250, 0, 26, 26);
+                candle.candleChunkOn(0, 250, 0, 0, 26, 18);
+                candle.candleChunkOn(0, 250, 0, 0, 119, 18);
             }
         }
 
@@ -276,14 +276,16 @@ public class RobotContainer {
                 verticalelevatorsp = 0.05;
                 horizontalelevatorsp = -0.05;
                 wristsp = 1;
-                //candle.candleChunkOn(250, 150, 0,0, 0, 26);
+                candle.candleChunkOn(0, 255, 0,0, 8, 18);
+                candle.candleChunkOn(0, 250, 0, 0, 137, 18);
             }
 
             if (gp == 2){
                 verticalelevatorsp = .5;
                 horizontalelevatorsp = 0;
                 wristsp = .2;
-                //candle.candleChunkOn(0, 125, 250, 0,0, 26);
+                candle.candleChunkOn(0, 255, 0, 0,8, 18);
+                candle.candleChunkOn(0, 250, 0, 0, 144, 18);
             }
         }
 
@@ -302,7 +304,7 @@ public class RobotContainer {
             // if(verticalElevator.pid.atSetpoint()){
             // wrist.setSetpoint(1.1);
             // }
-        }
+            }
 
         
         // //Limit switch to turn off forky 
