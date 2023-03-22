@@ -22,12 +22,6 @@ public class Robot extends TimedRobot {
   public static CTREConfigs ctreConfigs;
   public static RobotContainer m_robotContainer;
   private Command m_autonomousCommand;
-
-  //private static final String kDefaultAuto = "Default";
-  //private static final String kCustomAuto = "My Auto";
-  //private String m_autoSelected;
-  //private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,14 +30,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     ctreConfigs = new CTREConfigs();
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+    // Instantiate our RobotContainer.  This will perform all our button bindings
     m_robotContainer = new RobotContainer();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    //m_chooser.addOption("My Auto", kCustomAuto);
-    //SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**
@@ -84,8 +74,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    //m_autoSelected = m_chooser.getSelected();
-    //System.out.println("Auto selected: " + m_autonomousCommand);
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -104,7 +92,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    //Could not find a better way to turn this off...
+    //Could not find a better way to turn animation off...
     RobotContainer.candle.larsonAnimation(0);
 
     if (m_autonomousCommand != null) {
