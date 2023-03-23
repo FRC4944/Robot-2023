@@ -33,7 +33,7 @@ public class Auto5 extends SequentialCommandGroup {
             new WaitUntil(500),
             new Drive_Back_Command(swerve, 0, rotation, Constants.Swerve.AutoMaxspeed, 2000, true),
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, .85, true),
-            new Drive_Intake(swerve, RobotContainer.intake, .3, 0, Constants.Swerve.AutoMaxspeed, true),
+            new Drive_Intake(swerve, RobotContainer.intake, .26, 0, Constants.Swerve.AutoMaxspeed, true),
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, .85, true),
             new WaitUntil(700)
         );  
