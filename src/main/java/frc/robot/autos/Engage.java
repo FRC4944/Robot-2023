@@ -12,7 +12,7 @@ import frc.robot.subsystems.Swerve;
 
 public class Engage extends CommandBase {
   /** Creates a new AutoEngageCommand. */
-  private double balanaceEffort; // The effort the robot should use to balance
+  private double balanceEffort; // The effort the robot should use to balance
   private double turningEffort; // The effort the robot should use to turn
   Swerve m_Swerve;
 

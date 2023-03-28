@@ -4,7 +4,6 @@
 
 package frc.robot.autos;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -17,7 +16,7 @@ public class AutoEngage1 extends CommandBase {
   public double distance;  
   public double kp = 0.016;
 
-  private long time;
+  //private long time;
 
   private final boolean auto;
 

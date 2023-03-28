@@ -4,15 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.math.geometry.Pose2d;
-
-import frc.robot.subsystems.Swerve;
 
 
 /**
@@ -22,17 +21,11 @@ import frc.robot.subsystems.Swerve;
  * project.
  */
 public class Robot extends TimedRobot {
+
   public static CTREConfigs ctreConfigs;
-
+  public static RobotContainer m_robotContainer;
   private Command m_autonomousCommand;
-
-  static public RobotContainer m_robotContainer;
-
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
+  NetworkTable lm3 = NetworkTableInstance.getDefault().getTable("limelight");
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -41,15 +34,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     ctreConfigs = new CTREConfigs();
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+    // Instantiate our RobotContainer.  This will perform all our button bindings
     m_robotContainer = new RobotContainer();
-
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**
@@ -66,8 +54,10 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 
-    SmartDashboard.putNumber("Gyro", m_robotContainer.s_Swerve.gyro.getAngle());
-    SmartDashboard.putNumber("Converted Gyro", m_robotContainer.s_Swerve.getYaw().getDegrees());
+    SmartDashboard.putNumber("Gyro", RobotContainer.s_Swerve.gyro.getAngle());
+    SmartDashboard.putNumber("Converted Gyro", RobotContainer.s_Swerve.getYaw().getDegrees());
+    //SmartDashboard.setNetworkTableInstance(lm3);
+    NetworkTableInstance.create();
     
     CommandScheduler.getInstance().run();
 
@@ -76,21 +66,20 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    // if (DriverStation.isDisabled()){
-    //   RobotContainer.candle.rainbowAnimation(0.4, 0.5, 78);
-    // }
+    if (DriverStation.isDisabled()){
+      //Pink snake animation
+      RobotContainer.candle.larsonAnimation(155); //36, 36, 75 +8 internal
+    }
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    m_autoSelected = m_chooser.getSelected();
-    System.out.println("Auto selected: " + m_autoSelected);
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -100,15 +89,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
   }
 
   @Override
@@ -117,6 +97,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    //Could not find a better way to turn animation off...
+    RobotContainer.candle.larsonAnimation(0);
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -139,3 +122,4 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 }
+

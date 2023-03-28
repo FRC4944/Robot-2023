@@ -4,9 +4,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -40,11 +39,11 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /*Operator Buttons */
-    private final JoystickButton opAButton = new JoystickButton(operator, XboxController.Button.kA.value);
-    private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton RB = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+    //private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
 
     /* Subsystems */
-    public final Swerve s_Swerve = new Swerve();
+    public static Swerve s_Swerve = new Swerve();
     public static VerticalElevator verticalElevator = new VerticalElevator();
     public static HorizontalElevator horizontalElevator = new HorizontalElevator();
     public static Wrist wrist = new Wrist();
@@ -56,15 +55,9 @@ public class RobotContainer {
     private static double verticalelevatorsp;
     private static double horizontalelevatorsp;
     private static double wristsp;
+
     private static double level;
     private static double gp;
-
-//   // A simple auto routine that drives forward a specified distance, and then stops.
-//   private final Command m_simpleAuto =
-//       new Auto1(s_Swerve);
-
-//   // A complex auto routine that drives forward, drops a hatch, and then drives backward.
-//   private final Command m_complexAuto = new Auto2(s_Swerve);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -74,26 +67,27 @@ public class RobotContainer {
         gp = 2;
         level = 1;
         final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
-        final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));
+        final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));        
+        
 
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translate), 
-                () -> -driver.getRawAxis(strafe), 
-                () -> -driver.getRawAxis(rotationAxis), 
+                () -> -(driver.getRawAxis(translate) * getDriveMultiplier()), 
+                () -> -driver.getRawAxis(strafe) * getDriveMultiplier(), 
+                () -> -driver.getRawAxis(rotationAxis) * getDriveMultiplier(), 
                 () -> robotCentric.getAsBoolean()
             )
         );
 
         // Configure the button bindings
         configureButtonBindings();
+        // Bring up autonomous mode selector
+        autonomousOptions();
+    }
 
-        // m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-        // m_chooser.addOption("Complex Auto", m_complexAuto);
-
-        // Put the chooser on the dashboard
-        SmartDashboard.putData(m_chooser);
+    public double getDriveMultiplier() {
+        return driver.getRightBumper() ? 0.33 : 1;
     }
 
     /**
@@ -109,13 +103,12 @@ public class RobotContainer {
 
         /* Operator Buttons */
         //Robot aligns with apriltags while operator presses A and reflective tape while operator presses B
-        Command aprilTagLineup = new VisionLineup(s_Swerve, candle, 1);
-        opAButton.whileTrue(aprilTagLineup);
-        Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
-        opBButton.whileTrue(reflectiveTapeLineup);
-
-
-        
+        //Command aprilTagLineup = new VisionLineup(s_Swerve, candle, 1);
+        //opAButton.whileTrue(aprilTagLineup);
+        //Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
+        //opBButton.whileTrue(reflectiveTapeLineup);
+        RB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.08, -0.05, 1.182, false));
+        RB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.05, -0.05, 0.85, false));
 
     }
 
@@ -123,6 +116,8 @@ public class RobotContainer {
     public void teleopPeriodic() {
         //Fix Gyro from Autos
         s_Swerve.setGyroOffset(0.0);
+        //Linear filter for intake amp measurement
+        LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
         // Has the pid running the whole time 
         this.verticalElevator.driveTowardsPid();
@@ -132,34 +127,30 @@ public class RobotContainer {
          // Intake 
         if (driver.getYButtonPressed()){
             intake.intake_on(.6);
-
         }
 
         if (driver.getYButtonReleased()){    
             intake.intake_on(0.0);
         }
         
-
         // Outtake
         if (driver.getXButtonPressed()){
             intake.intake_on(-1);
-
         }
-
         // Stops outtake motor
         if (driver.getXButtonReleased()){
             intake.intake_on(0.0);
         }
 
         // Moves the wrist using the pid 
-        if (driver.getRightBumperPressed()){
-            wrist.setSetpoint(0.6);
-        }
-        if (driver.getLeftBumperPressed()){
-            wrist.setSetpoint(1.1);
-        }
+        // if (driver.getRightBumperPressed()){
+        //     wrist.setSetpoint(0.6);
+        // }
+        // if (driver.getLeftBumperPressed()){
+        //     wrist.setSetpoint(1.1);
+        // }
         
-        // // Sets the Elevators to zero and lift wrist for cubes 
+        // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getBButtonPressed()){
             wrist.setSetpoint(0.9);
             verticalElevator.setSetpoint(-0.05);
@@ -172,7 +163,6 @@ public class RobotContainer {
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-0.05);
             intake.intake_on(0);
-            
         }
 
         // Sets the wrist to the ground to pick up cones
@@ -190,49 +180,42 @@ public class RobotContainer {
             intake.intake_on(0);
         }
 
-       
-
-        if (driver.getPOV() == 270){
-        }
-
         /* Operator Controller buttons subsystems. */
         
-        // CANdle LED operator control
-        // Purple for cube 
+        //Operator game piece choice: Cube
         if (operator.getXButtonPressed()){
             gp = 1;
         }
-        // Yellow for cone
+        // Operator game piece choice: Cone
         if (operator.getYButtonPressed()){    
-            
             gp = 2;
         }
 
         if(gp == 2){
-            //Controller rumble and white candle when intake amps spike
-            if (intake.intake.getOutputCurrent() > 15){
+            //Controller rumble and white candle when intake amps spike on cones. Linear filter used to reduce noise
+            if (intake.intake.getOutputCurrent() > 13){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
                 driver.setRumble(RumbleType.kBothRumble, 0);
-                candle.candleOn(252, 186, 3);
+                candle.candleOn(240, 240, 0);
             }
-            
         }
 
-        if(gp ==1){
-            if (intake.intake.getOutputCurrent() > 15){
+        if(gp == 1){
+            //Controller rumble and white candle when intake amps spike on cubes. Linear filter is used to reduce noise
+            if (intake.intake.getOutputCurrent() > 16){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
                 driver.setRumble(RumbleType.kBothRumble, 0);
-                candle.candleOn(252, 186, 3);
+                candle.candleOn(102, 0, 102);
             }
         }
 
+        //Operator vertical level choice: High
         if (operator.getPOV() == 0){
             level = 1;
-            System.out.print("working level");
         }
         if (level == 1){
             if (gp == 1){
@@ -243,9 +226,8 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                candle.candleChunkOn(102, 0, 102, 0, 52, 26);
+                
             }
-
             if (gp == 2){
                 verticalelevatorsp = 1.12;
                 horizontalelevatorsp = -1;
@@ -254,11 +236,13 @@ public class RobotContainer {
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
-                candle.candleChunkOn(255, 102, 0, 0, 52, 26);
             }
+            //Light up halo green on top level choice
+            candle.candleChunkOn(0, 250, 0, 0, 44, 75);
         }
 
-        if (operator.getPOV() == 90){
+        //Operator vertical level choice: Middle
+        if (operator.getPOV() == 90 || operator.getPOV() == 270){
             level = 2;
         }
         if (level == 2){
@@ -266,17 +250,18 @@ public class RobotContainer {
                 verticalelevatorsp = .6;
                 horizontalelevatorsp = -.6;
                 wristsp = 1;
-                candle.candleChunkOn(102, 0, 102, 0, 26, 26);
-            }
-
+            }   
             if (gp == 2){
                 verticalelevatorsp = 1.11;
                 horizontalelevatorsp = -.6;
                 wristsp = 0.66;
-                candle.candleChunkOn(255, 102, 0, 0, 26, 26);
             }
+            //Light up middle section of LED strip green on middle level choice
+            candle.candleChunkOn(0, 250, 0, 0, 26, 18);
+            candle.candleChunkOn(0, 250, 0, 0, 119, 18);
         }
 
+        //Operator vertical level choice: Low
         if (operator.getPOV() == 180){
             level = 3;
         }
@@ -285,22 +270,21 @@ public class RobotContainer {
                 verticalelevatorsp = 0.05;
                 horizontalelevatorsp = -0.05;
                 wristsp = 1;
-                candle.candleChunkOn(102, 0, 102,0, 0, 26);
             }
 
             if (gp == 2){
                 verticalelevatorsp = .5;
                 horizontalelevatorsp = 0;
                 wristsp = .2;
-                candle.candleChunkOn(255, 102, 0, 0,0, 26);
             }
+            //Light up low section of LED strip green on low level choice
+            candle.candleChunkOn(0, 250, 0,0, 8, 18);
+            candle.candleChunkOn(0, 250, 0, 0, 137, 18);
         }
+
         Command scoreCommand = new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, verticalelevatorsp, horizontalelevatorsp, wristsp, false);
 
         if (driver.getPOV() == 90){
-            // wrist.setSetpoint(wristsp);
-            // verticalElevator.setSetpoint(verticalelevatorsp);
-            // horizontalElevator.setSetpoint(horizontalelevatorsp);
             scoreCommand.execute();
         }
 
@@ -313,7 +297,14 @@ public class RobotContainer {
             // if(verticalElevator.pid.atSetpoint()){
             // wrist.setSetpoint(1.1);
             // }
-        }
+            }
+
+            if (operator.getRightBumperPressed()){
+                intake.intake_on(-0.9);
+            }
+            if (operator.getRightBumperReleased()){
+                intake.intake_on(0.0);
+            }
 
         
         // //Limit switch to turn off forky 
@@ -353,7 +344,17 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
     // Get the selected Auto in smartDashboard
     //return m_chooser.getSelected();
-    return new Auto5(s_Swerve);
-    }
     
+    return new Auto2(s_Swerve);
+    //Uncomment this ^ if auto selector is not working
+    }
+    private void autonomousOptions() {
+       m_chooser.setDefaultOption("engage", new Auto2(s_Swerve));
+       m_chooser.addOption("score and intake", new Auto5(s_Swerve));
+     //   m_chooser.addOption("Auto 3", new Auto3(s_Swerve));
+     //   m_chooser.addOption("Auto 4", new Auto4(s_Swerve));
+     //   m_chooser.addOption("Auto 5", new Auto5(s_Swerve));
+     //   m_chooser.addOption("Auto 6", new Auto6(s_Swerve));
+       SmartDashboard.putData("Auto mode", m_chooser);
+    }
 }

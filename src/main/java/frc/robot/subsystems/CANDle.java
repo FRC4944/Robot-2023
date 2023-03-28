@@ -5,11 +5,11 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
-import com.ctre.phoenix.led.ColorFlowAnimation;
-import com.ctre.phoenix.led.FireAnimation;
+import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
-import com.ctre.phoenix.led.CANdle.VBatOutputMode; 
+import com.ctre.phoenix.led.CANdle.VBatOutputMode;
+import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -39,9 +39,9 @@ public class CANDle extends SubsystemBase {
     candle.animate(rainbowAnim);   
   }
 
-  public void ColorFlowAnimation(int red, int green, int blue){
-    ColorFlowAnimation cFlowAnimation = new ColorFlowAnimation(0, 0, 0);
-    candle.animate(cFlowAnimation);
+  public void larsonAnimation(int numLeds){
+  LarsonAnimation larsonAnimation = new LarsonAnimation(250, 40, 146, 0, 0.6, numLeds, BounceMode.Front, 7);
+  candle.animate(larsonAnimation);
   }
 
 }
