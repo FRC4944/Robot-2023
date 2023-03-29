@@ -39,7 +39,7 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /*Operator Buttons */
-    //private final JoystickButton opAButton = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton RB = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
     //private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
 
     /* Subsystems */
@@ -67,14 +67,15 @@ public class RobotContainer {
         gp = 2;
         level = 1;
         final int translate = (int) (((translationAxis<0)?-1:1)*Math.sqrt(Math.abs(translationAxis)));
-        final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));
+        final int strafe = (int) (((strafeAxis<0)?-1:1)*Math.sqrt(Math.abs(strafeAxis)));        
+        
 
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translate), 
-                () -> -driver.getRawAxis(strafe), 
-                () -> -driver.getRawAxis(rotationAxis), 
+                () -> -(driver.getRawAxis(translate) * getDriveMultiplier()), 
+                () -> -driver.getRawAxis(strafe) * getDriveMultiplier(), 
+                () -> -driver.getRawAxis(rotationAxis) * getDriveMultiplier(), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -83,6 +84,10 @@ public class RobotContainer {
         configureButtonBindings();
         // Bring up autonomous mode selector
         autonomousOptions();
+    }
+
+    public double getDriveMultiplier() {
+        return driver.getRightBumper() ? 0.33 : 1;
     }
 
     /**
@@ -102,6 +107,8 @@ public class RobotContainer {
         //opAButton.whileTrue(aprilTagLineup);
         //Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
         //opBButton.whileTrue(reflectiveTapeLineup);
+        RB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.08, -0.05, 1.182, false));
+        RB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.05, -0.05, 0.85, false));
 
     }
 
@@ -136,12 +143,12 @@ public class RobotContainer {
         }
 
         // Moves the wrist using the pid 
-        if (driver.getRightBumperPressed()){
-            wrist.setSetpoint(0.6);
-        }
-        if (driver.getLeftBumperPressed()){
-            wrist.setSetpoint(1.1);
-        }
+        // if (driver.getRightBumperPressed()){
+        //     wrist.setSetpoint(0.6);
+        // }
+        // if (driver.getLeftBumperPressed()){
+        //     wrist.setSetpoint(1.1);
+        // }
         
         // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getBButtonPressed()){
@@ -186,7 +193,7 @@ public class RobotContainer {
 
         if(gp == 2){
             //Controller rumble and white candle when intake amps spike on cones. Linear filter used to reduce noise
-            if (filter.calculate(intake.intake.getOutputCurrent()) > 12){
+            if (intake.intake.getOutputCurrent() > 13){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
@@ -197,7 +204,7 @@ public class RobotContainer {
 
         if(gp == 1){
             //Controller rumble and white candle when intake amps spike on cubes. Linear filter is used to reduce noise
-            if (filter.calculate(intake.intake.getOutputCurrent()) > 15){
+            if (intake.intake.getOutputCurrent() > 16){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
@@ -292,6 +299,13 @@ public class RobotContainer {
             // }
             }
 
+            if (operator.getRightBumperPressed()){
+                intake.intake_on(-0.9);
+            }
+            if (operator.getRightBumperReleased()){
+                intake.intake_on(0.0);
+            }
+
         
         // //Limit switch to turn off forky 
         // if (!engage.get()){
@@ -329,9 +343,10 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
     // Get the selected Auto in smartDashboard
-    return m_chooser.getSelected();
+
+    //return m_chooser.getSelected();
     
-    //return new Auto2(s_Swerve);
+    return new Auto2(s_Swerve);
     //Uncomment this ^ if auto selector is not working
     }
     private void autonomousOptions() {

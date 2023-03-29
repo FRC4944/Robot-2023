@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,9 +22,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
 
+
   public static CTREConfigs ctreConfigs;
   public static RobotContainer m_robotContainer;
   private Command m_autonomousCommand;
+  NetworkTable lm3 = NetworkTableInstance.getDefault().getTable("limelight");
+
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -52,6 +58,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Gyro", RobotContainer.s_Swerve.gyro.getAngle());
     SmartDashboard.putNumber("Converted Gyro", RobotContainer.s_Swerve.getYaw().getDegrees());
+    //SmartDashboard.setNetworkTableInstance(lm3);
+    NetworkTableInstance.create();
     
     CommandScheduler.getInstance().run();
 
@@ -116,3 +124,4 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 }
+

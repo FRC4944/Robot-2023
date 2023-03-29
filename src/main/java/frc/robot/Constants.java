@@ -95,7 +95,7 @@ public final class Constants {
         public static final double AutoMaxspeed1 = 3;
         public static final double AutoMaxspeed2 = 2.4;
         public static final double AutoEngageMaxspeed = 2.3;
-        public static final double AutoAngleSpeed = 2;
+        public static final double AutoAngleSpeed = 1.5;
         public static final double EngageSpeed = 0.7;
 
         /* Radians per Second */
@@ -111,7 +111,7 @@ public final class Constants {
             public static final int driveMotorID = 10;
             public static final int angleMotorID = 12;
             public static final int canCoderID = 11;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(154.511719);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(241.511719);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }

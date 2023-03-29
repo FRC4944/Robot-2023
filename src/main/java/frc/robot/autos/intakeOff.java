@@ -20,5 +20,6 @@ public class intakeOff extends InstantCommand {
   @Override
   public void initialize() {
     RobotContainer.intake.intake_on(0.0);
+    System.out.print("Working intake off");
   }
 }
