@@ -343,6 +343,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
     // Get the selected Auto in smartDashboard
+
     //return m_chooser.getSelected();
     
     return new Auto2(s_Swerve);

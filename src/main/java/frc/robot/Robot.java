@@ -22,10 +22,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
 
+
   public static CTREConfigs ctreConfigs;
   public static RobotContainer m_robotContainer;
   private Command m_autonomousCommand;
   NetworkTable lm3 = NetworkTableInstance.getDefault().getTable("limelight");
+
   
   /**
    * This function is run when the robot is first started up and should be used for any
