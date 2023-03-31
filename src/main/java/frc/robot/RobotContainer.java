@@ -4,6 +4,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
@@ -12,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
+import frc.robot.autos.Test;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -346,8 +353,20 @@ public class RobotContainer {
 
     //return m_chooser.getSelected();
     
-    return new Auto2(s_Swerve);
+    return new Test(s_Swerve);
     //Uncomment this ^ if auto selector is not working
+    // This will load the file "Example Path.path" and generate it with a max velocity of 4 m/s and a max acceleration of 3 m/s^2
+    // PathPlannerTrajectory Test = PathPlanner.loadPath("Test", new PathConstraints(5, 3));
+
+    // // This trajectory can then be passed to a path follower such as a PPSwerveControllerCommand
+    // // Or the path can be sampled at a given point in time for custom path following
+
+    // // Sample the state of the path at 1.2 seconds
+    // PathPlannerState exampleState = (PathPlannerState) Test.sample(1.2);
+
+    // // Print the velocity at the sampled time
+    // System.out.println(exampleState.velocityMetersPerSecond);
+    
     }
     private void autonomousOptions() {
        m_chooser.setDefaultOption("engage", new Auto2(s_Swerve));
