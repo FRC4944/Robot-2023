@@ -18,33 +18,38 @@ import frc.robot.Constants;
 
 public class VerticalElevator extends SubsystemBase {
   /** Creates a new VerticalElevator. */
-  private final TalonFX vertical_elevator_motor = new TalonFX(Constants.verticalElevatorMotorID);
-  private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(vertical_elevator_motor);
-  public final PIDController pid = new PIDController(1, 1.0/5.0, 0);
+  private final TalonFX vertical_elevator_motor1 = new TalonFX(Constants.verticalElevatorMotor1ID);
+  private final TalonFX vertical_elevator_motor2 = new TalonFX(Constants.verticalElevatorMotor2ID);
+  private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(vertical_elevator_motor1);
+  public final PIDController pid = new PIDController(0.73, 1.0/5.0, 0);
   private double setPoint = 0;
 
   // Constants
   private static final int ENCODER_BUFFER = 500;
   private static final int BOTTOM_ENCODER_VALUE = -30000 + ENCODER_BUFFER;
   private static final int TOP_ENCODER_VALUE = 46000 - ENCODER_BUFFER;
-  private static final double MAX_POWER = 0.7;
+  private static final double MAX_POWER = 0.9;
 
   public VerticalElevator(){
     this.pid.setTolerance(0.15, 0.05/20);
 
-    this.vertical_elevator_motor.setNeutralMode(NeutralMode.Coast);
-    this.vertical_elevator_motor.setInverted(true);
+    this.vertical_elevator_motor1.setNeutralMode(NeutralMode.Brake);
+    this.vertical_elevator_motor1.setInverted(false);
+    this.vertical_elevator_motor2.setNeutralMode(NeutralMode.Brake);
+    this.vertical_elevator_motor2.setInverted(false);
     this.setSetpoint(this.getEncoderValue());
  }
   
   public void Vertical_Elevator_On(Double power) {
-    vertical_elevator_motor.set(ControlMode.PercentOutput, power);
-    vertical_elevator_motor.setNeutralMode(NeutralMode.Brake);
+    vertical_elevator_motor1.set(ControlMode.PercentOutput, power);
+    vertical_elevator_motor2.set(ControlMode.PercentOutput, power);
+    vertical_elevator_motor1.setNeutralMode(NeutralMode.Brake);
+    vertical_elevator_motor2.setNeutralMode(NeutralMode.Brake);
     
   }
 
   private double getEncoderValue() {
-    return (-this.encoder.getIntegratedSensorPosition() - BOTTOM_ENCODER_VALUE) / (TOP_ENCODER_VALUE - BOTTOM_ENCODER_VALUE);
+    return (this.encoder.getIntegratedSensorPosition() - BOTTOM_ENCODER_VALUE) / (TOP_ENCODER_VALUE - BOTTOM_ENCODER_VALUE);
   }
 
   private double getPidPower() {
@@ -69,7 +74,7 @@ public class VerticalElevator extends SubsystemBase {
    // double Vdegrees = Vcoder.getPosition();
     SmartDashboard.putNumber("Vertical Encoders", encoder.getIntegratedSensorPosition());
     SmartDashboard.putNumber("Current Setpoint", this.setPoint);
-    SmartDashboard.putNumber("Motor Power", this.vertical_elevator_motor.getMotorOutputPercent());
+    SmartDashboard.putNumber("Motor Power", this.vertical_elevator_motor1.getMotorOutputPercent());
     SmartDashboard.putNumber("Transform Encoder Value vertical", getEncoderValue());
   }
 

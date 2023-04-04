@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
-
+import frc.robot.Constants;
+import frc.robot.subsystems.Swerve;
 
 import java.util.List;
 
@@ -12,13 +13,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.Constants;
-import frc.robot.subsystems.Swerve;
 
-public class Auto_Drive extends SequentialCommandGroup {
-    public Auto_Drive(Swerve s_Swerve, double xdistance, double xrotation){
+public class AutoDrive extends SequentialCommandGroup {
+    public AutoDrive(Swerve s_Swerve){
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -31,9 +31,9 @@ public class Auto_Drive extends SequentialCommandGroup {
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(xdistance / 2, 0), new Translation2d(xdistance, 0)),
+                List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(xdistance, 0, new Rotation2d(xrotation)),
+                new Pose2d(3, 0, new Rotation2d(0)),
                 config);
 
         var thetaController =
@@ -52,5 +52,10 @@ public class Auto_Drive extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+
+        addCommands(
+            new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
+            swerveControllerCommand
+        );
     }
 }

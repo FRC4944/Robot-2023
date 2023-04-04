@@ -47,7 +47,8 @@ public class RobotContainer {
 
     /*Operator Buttons */
     private final JoystickButton RB = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
-    //private final JoystickButton opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton LB = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+    //private final opBButton = new JoystickButton(operator, XboxController.Button.kB.value);
 
     /* Subsystems */
     public static Swerve s_Swerve = new Swerve();
@@ -114,9 +115,11 @@ public class RobotContainer {
         //opAButton.whileTrue(aprilTagLineup);
         //Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
         //opBButton.whileTrue(reflectiveTapeLineup);
-        RB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.08, -0.05, 1.182, false));
-        RB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.05, -0.05, 0.85, false));
+        RB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, -0.03, -0.05, 1.418, false));
+        RB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, -0.03, -0.05, 1.418, false));
 
+        LB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.6, -0.05, 1.418, false));
+        LB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.6, -0.05, 1.418, false));
     }
 
 
@@ -161,14 +164,14 @@ public class RobotContainer {
         if (driver.getBButtonPressed()){
             wrist.setSetpoint(0.9);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(-.09);
+            horizontalElevator.setSetpoint(-.33);
             intake.intake_on(0.9);
         }
         // Sets the wrist back to default
         if (driver.getBButtonReleased()){
             wrist.setSetpoint(1.3);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(-0.05);
+            horizontalElevator.setSetpoint(-0.02);
             intake.intake_on(0);
         }
 
@@ -176,14 +179,14 @@ public class RobotContainer {
         if (driver.getAButtonPressed()){
             wrist.setSetpoint(0.46);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(-.1);
+            horizontalElevator.setSetpoint(-0.33);
             intake.intake_on(-.9);
         }
         // Sets the wrist back to default
         if (driver.getAButtonReleased()){
             wrist.setSetpoint(1.3);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(-0.05);
+            horizontalElevator.setSetpoint(-0.02);
             intake.intake_on(0);
         }
 
@@ -236,7 +239,7 @@ public class RobotContainer {
                 
             }
             if (gp == 2){
-                verticalelevatorsp = 1.12;
+                verticalelevatorsp = 1.10;
                 horizontalelevatorsp = -1;
                 wristsp = 0.95;
                 System.out.print("working high cone");
@@ -244,8 +247,6 @@ public class RobotContainer {
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
             }
-            //Light up halo green on top level choice
-            candle.candleChunkOn(0, 250, 0, 0, 44, 75);
         }
 
         //Operator vertical level choice: Middle
@@ -256,16 +257,14 @@ public class RobotContainer {
             if (gp == 1){
                 verticalelevatorsp = .6;
                 horizontalelevatorsp = -.6;
-                wristsp = 1;
+                wristsp = 1.2;
+                
             }   
             if (gp == 2){
                 verticalelevatorsp = 1.11;
                 horizontalelevatorsp = -.6;
                 wristsp = 0.66;
             }
-            //Light up middle section of LED strip green on middle level choice
-            candle.candleChunkOn(0, 250, 0, 0, 26, 18);
-            candle.candleChunkOn(0, 250, 0, 0, 119, 18);
         }
 
         //Operator vertical level choice: Low
@@ -284,9 +283,6 @@ public class RobotContainer {
                 horizontalelevatorsp = 0;
                 wristsp = .2;
             }
-            //Light up low section of LED strip green on low level choice
-            candle.candleChunkOn(0, 250, 0,0, 8, 18);
-            candle.candleChunkOn(0, 250, 0, 0, 137, 18);
         }
 
         Command scoreCommand = new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, verticalelevatorsp, horizontalelevatorsp, wristsp, false);
@@ -310,6 +306,13 @@ public class RobotContainer {
                 intake.intake_on(-0.9);
             }
             if (operator.getRightBumperReleased()){
+                intake.intake_on(0.0);
+            }
+
+            if (operator.getLeftBumperPressed()){
+                intake.intake_on(0.9);
+            }
+            if (operator.getLeftBumperReleased()){
                 intake.intake_on(0.0);
             }
 
@@ -353,20 +356,8 @@ public class RobotContainer {
 
     //return m_chooser.getSelected();
     
-    return new Test(s_Swerve);
+    return new Auto1(s_Swerve);
     //Uncomment this ^ if auto selector is not working
-    // This will load the file "Example Path.path" and generate it with a max velocity of 4 m/s and a max acceleration of 3 m/s^2
-    // PathPlannerTrajectory Test = PathPlanner.loadPath("Test", new PathConstraints(5, 3));
-
-    // // This trajectory can then be passed to a path follower such as a PPSwerveControllerCommand
-    // // Or the path can be sampled at a given point in time for custom path following
-
-    // // Sample the state of the path at 1.2 seconds
-    // PathPlannerState exampleState = (PathPlannerState) Test.sample(1.2);
-
-    // // Print the velocity at the sampled time
-    // System.out.println(exampleState.velocityMetersPerSecond);
-    
     }
     private void autonomousOptions() {
        m_chooser.setDefaultOption("engage", new Auto2(s_Swerve));

@@ -17,13 +17,13 @@ public class HorizontalElevator extends SubsystemBase {
   /** Creates a new HorizontalElevator. */
   private final TalonFX horizontal_elevator_motor = new TalonFX(Constants.horizontalElevatorMotorID);
   private final TalonFXSensorCollection hencoder   = new TalonFXSensorCollection(horizontal_elevator_motor);
-  public final PIDController pid = new PIDController(.45, 1/25.0, 0);
+  public final PIDController pid = new PIDController(.45, 1/25.0, 0.0008);
 
   //Constants
   private static final int ENCODER_BUFFER = 500;
   private static final int BOTTOM_ENCODER_VALUE = 0 + ENCODER_BUFFER;
   private static final int TOP_ENCODER_VALUE = 25000 - ENCODER_BUFFER;
-  private static final double MAX_POWER = 0.4;
+  private static final double MAX_POWER = 0.7;
 
   public HorizontalElevator() {
     this.pid.setTolerance(0.15, 0.05/20);

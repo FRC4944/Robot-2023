@@ -1,6 +1,8 @@
 package frc.robot.autos;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -25,13 +27,7 @@ public class Turn extends CommandBase {
   @Override
   public void execute() {
     double rot = rotSpeedController.calculate(m_Swerve.gyro.getYaw());
-
-    m_Swerve.drive(
-        new Translation2d(0, 0).times(Constants.Swerve.AutoAngleSpeed), 
-         rot, 
-        true, 
-        true
-    );
+    
   }
 
   @Override
