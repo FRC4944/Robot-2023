@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.autos.WaitUntil;
 import frc.robot.subsystems.Swerve;
 
 import java.util.List;
@@ -21,20 +22,30 @@ public class AutoDrive extends SequentialCommandGroup {
     public AutoDrive(Swerve s_Swerve){
         TrajectoryConfig config =
             new TrajectoryConfig(
-                    Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                    Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                    Constants.AutoConstants.kTestMaxSpeedMetersPerSecond,
+                    Constants.AutoConstants.kTestMaxAccelerationMetersPerSecondSquared)
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
         // An example trajectory to follow.  All units in meters.
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(0)),
+                new Pose2d(0, 0, new Rotation2d(-179)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+                List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(3, 0, new Rotation2d(0)),
+                new Pose2d(3, 0, new Rotation2d(-179)), //0
                 config);
+
+                Trajectory exampleTrajectory2 =
+                TrajectoryGenerator.generateTrajectory(
+                    // Start at the origin facing the +X direction
+                    new Pose2d(3, 0, new Rotation2d(-179)),
+                    // Pass through these two interior waypoints, making an 's' curve path
+                    List.of(new Translation2d(2, 0), new Translation2d(1, 0)),
+                    // End 3 meters straight ahead of where we started, facing forward
+                    new Pose2d(0, 0, new Rotation2d(-179)), //0
+                    config);
 
         var thetaController =
             new ProfiledPIDController(
@@ -55,6 +66,8 @@ public class AutoDrive extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
+            new WaitUntil(1000),
+            new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory2.getInitialPose())),
             swerveControllerCommand
         );
     }
