@@ -30,21 +30,21 @@ public class AutoDrive extends SequentialCommandGroup {
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(-179)),
+                new Pose2d(0, 0, new Rotation2d(0)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
+                List.of(new Translation2d(0.5, 0)),
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(3, 0, new Rotation2d(-179)), //0
+                new Pose2d(0, 0, new Rotation2d(-Math.PI + 0.1)), //0
                 config);
 
                 Trajectory exampleTrajectory2 =
                 TrajectoryGenerator.generateTrajectory(
                     // Start at the origin facing the +X direction
-                    new Pose2d(3, 0, new Rotation2d(-179)),
+                    new Pose2d(3, 0, new Rotation2d()),
                     // Pass through these two interior waypoints, making an 's' curve path
-                    List.of(new Translation2d(2, 0), new Translation2d(1, 0)),
+                    List.of(new Translation2d(1, 0), new Translation2d(-1, 0)),
                     // End 3 meters straight ahead of where we started, facing forward
-                    new Pose2d(0, 0, new Rotation2d(-179)), //0
+                    new Pose2d(0, 0, new Rotation2d(1)), //0
                     config);
 
         var thetaController =
@@ -63,11 +63,11 @@ public class AutoDrive extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+                
+
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            new WaitUntil(1000),
-            new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory2.getInitialPose())),
             swerveControllerCommand
         );
     }

@@ -22,7 +22,8 @@ public class Auto1 extends SequentialCommandGroup {
 
         addCommands(
             setGyro,
-            new AutoDrive(swerve)
+            //new AutoDrive(swerve)
+            new PathPlannerTest(swerve)
         );
     }
 }
