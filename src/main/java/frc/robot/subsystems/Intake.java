@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -14,19 +16,20 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  public CANSparkMax intake;
+  public TalonFX intake;
   public Intake() {
-    intake = new CANSparkMax(Constants.IntakeMotorID, MotorType.kBrushless);
+    intake = new TalonFX(Constants.IntakeMotorID);
+    intake.setInverted(true);
   }
 
   public void intake_on(double power){
-    intake.set(power);
+    intake.set(TalonFXControlMode.PercentOutput, power);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake Amps", intake.getOutputCurrent());
+    SmartDashboard.putNumber("Intake Amps", intake.getMotorOutputVoltage());
     
   }
 }

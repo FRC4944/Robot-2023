@@ -20,7 +20,7 @@ public class Wrist extends SubsystemBase {
 
   private final TalonFX wrist = new TalonFX(Constants.WristMotorID);
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(wrist);
-  public final PIDController pid = new PIDController(0.5, 0.15, 0.001);
+  public final PIDController pid = new PIDController(0.47, 0.1, 0.00001);
   private double setPoint = 0;
   
   // Constants

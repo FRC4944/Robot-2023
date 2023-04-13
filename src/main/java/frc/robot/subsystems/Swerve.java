@@ -8,13 +8,19 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
+
+import java.util.logging.LogManager;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -23,6 +29,8 @@ public class Swerve extends SubsystemBase {
     public static SwerveModule[] mSwerveMods;
     public AHRS gyro;
     public double gyroOffset = 180;
+    private final Field2d m_field = new Field2d();
+    DoubleLogEntry myDoubleLog;
 
     public Swerve() {
         gyro = new AHRS(SPI.Port.kMXP , (byte) 200);
@@ -105,7 +113,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getYaw() {
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(gyro.getYaw() * -1 + 180) : Rotation2d.fromDegrees(gyro.getYaw() + gyroOffset);
+        return Rotation2d.fromDegrees(gyro.getYaw() * -1);
     }
 
     public void resetModulesToAbsolute(){
@@ -120,9 +128,10 @@ public class Swerve extends SubsystemBase {
          for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond); 
+            SmartDashboard.putData("Field", m_field);   
         }
 
-
+        m_field.setRobotPose(swerveOdometry.getPoseMeters());
     }
 }

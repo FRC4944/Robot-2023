@@ -7,8 +7,11 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,6 +31,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   NetworkTable lm3 = NetworkTableInstance.getDefault().getTable("limelight");
 
+
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,6 +44,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+      // Starts recording to data log
+      DataLogManager.start();
+
+      DataLogManager.getLog();
   }
 
   /**
@@ -58,6 +66,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Gyro", RobotContainer.s_Swerve.gyro.getAngle());
     SmartDashboard.putNumber("Converted Gyro", RobotContainer.s_Swerve.getYaw().getDegrees());
+
+  
     //SmartDashboard.setNetworkTableInstance(lm3);
     NetworkTableInstance.create();
     
@@ -70,7 +80,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     if (DriverStation.isDisabled()){
       //Pink snake animation
-      RobotContainer.candle.larsonAnimation(155); //36, 36, 75 +8 internal
+      RobotContainer.candle.larsonAnimation(204); //36, 36, 75 +8 internal
     }
   }
 

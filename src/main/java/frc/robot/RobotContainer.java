@@ -115,13 +115,12 @@ public class RobotContainer {
         //opAButton.whileTrue(aprilTagLineup);
         //Command reflectiveTapeLineup = new VisionLineup(s_Swerve, candle, 2);
         //opBButton.whileTrue(reflectiveTapeLineup);
-        RB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, -0.03, -0.05, 1.418, false));
-        RB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, -0.03, -0.05, 1.418, false));
+        RB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, -0.05, -0.05, 1.218, false));
+        RB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, -0.05, -0.05, 1.218, false));
 
-        LB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.6, -0.05, 1.418, false));
-        LB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.6, -0.05, 1.418, false));
+        LB.whileTrue(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.45, -0.05, 1.358, false));
+        LB.whileFalse(new VerticalFirstHorizontalCommand(verticalElevator, horizontalElevator, wrist, 0.45, -0.05, 1.358, false));
     }
-
 
     public void teleopPeriodic() {
         //Fix Gyro from Autos
@@ -162,7 +161,7 @@ public class RobotContainer {
         
         // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getBButtonPressed()){
-            wrist.setSetpoint(0.9);
+            wrist.setSetpoint(0.95);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-.33);
             intake.intake_on(0.9);
@@ -177,7 +176,7 @@ public class RobotContainer {
 
         // Sets the wrist to the ground to pick up cones
         if (driver.getAButtonPressed()){
-            wrist.setSetpoint(0.46);
+            wrist.setSetpoint(0.42);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-0.33);
             intake.intake_on(-.9);
@@ -203,7 +202,7 @@ public class RobotContainer {
 
         if(gp == 2){
             //Controller rumble and white candle when intake amps spike on cones. Linear filter used to reduce noise
-            if (intake.intake.getOutputCurrent() > 13){
+            if (intake.intake.getMotorOutputVoltage() > 13){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
@@ -214,7 +213,7 @@ public class RobotContainer {
 
         if(gp == 1){
             //Controller rumble and white candle when intake amps spike on cubes. Linear filter is used to reduce noise
-            if (intake.intake.getOutputCurrent() > 16){
+            if (intake.intake.getMotorOutputVoltage() > 20){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
@@ -239,13 +238,29 @@ public class RobotContainer {
                 
             }
             if (gp == 2){
-                verticalelevatorsp = 1.10;
-                horizontalelevatorsp = -1;
-                wristsp = 0.95;
+                verticalelevatorsp = 1.13;
+                horizontalelevatorsp = -0.98;
+                wristsp = 0.9;
                 System.out.print("working high cone");
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
                 System.out.print(wristsp);
+
+                
+// high
+// 1.17  v
+// -.98  h
+// .747  w
+
+// mid
+//1.17
+//-0.54
+//0.48
+
+
+                // verticalelevatorsp = 1.10;
+                // horizontalelevatorsp = -1;
+                // wristsp = 0.95;
             }
         }
 
@@ -261,8 +276,8 @@ public class RobotContainer {
                 
             }   
             if (gp == 2){
-                verticalelevatorsp = 1.11;
-                horizontalelevatorsp = -.6;
+                verticalelevatorsp = 1.06;
+                horizontalelevatorsp = -.55;
                 wristsp = 0.66;
             }
         }
@@ -294,8 +309,12 @@ public class RobotContainer {
         if (driver.getPOV() == 270){
             horizontalElevator.setSetpoint(-0.05);
             if(horizontalElevator.pid.atSetpoint()){
-            verticalElevator.setSetpoint(0.05);
+            verticalElevator.setSetpoint(-0.06);
             wrist.setSetpoint(1.1);
+
+            // -0.06 v
+            //-0.02  h
+            //0.8    w
             }
             // if(verticalElevator.pid.atSetpoint()){
             // wrist.setSetpoint(1.1);
@@ -314,6 +333,10 @@ public class RobotContainer {
             }
             if (operator.getLeftBumperReleased()){
                 intake.intake_on(0.0);
+            }
+
+            if (operator.getBackButtonPressed()){
+                verticalElevator.vZero();
             }
 
         
@@ -369,3 +392,14 @@ public class RobotContainer {
        SmartDashboard.putData("Auto mode", m_chooser);
     }
 }
+
+
+// high
+// 1.17  v
+// -.98  h
+// .747  w
+
+// low
+//1.17
+//-0.54
+//0.48

@@ -18,7 +18,7 @@ public class exampleAuto extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
             new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.08, .55, 0.587, true), 
-            new intakeOn(),
+            new intakeOn(0.9),
             new WaitUntil(3000),
             new intakeOff(), 
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, 0.6, true),

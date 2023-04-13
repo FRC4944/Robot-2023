@@ -26,7 +26,7 @@ public class Auto5 extends SequentialCommandGroup {
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
             new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.15, -1, 1, true), 
             new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.15, -1, 1, true), 
-            new intakeOn(),
+            new intakeOn(0.9),
             new WaitUntil(2500),
             new intakeOff(), 
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 1.1, true),
@@ -37,7 +37,7 @@ public class Auto5 extends SequentialCommandGroup {
             new Drive_Intake(swerve, RobotContainer.intake, .3, 0, Constants.Swerve.AutoMaxspeed, true),
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, 0.05, .88, true),
             new intakeOff(),
-            new intakeOn(),
+            new intakeOn(0.9),
             new WaitUntil(1000),
             new intakeOff()
         );  

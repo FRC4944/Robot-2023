@@ -25,7 +25,7 @@ public class Auto2 extends SequentialCommandGroup {
             setGyro,
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
             new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.15, -1, 1, true), 
-            new intakeOn(),
+            new intakeOn(0.9),
             new WaitUntil(3000),
             new intakeOff(), 
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 1, true),

@@ -132,7 +132,7 @@ public final class Constants {
             public static final int driveMotorID = 7;
             public static final int angleMotorID = 9;
             public static final int canCoderID = 8;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(54.66796875);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(60.66796875);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -156,9 +156,9 @@ public final class Constants {
         public static final double kTestMaxSpeedMetersPerSecond = 1;
         public static final double kTestMaxAccelerationMetersPerSecondSquared = 1;
     
-        public static final double kPXController = 1;
-        public static final double kPYController = 1;
-        public static final double kPThetaController = 1;
+        public static final double kPXController = .96;
+        public static final double kPYController = .96;
+        public static final double kPThetaController = 0.82;
     
         /* Constraint for the motion profilied robot angle controller */
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

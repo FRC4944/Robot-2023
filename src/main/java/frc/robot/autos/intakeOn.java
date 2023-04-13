@@ -11,14 +11,16 @@ import frc.robot.RobotContainer;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class intakeOn extends InstantCommand {
-  public intakeOn() {
+  double power;
+  public intakeOn(Double power) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.power = power;
     addRequirements(RobotContainer.intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.intake.intake_on(0.9);
+    RobotContainer.intake.intake_on(power);
   }
 }
