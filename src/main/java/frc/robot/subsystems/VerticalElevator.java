@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.lang.annotation.Retention;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
@@ -21,7 +23,7 @@ public class VerticalElevator extends SubsystemBase {
   private final TalonFX vertical_elevator_motor1 = new TalonFX(Constants.verticalElevatorMotor1ID);
   private final TalonFX vertical_elevator_motor2 = new TalonFX(Constants.verticalElevatorMotor2ID);
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(vertical_elevator_motor1);
-  public final PIDController pid = new PIDController(0.73, 1.0/5.0, 0);
+  public final PIDController pid = new PIDController(0.735, 1.0/8.0, 0.0001);
   private double setPoint = 0;
 
   // Constants
@@ -66,6 +68,10 @@ public class VerticalElevator extends SubsystemBase {
   public void setSetpoint(double setpoint) {
     this.setPoint = setpoint;
     this.pid.setSetpoint(setpoint);
+  }
+
+  public double vZero(){
+    return (this.encoder.getIntegratedSensorPosition() * 0);
   }
 
   @Override
