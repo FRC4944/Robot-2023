@@ -40,37 +40,38 @@ public class PathPlannerTest extends SequentialCommandGroup {
         
 
         // wait command placeholder
-        //eventMap.put("IntakeOn", new intakeOn(0.9));
-        //eventMap.put("IntakeOff", new intakeOff());
-        //eventMap.put("Zero", new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.03, .94, true));
+        eventMap.put("IntakeOn", new intakeOn(0.9));
+        eventMap.put("IntakeOff", new intakeOff());
+        eventMap.put("Zero", new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, -0.02, -0.03, .92, true));
         eventMap.put("Wait", new WaitUntil(500));
+        eventMap.put("Wrist Up", new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, -0.02, -0.03, 1.2, true));
         // eventMap.put("Wait", new PrintCommand(s_Swerve.gyro.getYaw()));
         // eventMap.put("Down", new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 1, true));
         // eventMap.put("grab cube", grabCube);
         // eventMap.put("drop cube", new InstantCommand(() -> armSubsystem.openClamper()));
 
-        PathPlannerTrajectory path = PathPlanner.loadPath("Score Pick up cube Engage", new PathConstraints(1.5, 1), false);
+        PathPlannerTrajectory path = PathPlanner.loadPath("Two Piece ShortSide", new PathConstraints(3, 1.8), true);
         // var thetaController =
         //     new ProfiledPIDController(
         //         Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         // thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        m_field.getObject("Score Pick up cube Engage").setTrajectory(path);
+        m_field.getObject("Two Piece ShortSide").setTrajectory(path);
 
         PPSwerveControllerCommand swerveControllerCommand = 
                  new PPSwerveControllerCommand(
                     path, 
                     s_Swerve::getPose, // Pose supplier
                     Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-                    new PIDController(Constants.AutoConstants.kPXController, 0.05, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                    new PIDController(Constants.AutoConstants.kPYController, 0.05, 0), // Y controller (usually the same values as X controller)
-                    new PIDController(Constants.AutoConstants.kPThetaController, 0.05, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                    new PIDController(Constants.AutoConstants.kPXController, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                    new PIDController(Constants.AutoConstants.kPYController, 0, 0), // Y controller (usually the same values as X controller)
+                    new PIDController(Constants.AutoConstants.kPThetaController, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                     s_Swerve::setModuleStates, // Module states consumer
                     true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
                     s_Swerve // Requires this drive subsystem
                 );
             FollowPathWithEvents command = new FollowPathWithEvents(swerveControllerCommand,path.getMarkers(),eventMap);
             addCommands(
-                //new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.03, .94, true),
+                new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, -0.02, -0.03, .90, true),
                 // new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.15, -1, 1, true), 
                 // new intakeOn(0.9),
                 // new WaitUntil(2500),

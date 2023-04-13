@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.lang.annotation.Retention;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -71,7 +70,7 @@ public class VerticalElevator extends SubsystemBase {
   }
 
   public double vZero(){
-    return (this.encoder.getIntegratedSensorPosition() * 0);
+    return (this.getEncoderValue() * 0);
   }
 
   @Override

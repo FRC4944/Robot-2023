@@ -21,7 +21,7 @@ public class Auto1 extends SequentialCommandGroup {
         setGyro setGyro = new setGyro(78);
 
         addCommands(
-            setGyro,
+            new InstantCommand(() -> swerve.zeroGyro()),
             //new AutoDrive(swerve)
             new PathPlannerTest(swerve)
         );

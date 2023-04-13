@@ -5,11 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
@@ -18,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
-import frc.robot.autos.Test;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -161,7 +155,7 @@ public class RobotContainer {
         
         // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getBButtonPressed()){
-            wrist.setSetpoint(0.95);
+            wrist.setSetpoint(0.90);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-.33);
             intake.intake_on(0.9);
@@ -239,7 +233,7 @@ public class RobotContainer {
             }
             if (gp == 2){
                 verticalelevatorsp = 1.13;
-                horizontalelevatorsp = -0.98;
+                horizontalelevatorsp = -1;
                 wristsp = 0.9;
                 System.out.print("working high cone");
                 System.out.print(verticalelevatorsp);
@@ -337,7 +331,31 @@ public class RobotContainer {
 
             if (operator.getBackButtonPressed()){
                 verticalElevator.vZero();
+                horizontalElevator.hZero();
+                wrist.wZero();
             }
+
+            // if (operator.getRightY() > 0.5){
+            //     verticalElevator.Vertical_Elevator_On(0.4);
+            // } else {
+            //     verticalElevator.Vertical_Elevator_On(0.0);
+            // }
+            // if (operator.getRightY() < -0.5){
+            //     verticalElevator.Vertical_Elevator_On(-0.4);
+            // } else {
+            //     verticalElevator.Vertical_Elevator_On(0.0);
+            // }
+
+            // if (operator.getLeftX() > 0.5){
+            //     horizontalElevator.Horizontal_Elevator_On(0.4);
+            // } else {
+            //     horizontalElevator.Horizontal_Elevator_On(0.0);
+            // }
+            // if (operator.getLeftX() < -0.5){
+            //     horizontalElevator.Horizontal_Elevator_On(-0.4);
+            // } else {
+            //     horizontalElevator.Horizontal_Elevator_On(0.0);
+            // }
 
         
         // //Limit switch to turn off forky 

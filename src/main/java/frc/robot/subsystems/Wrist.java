@@ -32,14 +32,14 @@ public class Wrist extends SubsystemBase {
   public Wrist(){
     this.pid.setTolerance(0.1, 0.07/20);
     this.wrist.setNeutralMode(NeutralMode.Brake);
-    this.wrist.setInverted(false);
+    this.wrist.setInverted(true);
     this.setSetpoint(this.getEncoderValue());
   }
   public void wrist_On(Double power) {
     wrist.set(ControlMode.PercentOutput, power);
   }
   private double getEncoderValue() {
-    return (this.encoder.getIntegratedSensorPosition() - BOTTOM_ENCODER_VALUE) / (TOP_ENCODER_VALUE - BOTTOM_ENCODER_VALUE);
+    return (-this.encoder.getIntegratedSensorPosition() - BOTTOM_ENCODER_VALUE) / (TOP_ENCODER_VALUE - BOTTOM_ENCODER_VALUE);
   }
   private double getPidPower() {
     double power = this.pid.calculate(this.getEncoderValue());
@@ -54,6 +54,11 @@ public class Wrist extends SubsystemBase {
     this.setPoint = setpoint;
     this.pid.setSetpoint(setpoint);
   }
+
+  public double wZero(){
+    return (this.getEncoderValue() * 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

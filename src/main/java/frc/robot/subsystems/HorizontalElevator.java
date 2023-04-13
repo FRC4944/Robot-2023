@@ -57,6 +57,10 @@ public class HorizontalElevator extends SubsystemBase {
     this.pid.setSetpoint(setpoint);
   }
 
+  public double hZero(){
+    return (this.getEncoderValue() * 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

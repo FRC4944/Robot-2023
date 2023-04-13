@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     if (DriverStation.isDisabled()){
       //Pink snake animation
-      RobotContainer.candle.larsonAnimation(204); //36, 36, 75 +8 internal
+      RobotContainer.candle.larsonAnimation(244); //36, 36, 75 +8 internal
     }
   }
 

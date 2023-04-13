@@ -156,9 +156,9 @@ public final class Constants {
         public static final double kTestMaxSpeedMetersPerSecond = 1;
         public static final double kTestMaxAccelerationMetersPerSecondSquared = 1;
     
-        public static final double kPXController = .96;
-        public static final double kPYController = .96;
-        public static final double kPThetaController = 0.82;
+        public static final double kPXController = 0.98;
+        public static final double kPYController = 0.98;
+        public static final double kPThetaController = 0.3;
     
         /* Constraint for the motion profilied robot angle controller */
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
