@@ -47,7 +47,7 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
     // this.verticalElevator.setSetpoint(this.verticalSetpoint);
 
     if (auto) {
-      time = System.currentTimeMillis() + 2000;
+      time = System.currentTimeMillis() + 1500;
     }
 
     //this.horizontalElevator.setSetpoint(this.horizontalSetpoint);

@@ -43,7 +43,7 @@ public class HorizontalFirstVerticalCommand extends CommandBase {
   public void initialize() {
 
     if (auto) {
-      time = System.currentTimeMillis() + 2000;
+      time = System.currentTimeMillis() + 1500;
     }
   }
 
