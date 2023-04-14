@@ -4,8 +4,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
+import frc.robot.autos.AutosPaths.EngageAuto;
+import frc.robot.autos.AutosPaths.TwoPieceAuto;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -117,6 +120,7 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+        Debouncer debounce = new Debouncer(0.2, DebounceType.kRising);
         //Fix Gyro from Autos
         s_Swerve.setGyroOffset(0.0);
         //Linear filter for intake amp measurement
@@ -196,7 +200,7 @@ public class RobotContainer {
 
         if(gp == 2){
             //Controller rumble and white candle when intake amps spike on cones. Linear filter used to reduce noise
-            if (intake.intake.getMotorOutputVoltage() > 13){
+            if (debounce.calculate(intake.intake.getMotorOutputVoltage() > 10)){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
@@ -207,7 +211,7 @@ public class RobotContainer {
 
         if(gp == 1){
             //Controller rumble and white candle when intake amps spike on cubes. Linear filter is used to reduce noise
-            if (intake.intake.getMotorOutputVoltage() > 20){
+            if (debounce.calculate(intake.intake.getMotorOutputVoltage() > 17)){
                 driver.setRumble(RumbleType.kBothRumble, 1);
                 candle.candleOn(255, 255, 255);
             } else {
@@ -397,12 +401,12 @@ public class RobotContainer {
 
     //return m_chooser.getSelected();
     
-    return new Auto1(s_Swerve);
+    return new TwoPieceAuto(s_Swerve);
     //Uncomment this ^ if auto selector is not working
     }
     private void autonomousOptions() {
-       m_chooser.setDefaultOption("engage", new Auto2(s_Swerve));
-       m_chooser.addOption("score and intake", new Auto5(s_Swerve));
+       m_chooser.setDefaultOption("engage", new EngageAuto(s_Swerve));
+       m_chooser.addOption("Two Piece Auto", new TwoPieceAuto(s_Swerve));
      //   m_chooser.addOption("Auto 3", new Auto3(s_Swerve));
      //   m_chooser.addOption("Auto 4", new Auto4(s_Swerve));
      //   m_chooser.addOption("Auto 5", new Auto5(s_Swerve));
