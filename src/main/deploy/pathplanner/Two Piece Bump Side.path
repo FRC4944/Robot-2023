@@ -170,5 +170,30 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 1.3,
+      "names": [
+        "Zero"
+      ]
+    },
+    {
+      "position": 1.8181818181818512,
+      "names": [
+        "IntakeOn"
+      ]
+    },
+    {
+      "position": 3.418181818181759,
+      "names": [
+        "IntakeOff"
+      ]
+    },
+    {
+      "position": 3.7090909090910493,
+      "names": [
+        "Wrist Up"
+      ]
+    }
+  ]
 }

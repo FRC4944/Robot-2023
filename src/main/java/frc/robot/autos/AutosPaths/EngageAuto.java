@@ -4,6 +4,7 @@ package frc.robot.autos.AutosPaths;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.autos.AutoEngage1;
+import frc.robot.autos.AutoEngage2;
 import frc.robot.autos.WaitUntil;
 import frc.robot.autos.intakeOff;
 import frc.robot.autos.intakeOn;
@@ -24,17 +25,17 @@ public class EngageAuto extends SequentialCommandGroup {
     public EngageAuto(Swerve swerve){
         this.m_swerve = swerve;
         // needs to change
-        setGyro setGyro = new setGyro(258);
+        setGyro setGyro = new setGyro(78);
 
         addCommands(
             setGyro,
             new InstantCommand(() -> RobotContainer.wrist.setSetpoint(0.7)),
-            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.15, -1, 1, true), 
+            new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.18, -1, .95, true), 
             new intakeOn(0.9),
-            new WaitUntil(3000),
+            new WaitUntil(2500),
             new intakeOff(), 
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 1, true),
-            new Drive_Back_Command(swerve, .45, 0, Constants.Swerve.AutoMaxspeed, 2000, true),
+            new Drive_Back_Command(swerve, .9, 0, Constants.Swerve.AutoMaxspeed, 900, true),
             new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 0.05, -0.05, 1, true),
             // new Drive_Back_Command(swerve, .4, 0, true),
             new AutoEngage1(swerve, true)

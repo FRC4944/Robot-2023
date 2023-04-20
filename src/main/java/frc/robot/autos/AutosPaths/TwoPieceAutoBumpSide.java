@@ -5,10 +5,9 @@ import frc.robot.RobotContainer;
 import frc.robot.autos.WaitUntil;
 import frc.robot.autos.intakeOff;
 import frc.robot.autos.intakeOn;
+import frc.robot.autos.setGyro;
 import frc.robot.commands.HorizontalFirstVerticalCommand;
 import frc.robot.commands.VerticalFirstHorizontalCommand;
-import frc.robot.subsystems.HorizontalElevator;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
 
 import java.util.HashMap;
@@ -20,19 +19,15 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
-public class PathPlannerTest extends SequentialCommandGroup {
-    public PathPlannerTest(Swerve s_Swerve){
+
+public class TwoPieceAutoBumpSide extends SequentialCommandGroup {
+    public TwoPieceAutoBumpSide(Swerve s_Swerve){
         HashMap<String, Command> eventMap = new HashMap<>();
         Field2d m_field = new Field2d();
         // SequentialCommandGroup Score = new SequentialCommandGroup(new InstantCommand(() -> 
@@ -53,14 +48,14 @@ public class PathPlannerTest extends SequentialCommandGroup {
         // eventMap.put("grab cube", grabCube);
         // eventMap.put("drop cube", new InstantCommand(() -> armSubsystem.openClamper()));
 
-        PathPlannerTrajectory path = PathPlanner.loadPath("Two Piece ShortSide", 
+        PathPlannerTrajectory path = PathPlanner.loadPath("Two Piece Bump Side", 
         new PathConstraints(3, 1.8), true);
 
         // var thetaController =
         //     new ProfiledPIDController(
         //         Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         // thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        m_field.getObject("Two Piece ShortSide").setTrajectory(path);
+        m_field.getObject("Two Piece Bump Side").setTrajectory(path);
 
         PPSwerveControllerCommand swerveControllerCommand = 
                  new PPSwerveControllerCommand(
@@ -75,8 +70,12 @@ public class PathPlannerTest extends SequentialCommandGroup {
                     s_Swerve // Requires this drive subsystem
                 );
             FollowPathWithEvents command = new FollowPathWithEvents(swerveControllerCommand,path.getMarkers(),eventMap);
+
+            setGyro setGyro = new setGyro(78);
+            
             addCommands(
                 //new HorizontalFirstVerticalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, -0.02, -0.03, .87, true),
+                new InstantCommand(() -> s_Swerve.zeroGyro()),
                 new VerticalFirstHorizontalCommand(RobotContainer.verticalElevator, RobotContainer.horizontalElevator, RobotContainer.wrist, 1.15, -1, 1, true), 
                 new intakeOn(0.9),
                 new WaitUntil(2500),

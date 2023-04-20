@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
 import frc.robot.autos.AutosPaths.EngageAuto;
+import frc.robot.autos.AutosPaths.TwoPieceAutoBumpSide;
 import frc.robot.autos.AutosPaths.TwoPieceAuto;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -55,7 +56,6 @@ public class RobotContainer {
     public static Intake intake = new Intake();
     public static CANDle candle = new CANDle();
     public static DigitalInput engage = new DigitalInput(0);
-    public static Partner_Lift Engage = new Partner_Lift();
 
     private static double verticalelevatorsp;
     private static double horizontalelevatorsp;
@@ -80,7 +80,7 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> -(driver.getRawAxis(translate) * getDriveMultiplier()), 
                 () -> -driver.getRawAxis(strafe) * getDriveMultiplier(), 
-                () -> -driver.getRawAxis(rotationAxis) * getDriveMultiplier(), 
+                () -> -driver.getRawAxis(rotationAxis) * getDriveMultiplier(),
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -159,7 +159,7 @@ public class RobotContainer {
         
         // Sets the Elevators to zero and lift wrist for cubes 
         if (driver.getBButtonPressed()){
-            wrist.setSetpoint(0.90);
+            wrist.setSetpoint(0.87);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-.33);
             intake.intake_on(0.9);
@@ -169,7 +169,7 @@ public class RobotContainer {
             wrist.setSetpoint(1.3);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-0.02);
-            intake.intake_on(0);
+            intake.intake_on(0.1);
         }
 
         // Sets the wrist to the ground to pick up cones
@@ -236,9 +236,9 @@ public class RobotContainer {
                 
             }
             if (gp == 2){
-                verticalelevatorsp = 1.13;
+                verticalelevatorsp = 1.15;
                 horizontalelevatorsp = -1;
-                wristsp = 0.9;
+                wristsp = 0.85;
                 System.out.print("working high cone");
                 System.out.print(verticalelevatorsp);
                 System.out.print(horizontalelevatorsp);
@@ -256,9 +256,19 @@ public class RobotContainer {
 //0.48
 
 
-                // verticalelevatorsp = 1.10;
-                // horizontalelevatorsp = -1;
-                // wristsp = 0.95;
+// verticalelevatorsp = 1.10;
+// horizontalelevatorsp = -1;
+// wristsp = 0.95;
+
+// 2023 worlds high cone didn't work 
+// 1.13
+// -1 
+// .9
+
+// 2023 worlds high cone working
+// 1.15
+// -1 
+// .85
             }
         }
 
@@ -293,7 +303,7 @@ public class RobotContainer {
 
             if (gp == 2){
                 verticalelevatorsp = .5;
-                horizontalelevatorsp = 0;
+                horizontalelevatorsp = -0.05;
                 wristsp = .2;
             }
         }
@@ -401,7 +411,8 @@ public class RobotContainer {
 
     //return m_chooser.getSelected();
     
-    return new TwoPieceAuto(s_Swerve);
+    return new EngageAuto(s_Swerve);
+    //return new TwoPieceAuto(s_Swerve);
     //Uncomment this ^ if auto selector is not working
     }
     private void autonomousOptions() {

@@ -14,7 +14,7 @@ public class AutoEngage1 extends CommandBase {
   public static Swerve m_Swerve;
 
   public double distance;  
-  public double kp = 0.016;
+  public double kp = 0.02;
 
   //private long time;
 

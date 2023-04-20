@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.simulation.DIOSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -24,6 +25,7 @@ public class VerticalElevator extends SubsystemBase {
   private final TalonFXSensorCollection encoder   = new TalonFXSensorCollection(vertical_elevator_motor1);
   public final PIDController pid = new PIDController(0.735, 1.0/8.0, 0.0001);
   private double setPoint = 0;
+  DIOSim BrakeButton = new DIOSim(0);
 
   // Constants
   private static final int ENCODER_BUFFER = 500;
@@ -81,6 +83,16 @@ public class VerticalElevator extends SubsystemBase {
     SmartDashboard.putNumber("Current Setpoint", this.setPoint);
     SmartDashboard.putNumber("Motor Power", this.vertical_elevator_motor1.getMotorOutputPercent());
     SmartDashboard.putNumber("Transform Encoder Value vertical", getEncoderValue());
+
+    if (BrakeButton.getIsInput() == true){
+      this.vertical_elevator_motor1.setNeutralMode(NeutralMode.Coast);
+      this.vertical_elevator_motor2.setNeutralMode(NeutralMode.Coast);
+    }
+
+    if (BrakeButton.getIsInput() == false){
+      this.vertical_elevator_motor1.setNeutralMode(NeutralMode.Brake);
+      this.vertical_elevator_motor2.setNeutralMode(NeutralMode.Brake);
+    }
   }
 
   public void driveTowardsPid() {
