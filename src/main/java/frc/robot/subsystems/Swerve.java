@@ -139,7 +139,12 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond); 
-            SmartDashboard.putData("Field", m_field);   
+            SmartDashboard.putData("Field", m_field);  
+
+            SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
+            SmartDashboard.putNumber("Gyro ByteCount", gyro.getByteCount());
+            SmartDashboard.putNumber("Gyro UpdateRefresh", gyro.getUpdateCount());
+            SmartDashboard.putBoolean("Gyro Connected", gyro.isConnected());
         }
 
         m_field.setRobotPose(swerveOdometry.getPoseMeters());
