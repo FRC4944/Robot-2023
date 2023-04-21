@@ -39,6 +39,10 @@ public class AutoEngage1 extends CommandBase {
   public void execute() {
     distance = m_Swerve.gyro.getPitch();
 
+    if (m_Swerve.gyro.isConnected() == false){
+      distance = 0;
+    }
+
     double delta = 0 - distance;
     double drive = delta * kp;
 
