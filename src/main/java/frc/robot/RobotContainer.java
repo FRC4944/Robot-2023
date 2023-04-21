@@ -92,6 +92,9 @@ public class RobotContainer {
     }
 
     public double getDriveMultiplier() {
+        if (verticalElevator.getEncoderValue() > 0.5){
+            return driver.getRightBumper() ? 0.33 : 0.5;
+        }
         return driver.getRightBumper() ? 0.33 : 1;
     }
 
@@ -166,10 +169,11 @@ public class RobotContainer {
         }
         // Sets the wrist back to default
         if (driver.getBButtonReleased()){
-            wrist.setSetpoint(1.3);
+            wrist.setSetpoint(1.4);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-0.02);
             intake.intake_on(0.1);
+        
         }
 
         // Sets the wrist to the ground to pick up cones
@@ -181,7 +185,7 @@ public class RobotContainer {
         }
         // Sets the wrist back to default
         if (driver.getAButtonReleased()){
-            wrist.setSetpoint(1.3);
+            wrist.setSetpoint(1.4);
             verticalElevator.setSetpoint(-0.05);
             horizontalElevator.setSetpoint(-0.02);
             intake.intake_on(0);

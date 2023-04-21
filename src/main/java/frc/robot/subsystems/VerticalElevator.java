@@ -51,7 +51,7 @@ public class VerticalElevator extends SubsystemBase {
     
   }
 
-  private double getEncoderValue() {
+  public double getEncoderValue() {
     return (this.encoder.getIntegratedSensorPosition() - BOTTOM_ENCODER_VALUE) / (TOP_ENCODER_VALUE - BOTTOM_ENCODER_VALUE);
   }
 
