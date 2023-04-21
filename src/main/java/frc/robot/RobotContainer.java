@@ -169,9 +169,9 @@ public class RobotContainer {
         }
         // Sets the wrist back to default
         if (driver.getBButtonReleased()){
-            wrist.setSetpoint(1.4);
+            wrist.setSetpoint(1.5);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(-0.02);
+            horizontalElevator.setSetpoint(-0.05);
             intake.intake_on(0.1);
         
         }
@@ -185,9 +185,9 @@ public class RobotContainer {
         }
         // Sets the wrist back to default
         if (driver.getAButtonReleased()){
-            wrist.setSetpoint(1.4);
+            wrist.setSetpoint(1.5);
             verticalElevator.setSetpoint(-0.05);
-            horizontalElevator.setSetpoint(-0.02);
+            horizontalElevator.setSetpoint(-0.05);
             intake.intake_on(0);
         }
 
