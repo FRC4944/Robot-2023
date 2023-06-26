@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
 import frc.robot.autos.AutosPaths.EngageAuto;
+import frc.robot.autos.AutosPaths.EngageAutoLeaveCom;
 import frc.robot.autos.AutosPaths.TwoPieceAutoBumpSide;
 import frc.robot.autos.AutosPaths.TwoPieceAuto;
 import frc.robot.commands.*;
@@ -416,6 +417,7 @@ public class RobotContainer {
     //return m_chooser.getSelected();
     
     return new EngageAuto(s_Swerve);
+    //return new EngageAutoLeaveCom(s_Swerve);
     //return new TwoPieceAuto(s_Swerve);
     //Uncomment this ^ if auto selector is not working
     }

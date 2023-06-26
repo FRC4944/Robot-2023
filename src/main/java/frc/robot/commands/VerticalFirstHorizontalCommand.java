@@ -58,8 +58,8 @@ public class VerticalFirstHorizontalCommand extends CommandBase {
   public void execute() {
     this.verticalElevator.setSetpoint(this.verticalSetpoint);
     if (verticalElevator.pid.atSetpoint()) {
-      this.wrist.setSetpoint(this.wristSetpoint);
       this.horizontalElevator.setSetpoint(this.horizontalSetpoint); 
+      this.wrist.setSetpoint(this.wristSetpoint);
 
     // if(wrist.pid.atSetpoint()){
     //   this.horizontalElevator.setSetpoint(this.horizontalSetpoint);

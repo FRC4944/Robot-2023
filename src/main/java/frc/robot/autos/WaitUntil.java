@@ -9,14 +9,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class WaitUntil extends CommandBase {
   /** Creates a new wait. */
   double endTime;
+  double duration;
   public WaitUntil(double endTime) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.endTime = System.currentTimeMillis() + endTime;
+    this.duration = endTime;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.endTime = System.currentTimeMillis() + this.duration;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
